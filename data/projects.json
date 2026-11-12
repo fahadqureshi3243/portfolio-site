@@ -4,7 +4,7 @@
     "category": "pbi",
     "industry": "Oil & Gas",
     "fn": "FP&A",
-    "desc": "Five-page finance dashboard for a Saudi oilfield supplies distributor: net sales, gross margin, EBITDA and operating profit vs prior year and budget, a P&L bridge from gross sales to operating profit, margins by product, quarter and region, and sales by customer, rep and product with drill-through.",
+    "desc": "Sales, margins and profit for a Saudi oilfield supplies distributor, vs prior year and budget, with a P&L bridge and drill-down by product, region and customer.",
     "meta": "5 pages · FY2024–FY2025 · SAR",
     "images": [
       "/images/oilfield-supplies-overview.png",
