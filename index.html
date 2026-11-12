@@ -85,6 +85,15 @@
   </div>
 </div>
 
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="vCap" hidden>
+  <div class="vtop"><span id="vCap"></span><button type="button" id="vClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>Close</button></div>
+  <div class="vbody">
+    <button type="button" class="varrow" id="vPrev" aria-label="Previous screenshot"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg></button>
+    <img id="vImg" alt="">
+    <button type="button" class="varrow" id="vNext" aria-label="Next screenshot"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg></button>
+  </div>
+</div>
+
 <script src="assets/dc-lite.js"></script>
 <script src="data/mocks.js"></script>
 <script src="data/erp-data.js"></script>

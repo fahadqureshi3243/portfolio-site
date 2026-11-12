@@ -94,7 +94,8 @@ function startGallery(S) {
     var t = el('div', 'thumb'), imgs = p.images || [];
     if (imgs.length) {
       t.classList.add('has-img');
-      var i = (st.slide[p.title] || 0) % imgs.length, im = el('img'); im.src = imgs[i]; im.alt = p.title + ' screenshot ' + (i + 1); im.loading = 'lazy'; t.appendChild(im);
+      var i = (st.slide[p.title] || 0) % imgs.length, im = el('img'); im.src = imgs[i]; im.alt = p.title + ' screenshot ' + (i + 1); im.loading = 'lazy';
+      var zb = el('button', 'zoom'); zb.type = 'button'; zb.setAttribute('aria-label', 'Open ' + p.title + ' screenshot full size'); zb.appendChild(im); zb.onclick = function () { openViewer(p, i); }; t.appendChild(zb);
       if (imgs.length > 1) {
         t.appendChild(el('span', 'counter', (i + 1) + ' / ' + imgs.length));
         var go = function (j) { return function () { st.slide[p.title] = (j + imgs.length) % imgs.length; renderCards(); }; };
@@ -124,6 +125,7 @@ function startGallery(S) {
     if (p.download) { var ext = (p.download.split('?')[0].match(/\.([a-z0-9]+)$/i) || [])[1]; if (ext) m.appendChild(el('small', '', '.' + ext.toLowerCase())); }
     f.appendChild(m);
     var act = el('span', 'actions'), href = p.category === 'erp' ? 'erp-workflows.html#' + p.erp : (p.link || '');
+    if (!href && (p.images || []).length) { var vb = el('button', 'open', 'View'); vb.type = 'button'; vb.onclick = function () { openViewer(p, 0); }; act.appendChild(vb); }
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     if (p.download && p.category !== 'erp') {
@@ -147,6 +149,19 @@ function startGallery(S) {
   document.getElementById('flowClose').addEventListener('click', closeFlow);
   dlg.addEventListener('click', function (e) { if (e.target === dlg) closeFlow(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) closeFlow(); });
+
+  /* full-size screenshot viewer */
+  var vw = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vCap = document.getElementById('vCap'), vCur = null, vIdx = 0;
+  function showV() { var imgs = vCur.images; vImg.src = imgs[vIdx]; vImg.alt = vCur.title + ' screenshot ' + (vIdx + 1); vCap.textContent = vCur.title + (imgs.length > 1 ? '  ·  ' + (vIdx + 1) + ' / ' + imgs.length : '');
+    document.getElementById('vPrev').hidden = document.getElementById('vNext').hidden = imgs.length < 2; }
+  function openViewer(p, i) { vCur = p; vIdx = i || 0; showV(); vw.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vClose').focus(); }
+  function closeViewer() { vw.hidden = true; document.body.style.overflow = ''; vImg.removeAttribute('src'); }
+  function stepV(d) { var n = vCur.images.length; vIdx = (vIdx + d + n) % n; showV(); }
+  document.getElementById('vClose').onclick = closeViewer;
+  document.getElementById('vPrev').onclick = function () { stepV(-1); };
+  document.getElementById('vNext').onclick = function () { stepV(1); };
+  vw.addEventListener('click', function (e) { if (e.target === vw) closeViewer(); });
+  document.addEventListener('keydown', function (e) { if (vw.hidden) return; if (e.key === 'Escape') closeViewer(); if (e.key === 'ArrowLeft') stepV(-1); if (e.key === 'ArrowRight') stepV(1); });
 
   function renderCards() {
     thumbs.forEach(function (x) { x.unmount(); }); thumbs = [];
