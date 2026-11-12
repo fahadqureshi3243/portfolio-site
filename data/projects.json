@@ -1,47 +1,15 @@
 [
   {
-    "title": "Rig Cost & Day-Rate Dashboard",
-    "category": "pbi",
-    "industry": "Oil & Gas",
-    "fn": "FP&A",
-    "desc": "Cost per rig per day by component, budget vs actual and variance drivers.",
-    "meta": "5 pages",
-    "images": [],
-    "download": "",
-    "link": ""
-  },
-  {
-    "title": "IKTVA Local Content Tracker",
-    "category": "pbi",
-    "industry": "Oil & Gas",
-    "fn": "Tax & Compliance",
-    "desc": "Spend, workforce and training inputs rolled into a live IKTVA score against target.",
-    "meta": "3 pages",
-    "images": [],
-    "download": "",
-    "link": ""
-  },
-  {
-    "title": "VAT & ZATCA Reconciliation",
-    "category": "pbi",
-    "industry": "All industries",
-    "fn": "Tax & Compliance",
-    "desc": "Input and output VAT reconciled to the GL, with exceptions flagged before filing.",
-    "meta": "4 pages",
-    "images": [],
-    "download": "",
-    "link": ""
-  },
-  {
-    "title": "Workforce Cost & GOSI",
+    "title": "Construction Company - Power BI ",
     "category": "pbi",
     "industry": "Construction",
-    "fn": "HR & Payroll",
-    "desc": "Headcount, payroll and GOSI cost by project, nationality mix and Saudisation band.",
-    "meta": "3 pages",
-    "images": [],
-    "download": "",
-    "link": ""
+    "fn": "FP&A",
+    "desc": "Construction Company - Power BI - Finance Budget Progress",
+    "meta": "5 pages",
+    "images": [
+      "/images/Executive Summary - Construction.png"
+    ],
+    "download": "/downloads/Construction Powerbi.pbix"
   },
   {
     "title": "Purchase Request to Vendor RFQ",
@@ -50,9 +18,6 @@
     "fn": "Procurement",
     "desc": "Requests from a form or email are classified by AI, budget-checked and matched to approved vendors, and RFQs go out automatically.",
     "meta": "19 nodes",
-    "images": [],
-    "download": "",
-    "link": "",
     "kind": "rfq"
   },
   {
@@ -62,9 +27,6 @@
     "fn": "Procurement",
     "desc": "Low stock triggers an RFP, AI picks the vendor, the PO is raised, and goods receipt and invoice are matched before payment.",
     "meta": "23 nodes",
-    "images": [],
-    "download": "",
-    "link": "",
     "kind": "inv"
   },
   {
@@ -74,9 +36,6 @@
     "fn": "HR & Payroll",
     "desc": "Checks the talent pool first, then AI writes and posts the job, screens every CV and books interviews for the shortlist.",
     "meta": "22 nodes",
-    "images": [],
-    "download": "",
-    "link": "",
     "kind": "hr"
   },
   {
@@ -86,9 +45,6 @@
     "fn": "Operations",
     "desc": "Customer orders are exploded into BOMs and checked for material, labor and capacity, then AI builds the production schedule.",
     "meta": "19 nodes",
-    "images": [],
-    "download": "",
-    "link": "",
     "kind": "ops"
   },
   {
@@ -97,10 +53,6 @@
     "industry": "Oil & Gas",
     "fn": "ERP & Process",
     "desc": "Rig operations, day-rate billing, crew rotations and IKTVA, task by task, with what is in the ERP and what can be automated.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "drilling"
   },
   {
@@ -109,10 +61,6 @@
     "industry": "Petrochemicals",
     "fn": "ERP & Process",
     "desc": "Shift operations, yield accounting, turnarounds, LIMS and product sales mapped from ERP to manual steps.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "petrochem"
   },
   {
@@ -121,10 +69,6 @@
     "industry": "Oil & Gas",
     "fn": "ERP & Process",
     "desc": "EPC projects, field tickets, tool tracking and milestone billing, with owners and automation ideas.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "ofs"
   },
   {
@@ -133,10 +77,6 @@
     "industry": "Manufacturing",
     "fn": "ERP & Process",
     "desc": "Order to delivery, MRP, shop floor, OEE, quality and costing, step by step.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "manufacturing"
   },
   {
@@ -145,10 +85,6 @@
     "industry": "Logistics",
     "fn": "ERP & Process",
     "desc": "Bookings, dispatch, fleet, 3PL warehousing, FASAH customs and freight billing.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "logistics"
   },
   {
@@ -157,10 +93,6 @@
     "industry": "Entertainment",
     "fn": "ERP & Process",
     "desc": "Events, GEA licences, ticketing reconciliation, venues, sponsorship and crowd safety.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "entertainment"
   },
   {
@@ -169,10 +101,6 @@
     "industry": "Healthcare",
     "fn": "ERP & Process",
     "desc": "Patient access, NPHIES claims, coding, pharmacy and credentialing for a private hospital.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "healthcare"
   },
   {
@@ -181,10 +109,6 @@
     "industry": "Construction",
     "fn": "ERP & Process",
     "desc": "Tendering, contracts, site operations, procurement and project finance for an EPC contractor.",
-    "meta": "",
-    "images": [],
-    "download": "",
-    "link": "",
     "erp": "construction"
   },
   {
@@ -193,10 +117,7 @@
     "industry": "All industries",
     "fn": "FP&A",
     "desc": "From Excel exports to a working management dashboard, built on your own chart of accounts.",
-    "meta": "[DURATION]",
-    "images": [],
-    "download": "",
-    "link": ""
+    "meta": "[DURATION]"
   },
   {
     "title": "DAX for FP&A",
@@ -204,10 +125,7 @@
     "industry": "All industries",
     "fn": "FP&A",
     "desc": "Time intelligence, rolling forecasts and variance measures that finance teams trust.",
-    "meta": "[DURATION]",
-    "images": [],
-    "download": "",
-    "link": ""
+    "meta": "[DURATION]"
   },
   {
     "title": "Annual Budget Model",
@@ -215,9 +133,6 @@
     "industry": "All industries",
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
-    "meta": "6 sheets",
-    "images": [],
-    "download": "",
-    "link": ""
+    "meta": "6 sheets"
   }
 ]
