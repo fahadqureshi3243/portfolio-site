@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Operations: Customer Order → Production Plan</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 100%; box-sizing: border-box; font-family: 'Inter Tight', system-ui, sans-serif; color: #e6eaf5; background: #0b1020; border: 1px solid #26305a; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(11, 15, 23, 0.35)">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #232d4d; background: #0e1426">
+    <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+      <span style="font-size: 17px; font-weight: 800; color: #ffffff">Operations: Customer Order → Production Plan</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8b95b5">n8n · 19 nodes · BOM explosion · material, labor &amp; capacity checks · AI scheduling</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <button type="button" aria-label="{{pauseLabel}}" onClick="{{togglePause}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{pauseIcon}}"></path></svg></button>
+      <button type="button" aria-label="Replay from the start" onClick="{{replay}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"></path></svg></button>
+      <span style="{{statusStyle}}">{{statusText}}</span>
+    </div>
+  </div>
+  <div ref="{{wrapRef}}" style="overflow-x: auto; background: #0a0f1e">
+    <div style="min-width: 1000px">
+<svg viewBox="0 0 1600 760" role="img" aria-label="Animated n8n operations workflow from customer order through BOM, material, labor and capacity checks to production schedule" style="display: block; width: 100%; height: auto; font-family: 'Inter Tight', Inter, system-ui, sans-serif">
+<defs>
+<pattern id="wfDots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" style="fill: #1a2240"></circle></pattern>
+<filter id="wfGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+<filter id="wfSoft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"></feGaussianBlur></filter>
+</defs>
+<rect width="1600" height="760" style="fill: url(#wfDots)"></rect>
+<rect x="18" y="88" width="160" height="322" rx="18" style="fill: #3b82f6; fill-opacity: 0.05; stroke: #3b82f6; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="98.0" y="108.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #3b82f6; letter-spacing: 2px">INPUTS</text>
+<rect x="1418" y="92" width="164" height="650" rx="18" style="fill: #34d399; fill-opacity: 0.05; stroke: #34d399; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="1500.0" y="112.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #34d399; letter-spacing: 2px">OUTPUTS</text>
+<path d="M134.0 180.0 C174.0 180.0, 174.0 250.0, 214.0 250.0" style="fill: none; stroke: {{eg.cpo_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 180.0 C174.0 180.0, 174.0 250.0, 214.0 250.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.cpo_merge.fop}}"></path>
+<circle cx="214.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M134.0 330.0 C174.0 330.0, 174.0 250.0, 214.0 250.0" style="fill: none; stroke: {{eg.so_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 330.0 C174.0 330.0, 174.0 250.0, 214.0 250.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.so_merge.fop}}"></path>
+<circle cx="214.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M286.0 250.0 C326.0 250.0, 308.0 250.0, 348.0 250.0" style="fill: none; stroke: {{eg.merge_aiord.st}}; stroke-width: 2.4"></path>
+<path d="M286.0 250.0 C326.0 250.0, 308.0 250.0, 348.0 250.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.merge_aiord.fop}}"></path>
+<circle cx="348.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M552.0 250.0 C592.0 250.0, 574.0 250.0, 614.0 250.0" style="fill: none; stroke: {{eg.aiord_bom.st}}; stroke-width: 2.4"></path>
+<path d="M552.0 250.0 C592.0 250.0, 574.0 250.0, 614.0 250.0" style="fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.aiord_bom.fop}}"></path>
+<circle cx="614.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M686.0 250.0 C726.0 250.0, 724.0 250.0, 764.0 250.0" style="fill: none; stroke: {{eg.bom_stock.st}}; stroke-width: 2.4"></path>
+<path d="M686.0 250.0 C726.0 250.0, 724.0 250.0, 764.0 250.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.bom_stock.fop}}"></path>
+<circle cx="764.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M836.0 250.0 C876.0 250.0, 874.0 250.0, 914.0 250.0" style="fill: none; stroke: {{eg.stock_ifmat.st}}; stroke-width: 2.4"></path>
+<path d="M836.0 250.0 C876.0 250.0, 874.0 250.0, 914.0 250.0" style="fill: none; stroke: #f59e0b; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.stock_ifmat.fop}}"></path>
+<circle cx="914.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M986.0 250.0 C1026.0 250.0, 1024.0 110.0, 1064.0 110.0" style="fill: none; stroke: {{eg.ifmat_purreq.st}}; stroke-width: 2.4"></path>
+<path d="M986.0 250.0 C1026.0 250.0, 1024.0 110.0, 1064.0 110.0" style="fill: none; stroke: #60a5fa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifmat_purreq.fop}}"></path>
+<circle cx="1064.0" cy="110.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1022.1" y="183.5" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">short</text>
+<path d="M986.0 250.0 C1026.0 250.0, 1024.0 250.0, 1064.0 250.0" style="fill: none; stroke: {{eg.ifmat_labor.st}}; stroke-width: 2.4"></path>
+<path d="M986.0 250.0 C1026.0 250.0, 1024.0 250.0, 1064.0 250.0" style="fill: none; stroke: #c084fc; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifmat_labor.fop}}"></path>
+<circle cx="1064.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1022.1" y="243.0" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">in stock</text>
+<path d="M1136.0 250.0 C1176.0 250.0, 1174.0 250.0, 1214.0 250.0" style="fill: none; stroke: {{eg.labor_mach.st}}; stroke-width: 2.4"></path>
+<path d="M1136.0 250.0 C1176.0 250.0, 1174.0 250.0, 1214.0 250.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.labor_mach.fop}}"></path>
+<circle cx="1214.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1136.0 110.0 C1300.0 110.0, 1300.0 150.0, 1464.0 150.0" style="fill: none; stroke: {{eg.purreq_prout.st}}; stroke-width: 2.4"></path>
+<path d="M1136.0 110.0 C1300.0 110.0, 1300.0 150.0, 1464.0 150.0" style="fill: none; stroke: #60a5fa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.purreq_prout.fop}}"></path>
+<circle cx="1464.0" cy="150.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M752.0 560.0 C793.0 560.0, 793.0 560.0, 834.0 560.0" style="fill: none; stroke: {{eg.sched_cost.st}}; stroke-width: 2.4"></path>
+<path d="M752.0 560.0 C793.0 560.0, 793.0 560.0, 834.0 560.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.sched_cost.fop}}"></path>
+<circle cx="834.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M906.0 560.0 C946.0 560.0, 944.0 560.0, 984.0 560.0" style="fill: none; stroke: {{eg.cost_ifmar.st}}; stroke-width: 2.4"></path>
+<path d="M906.0 560.0 C946.0 560.0, 944.0 560.0, 984.0 560.0" style="fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.cost_ifmar.fop}}"></path>
+<circle cx="984.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1056.0 560.0 C1096.0 560.0, 1094.0 470.0, 1134.0 470.0" style="fill: none; stroke: {{eg.ifmar_confirm.st}}; stroke-width: 2.4"></path>
+<path d="M1056.0 560.0 C1096.0 560.0, 1094.0 470.0, 1134.0 470.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifmar_confirm.fop}}"></path>
+<circle cx="1134.0" cy="470.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1092.1" y="514.7" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">yes</text>
+<path d="M1056.0 560.0 C1096.0 560.0, 1094.0 650.0, 1134.0 650.0" style="fill: none; stroke: {{eg.ifmar_review.st}}; stroke-width: 2.4"></path>
+<path d="M1056.0 560.0 C1096.0 560.0, 1094.0 650.0, 1134.0 650.0" style="fill: none; stroke: #ef4444; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifmar_review.fop}}"></path>
+<circle cx="1134.0" cy="650.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1092.1" y="591.3" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">no</text>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 280.0, 1464.0 280.0" style="fill: none; stroke: {{eg.confirm_custc.st}}; stroke-width: 2.4"></path>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 280.0, 1464.0 280.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.confirm_custc.fop}}"></path>
+<circle cx="1464.0" cy="280.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 440.0, 1464.0 440.0" style="fill: none; stroke: {{eg.confirm_wo.st}}; stroke-width: 2.4"></path>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 440.0, 1464.0 440.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.confirm_wo.fop}}"></path>
+<circle cx="1464.0" cy="440.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 620.0, 1464.0 620.0" style="fill: none; stroke: {{eg.confirm_pbi.st}}; stroke-width: 2.4"></path>
+<path d="M1206.0 470.0 C1335.0 470.0, 1335.0 620.0, 1464.0 620.0" style="fill: none; stroke: #f2c811; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.confirm_pbi.fop}}"></path>
+<circle cx="1464.0" cy="620.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1206.0 650.0 C1335.0 650.0, 1335.0 620.0, 1464.0 620.0" style="fill: none; stroke: {{eg.review_pbi.st}}; stroke-width: 2.4"></path>
+<path d="M1206.0 650.0 C1335.0 650.0, 1335.0 620.0, 1464.0 620.0" style="fill: none; stroke: #f2c811; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.review_pbi.fop}}"></path>
+<circle cx="1464.0" cy="620.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1250.0 286.0 C1250.0 430.0, 650.0 410.0, 650.0 524.0" style="fill: none; stroke: {{eg.mach_sched.st}}; stroke-width: 2.4"></path>
+<path d="M1250.0 286.0 C1250.0 430.0, 650.0 410.0, 650.0 524.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.mach_sched.fop}}"></path>
+<circle cx="650.0" cy="524.0" r="3.5" style="fill: #3a4672"></circle>
+<circle cx="98" cy="180" r="{{nd.cpo.pr}}" style="fill: none; stroke: #ef4444; stroke-width: 2; opacity: {{nd.cpo.po}}"></circle>
+<circle cx="98" cy="330" r="{{nd.so.pr}}" style="fill: none; stroke: #818cf8; stroke-width: 2; opacity: {{nd.so.po}}"></circle>
+<g transform="translate(98 180)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.cpo.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.cpo.body}}; stroke-width: 2; filter: {{nd.cpo.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.cpo.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Customer PO</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(Gmail)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.cpo.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 POs</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.cpo.ckOp}}"><circle r="9" style="fill: {{nd.cpo.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(98 330)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #818cf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.so.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.so.body}}; stroke-width: 2; filter: {{nd.so.filt}}"></rect>
+<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #818cf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.so.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Sales Order</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(ERP webhook)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.so.bOp}}"><rect x="-20.2" y="-10" width="40.4" height="20" rx="10" style="fill: #818cf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1 SO</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.so.ckOp}}"><circle r="9" style="fill: {{nd.so.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(250 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.merge.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.merge.body}}; stroke-width: 2; filter: {{nd.merge.filt}}"></rect>
+<path d="M5 5c0 6 7 5 7 11v4M19 5c0 6-7 5-7 11M9 17l3 3 3-3" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.merge.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Merge Orders</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.merge.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #94a3b8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 orders</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.merge.ckOp}}"><circle r="9" style="fill: {{nd.merge.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(450 250)">
+<rect x="-108.0" y="-42.0" width="216" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.aiord.ringOp}}"></rect>
+<rect x="-102.0" y="-36.0" width="204" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.aiord.body}}; stroke-width: 2; filter: {{nd.aiord.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-86.0 -16) scale(1.35)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.aiord.icOp}}"></path>
+<text x="-42.0" y="-5.0" text-anchor="start" style="font-size: 11px; font-weight: 500; fill: #8b95b5; letter-spacing: 1.5px">AI AGENT</text>
+<text x="-42.0" y="14.0" text-anchor="start" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Read Order Lines</text>
+<g transform="translate(96.0 -42.0)" style="opacity: {{nd.aiord.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">11 lines</text></g>
+<g transform="translate(98.0 32.0)" style="opacity: {{nd.aiord.ckOp}}"><circle r="9" style="fill: {{nd.aiord.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(650 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.bom.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.bom.body}}; stroke-width: 2; filter: {{nd.bom.filt}}"></rect>
+<path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 17l9 5 9-5" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #2dd4bf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.bom.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Explode BOM</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(ERP API)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.bom.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #2dd4bf"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">64 parts</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.bom.ckOp}}"><circle r="9" style="fill: {{nd.bom.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(800 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.stock.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.stock.body}}; stroke-width: 2; filter: {{nd.stock.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.stock.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Check Material</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Stock</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.stock.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">58 / 64</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.stock.ckOp}}"><circle r="9" style="fill: {{nd.stock.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(950 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.ifmat.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.ifmat.body}}; stroke-width: 2; filter: {{nd.ifmat.filt}}"></rect>
+<path d="M12 3l9 9-9 9-9-9zM12 8v5M12 16h.01" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #f59e0b; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.ifmat.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Material</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Short?</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.ifmat.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #f59e0b"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 short</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.ifmat.ckOp}}"><circle r="9" style="fill: {{nd.ifmat.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1100 110)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.purreq.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.purreq.body}}; stroke-width: 2; filter: {{nd.purreq.filt}}"></rect>
+<path d="M7 4h10a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM9 2.5h6v3H9zM8.5 11h7M8.5 14.5h7M8.5 18h4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #60a5fa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.purreq.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Raise Purchase</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Requests</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.purreq.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #60a5fa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 PRs</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.purreq.ckOp}}"><circle r="9" style="fill: {{nd.purreq.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1100 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #c084fc; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.labor.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.labor.body}}; stroke-width: 2; filter: {{nd.labor.filt}}"></rect>
+<path d="M8 8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0M4.5 20c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #c084fc; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.labor.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Check Labor</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">&amp; Skills</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.labor.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #c084fc"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 crews</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.labor.ckOp}}"><circle r="9" style="fill: {{nd.labor.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1250 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.mach.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.mach.body}}; stroke-width: 2; filter: {{nd.mach.filt}}"></rect>
+<path d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.mach.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Check Machine</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Capacity</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.mach.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #94a3b8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">82% load</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.mach.ckOp}}"><circle r="9" style="fill: {{nd.mach.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(650 560)">
+<rect x="-108.0" y="-42.0" width="216" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.sched.ringOp}}"></rect>
+<rect x="-102.0" y="-36.0" width="204" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.sched.body}}; stroke-width: 2; filter: {{nd.sched.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-86.0 -16) scale(1.35)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.sched.icOp}}"></path>
+<text x="-42.0" y="-5.0" text-anchor="start" style="font-size: 11px; font-weight: 500; fill: #8b95b5; letter-spacing: 1.5px">AI AGENT</text>
+<text x="-42.0" y="14.0" text-anchor="start" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Build Production Schedule</text>
+<g transform="translate(96.0 -42.0)" style="opacity: {{nd.sched.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">wk 46–47</text></g>
+<g transform="translate(98.0 32.0)" style="opacity: {{nd.sched.ckOp}}"><circle r="9" style="fill: {{nd.sched.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(870 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.cost.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.cost.body}}; stroke-width: 2; filter: {{nd.cost.filt}}"></rect>
+<path d="M9 6l-5 6 5 6M15 6l5 6-5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #fb923c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.cost.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Cost Estimate</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(mat + labor)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.cost.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #fb923c"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">SAR 412K</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.cost.ckOp}}"><circle r="9" style="fill: {{nd.cost.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1020 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.ifmar.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.ifmar.body}}; stroke-width: 2; filter: {{nd.ifmar.filt}}"></rect>
+<path d="M12 3l9 9-9 9-9-9zM12 8v5M12 16h.01" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #2dd4bf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.ifmar.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Margin</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">≥ 18%?</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.ifmar.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #2dd4bf"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 ✓ 1 ✗</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.ifmar.ckOp}}"><circle r="9" style="fill: {{nd.ifmar.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1170 470)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.confirm.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.confirm.body}}; stroke-width: 2; filter: {{nd.confirm.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.confirm.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Confirm to</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Customer</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.confirm.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 orders</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.confirm.ckOp}}"><circle r="9" style="fill: {{nd.confirm.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1170 650)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.review.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.review.body}}; stroke-width: 2; filter: {{nd.review.filt}}"></rect>
+<path d="M8 8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0M4.5 20c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.review.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Commercial</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Review</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.review.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1 order</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.review.ckOp}}"><circle r="9" style="fill: {{nd.review.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 150)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.prout.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.prout.body}}; stroke-width: 2; filter: {{nd.prout.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #60a5fa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.prout.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Purchase</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Requests</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.prout.bOp}}"><rect x="-40.0" y="-10" width="80.0" height="20" rx="10" style="fill: #60a5fa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">→ RFQ flow</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.prout.ckOp}}"><circle r="9" style="fill: {{nd.prout.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 280)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.custc.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.custc.body}}; stroke-width: 2; filter: {{nd.custc.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.custc.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Customer</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Confirmations</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.custc.bOp}}"><rect x="-26.8" y="-10" width="53.6" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 sent</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.custc.ckOp}}"><circle r="9" style="fill: {{nd.custc.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 440)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.wo.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.wo.body}}; stroke-width: 2; filter: {{nd.wo.filt}}"></rect>
+<path d="M5.5 5h13a2 2 0 0 1 2 2v11a2 2 0 0 1 -2 2h-13a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2zM3.5 10h17M8 3v4M16 3v4M8 14h2M14 14h2" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.wo.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Work Orders</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">&amp; Schedule</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.wo.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 WOs</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.wo.ckOp}}"><circle r="9" style="fill: {{nd.wo.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 620)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #f2c811; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.pbi.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.pbi.body}}; stroke-width: 2; filter: {{nd.pbi.filt}}"></rect>
+<path d="M5.2 12h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v6.1a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-6.1a1.2 1.2 0 0 1 1.2 -1.2zM11.1 7.5h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v10.6a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-10.6a1.2 1.2 0 0 1 1.2 -1.2zM17.0 3.5h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v14.6a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-14.6a1.2 1.2 0 0 1 1.2 -1.2z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #f2c811; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.pbi.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Power BI</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Ops Dashboard</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.pbi.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #f2c811"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">refreshed</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.pbi.ckOp}}"><circle r="9" style="fill: {{nd.pbi.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(0 {{cd.bomcard.dy}})" style="opacity: {{cd.bomcard.op}}">
+<rect x="230" y="318" width="400" height="135" rx="12" style="fill: #0f2a2a; stroke: #5eead4; stroke-width: 1.2"></rect>
+<text x="244.0" y="341.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #5eead4; letter-spacing: 0.6px">BOM · SO-7781 · PUMP SKID × 4</text>
+<text x="244.0" y="362.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Steel frame</text>
+<text x="616.0" y="362.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">4 / 4 in stock</text>
+<text x="244.0" y="381.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Centrifugal pump</text>
+<text x="616.0" y="381.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">4 / 4 in stock</text>
+<text x="244.0" y="400.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Motor 15 kW</text>
+<text x="616.0" y="400.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fca5a5">2 / 4 · short</text>
+<text x="244.0" y="419.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Control panel</text>
+<text x="616.0" y="419.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fca5a5">0 / 4 · short</text>
+<text x="244.0" y="438.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Fastener kit</text>
+<text x="616.0" y="438.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">4 / 4 in stock</text>
+</g>
+<g transform="translate(0 {{cd.scard.dy}})" style="opacity: {{cd.scard.op}}">
+<rect x="230" y="318" width="400" height="135" rx="12" style="fill: #1a1636; stroke: #a78bfa; stroke-width: 1.2"></rect>
+<text x="244.0" y="341.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #a78bfa; letter-spacing: 0.6px">AI SCHEDULE · WEEK 46</text>
+<text x="244.0" y="362.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Line 1</text>
+<text x="616.0" y="362.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">Pump skid × 4 · Sun–Tue</text>
+<text x="244.0" y="381.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Crew A</text>
+<text x="616.0" y="381.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">3 welders · 2 shifts</text>
+<text x="244.0" y="400.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Line 2</text>
+<text x="616.0" y="400.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">Valve set × 20 · Wed</text>
+<text x="244.0" y="419.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Motors due</text>
+<text x="616.0" y="419.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fde68a">12 Nov (PR raised)</text>
+<text x="244.0" y="438.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Promise date</text>
+<text x="616.0" y="438.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">24 Nov to customer</text>
+</g>
+<g transform="translate({{pk.p0.x}} {{pk.p0.y}})" style="opacity: {{pk.p0.op}}"><circle r="15" style="fill: {{pk.p0.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p0.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p1.x}} {{pk.p1.y}})" style="opacity: {{pk.p1.op}}"><circle r="15" style="fill: {{pk.p1.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p1.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p2.x}} {{pk.p2.y}})" style="opacity: {{pk.p2.op}}"><circle r="15" style="fill: {{pk.p2.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p2.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p3.x}} {{pk.p3.y}})" style="opacity: {{pk.p3.op}}"><circle r="15" style="fill: {{pk.p3.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p3.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p4.x}} {{pk.p4.y}})" style="opacity: {{pk.p4.op}}"><circle r="15" style="fill: {{pk.p4.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p4.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p5.x}} {{pk.p5.y}})" style="opacity: {{pk.p5.op}}"><circle r="15" style="fill: {{pk.p5.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p5.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p6.x}} {{pk.p6.y}})" style="opacity: {{pk.p6.op}}"><circle r="15" style="fill: {{pk.p6.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p6.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p7.x}} {{pk.p7.y}})" style="opacity: {{pk.p7.op}}"><circle r="15" style="fill: {{pk.p7.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p7.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{lb.L0.x}} {{lb.L0.y}})" style="opacity: {{lb.L0.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L0.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">3 POs</text></g>
+<g transform="translate({{lb.L1.x}} {{lb.L1.y}})" style="opacity: {{lb.L1.op}}"><rect x="-20.6" y="-33" width="41.2" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L1.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">1 SO</text></g>
+<g transform="translate({{lb.L2.x}} {{lb.L2.y}})" style="opacity: {{lb.L2.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L2.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">4 orders</text></g>
+<g transform="translate({{lb.L3.x}} {{lb.L3.y}})" style="opacity: {{lb.L3.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L3.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">11 lines</text></g>
+<g transform="translate({{lb.L4.x}} {{lb.L4.y}})" style="opacity: {{lb.L4.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L4.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">64 parts</text></g>
+<g transform="translate({{lb.L5.x}} {{lb.L5.y}})" style="opacity: {{lb.L5.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L5.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">6 short</text></g>
+<g transform="translate({{lb.L6.x}} {{lb.L6.y}})" style="opacity: {{lb.L6.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L6.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">58 ok</text></g>
+<g transform="translate({{lb.L7.x}} {{lb.L7.y}})" style="opacity: {{lb.L7.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L7.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">capacity</text></g>
+<g transform="translate({{lb.L8.x}} {{lb.L8.y}})" style="opacity: {{lb.L8.op}}"><rect x="-20.6" y="-33" width="41.2" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L8.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">plan</text></g>
+<g transform="translate({{lb.L9.x}} {{lb.L9.y}})" style="opacity: {{lb.L9.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L9.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">3 orders</text></g>
+<g transform="translate({{lb.L10.x}} {{lb.L10.y}})" style="opacity: {{lb.L10.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L10.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">1 order</text></g>
+<g transform="translate({{lb.L11.x}} {{lb.L11.y}})" style="opacity: {{lb.L11.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L11.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">4 WOs</text></g>
+</svg>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px; border-top: 1px solid #232d4d; background: #0e1426; min-height: 64px; box-sizing: border-box">
+    <div style="display: flex; gap: 5px; align-items: center">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="8">
+        <span style="display: block; height: 5px; border-radius: 3px; width: {{s.w}}; background: {{s.bg}}"></span>
+      </sc-for>
+    </div>
+    <div style="font-size: 13px; font-weight: 800; color: #ffffff; white-space: nowrap"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: #8b95b5; margin-right: 8px">{{capN}}</span>{{capT}}</div>
+    <div style="flex: 1 1 320px; min-width: 0; color: #b7bfd8; font-size: 13.5px; line-height: 1.45">{{capX}}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1392,"height":760}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { t: 0, paused: false };
+    this.G = {"W": 1600, "nodes": {"cpo": {"x": 98, "c": "#ef4444", "inp": true}, "so": {"x": 98, "c": "#818cf8", "inp": true}, "merge": {"x": 250, "c": "#94a3b8", "inp": false}, "aiord": {"x": 450, "c": "#a78bfa", "inp": false}, "bom": {"x": 650, "c": "#2dd4bf", "inp": false}, "stock": {"x": 800, "c": "#22c55e", "inp": false}, "ifmat": {"x": 950, "c": "#f59e0b", "inp": false}, "purreq": {"x": 1100, "c": "#60a5fa", "inp": false}, "labor": {"x": 1100, "c": "#c084fc", "inp": false}, "mach": {"x": 1250, "c": "#94a3b8", "inp": false}, "sched": {"x": 650, "c": "#a78bfa", "inp": false}, "cost": {"x": 870, "c": "#fb923c", "inp": false}, "ifmar": {"x": 1020, "c": "#2dd4bf", "inp": false}, "confirm": {"x": 1170, "c": "#22c55e", "inp": false}, "review": {"x": 1170, "c": "#ef4444", "inp": false}, "prout": {"x": 1500, "c": "#60a5fa", "inp": false}, "custc": {"x": 1500, "c": "#22c55e", "inp": false}, "wo": {"x": 1500, "c": "#22c55e", "inp": false}, "pbi": {"x": 1500, "c": "#f2c811", "inp": false}}, "edges": {"cpo-merge": {"pts": [134.0, 180, 174.0, 180, 174.0, 250, 214.0, 250], "c": "#94a3b8"}, "so-merge": {"pts": [134.0, 330, 174.0, 330, 174.0, 250, 214.0, 250], "c": "#94a3b8"}, "merge-aiord": {"pts": [286.0, 250, 326.0, 250, 308.0, 250, 348.0, 250], "c": "#a78bfa"}, "aiord-bom": {"pts": [552.0, 250, 592.0, 250, 574.0, 250, 614.0, 250], "c": "#2dd4bf"}, "bom-stock": {"pts": [686.0, 250, 726.0, 250, 724.0, 250, 764.0, 250], "c": "#22c55e"}, "stock-ifmat": {"pts": [836.0, 250, 876.0, 250, 874.0, 250, 914.0, 250], "c": "#f59e0b"}, "ifmat-purreq": {"pts": [986.0, 250, 1026.0, 250, 1024.0, 110, 1064.0, 110], "c": "#60a5fa"}, "ifmat-labor": {"pts": [986.0, 250, 1026.0, 250, 1024.0, 250, 1064.0, 250], "c": "#c084fc"}, "labor-mach": {"pts": [1136.0, 250, 1176.0, 250, 1174.0, 250, 1214.0, 250], "c": "#94a3b8"}, "purreq-prout": {"pts": [1136.0, 110, 1300.0, 110, 1300.0, 150, 1464.0, 150], "c": "#60a5fa"}, "sched-cost": {"pts": [752.0, 560, 793.0, 560, 793.0, 560, 834.0, 560], "c": "#fb923c"}, "cost-ifmar": {"pts": [906.0, 560, 946.0, 560, 944.0, 560, 984.0, 560], "c": "#2dd4bf"}, "ifmar-confirm": {"pts": [1056.0, 560, 1096.0, 560, 1094.0, 470, 1134.0, 470], "c": "#22c55e"}, "ifmar-review": {"pts": [1056.0, 560, 1096.0, 560, 1094.0, 650, 1134.0, 650], "c": "#ef4444"}, "confirm-custc": {"pts": [1206.0, 470, 1335.0, 470, 1335.0, 280, 1464.0, 280], "c": "#22c55e"}, "confirm-wo": {"pts": [1206.0, 470, 1335.0, 470, 1335.0, 440, 1464.0, 440], "c": "#22c55e"}, "confirm-pbi": {"pts": [1206.0, 470, 1335.0, 470, 1335.0, 620, 1464.0, 620], "c": "#f2c811"}, "review-pbi": {"pts": [1206.0, 650, 1335.0, 650, 1335.0, 620, 1464.0, 620], "c": "#f2c811"}, "mach-sched": {"pts": [1250, 286, 1250, 430, 650, 410, 650, 524], "c": "#a78bfa"}}, "keys": ["cpo-merge", "so-merge", "merge-aiord", "aiord-bom", "bom-stock", "stock-ifmat", "ifmat-purreq", "ifmat-labor", "labor-mach", "purreq-prout", "sched-cost", "cost-ifmar", "ifmar-confirm", "ifmar-review", "confirm-custc", "confirm-wo", "confirm-pbi", "review-pbi", "mach-sched"], "labels": ["3 POs", "1 SO", "4 orders", "11 lines", "64 parts", "6 short", "58 ok", "capacity", "plan", "3 orders", "1 order", "4 WOs"], "cards": {"bomcard": 1, "scard": 1}, "ops": [["S", 1], ["par", [[["n", "cpo", 1200]], [["n", "so", 1200]]]], ["par", [[["e", "cpo-merge", 900, "3 POs"]], [["e", "so-merge", 900, "1 SO"]]]], ["n", "merge", 700], ["e", "merge-aiord", 900, "4 orders"], ["n", "aiord", 1500], ["S", 2], ["e", "aiord-bom", 900, "11 lines"], ["n", "bom", 1100], ["card", "bomcard", "on"], ["S", 3], ["e", "bom-stock", 900, "64 parts"], ["n", "stock", 1000], ["e", "stock-ifmat", 800], ["n", "ifmat", 600], ["par", [[["e", "ifmat-purreq", 900, "6 short"], ["n", "purreq", 900], ["e", "purreq-prout", 900], ["n", "prout", 700]], [["e", "ifmat-labor", 900, "58 ok"]]]], ["S", 4], ["n", "labor", 1100], ["e", "labor-mach", 800], ["n", "mach", 1000], ["card", "bomcard", "off"], ["S", 5], ["e", "mach-sched", 1300, "capacity"], ["n", "sched", 1700], ["card", "scard", "on"], ["S", 6], ["e", "sched-cost", 900, "plan"], ["n", "cost", 1000], ["e", "cost-ifmar", 800], ["n", "ifmar", 600], ["par", [[["e", "ifmar-confirm", 900, "3 orders"], ["n", "confirm", 900]], [["e", "ifmar-review", 900, "1 order"], ["n", "review", 900, 1]]]], ["S", 7], ["par", [[["e", "confirm-custc", 900], ["n", "custc", 700]], [["e", "confirm-wo", 900, "4 WOs"], ["n", "wo", 700]], [["e", "confirm-pbi", 1000], ["n", "pbi", 900]], [["e", "review-pbi", 1000]]]], ["S", 8]], "stages": [["Order intake", "Orders arrive as customer POs by email and as sales orders from the ERP. The AI Agent reads each order line (product, quantity, delivery date) into a standard format."], ["Bill of materials", "Each product is exploded into its bill of materials through the ERP API, so 4 orders become 64 component lines."], ["Material check", "Every component is checked against stock. Six are short, so n8n raises purchase requests that feed straight into the procurement RFQ flow."], ["Labor & capacity", "Labor is checked by skill and shift (welders, fitters, electricians), and machine capacity by production line."], ["AI schedule", "An AI Agent builds the production schedule from material arrival dates, crew availability and line load, and proposes a delivery date for each order."], ["Cost & margin", "Material and labor are costed. Orders at an 18% margin or higher are confirmed; the rest go to commercial review before anyone commits."], ["Outputs", "Outputs: purchase requests, customer confirmations with delivery dates, work orders with the production schedule, and an operations dashboard in Power BI."], ["Complete", "Done: 4 orders planned end to end in under a minute: 6 purchase requests raised, 3 orders confirmed, 1 sent for review, and the shop floor has its schedule."]]};
+    this.TL = this.timeline();
+    this.last = null; this.raf = 0; this.fxp = -1; this.wrap = null; this.focus = 0;
+    this.wrapRef = (el) => { this.wrap = el; };
+  }
+  componentDidMount() {
+    let reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    if (reduce) this.setState({ paused: true, t: this.TL.doneAt + 100 });
+    const loop = (ts) => {
+      const hidden = typeof document !== 'undefined' && document.hidden;
+      if (this.last !== null && !this.state.paused && !hidden) {
+        let t = this.state.t + Math.min(ts - this.last, 100);
+        if (t >= this.TL.total) t = 0;
+        this.setState({ t: t });
+      }
+      this.last = ts;
+      this.raf = requestAnimationFrame(loop);
+    };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); }
+  componentDidUpdate() {
+    const w = this.wrap;
+    if (!w || !w.scrollWidth || w.scrollWidth <= w.clientWidth + 4) return;
+    const fx = this.focus || 0;
+    if (Math.abs(fx - this.fxp) < 1) return;
+    this.fxp = fx;
+    try { w.scrollTo({ left: Math.max(0, fx / this.G.W * w.scrollWidth - w.clientWidth / 2), behavior: 'smooth' }); } catch (e) {}
+  }
+  ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+  bez(p, u) {
+    const m = 1 - u, a = m * m * m, b = 3 * m * m * u, c = 3 * m * u * u, d = u * u * u;
+    return { x: a * p[0] + b * p[2] + c * p[4] + d * p[6], y: a * p[1] + b * p[3] + c * p[5] + d * p[7] };
+  }
+  timeline() {
+    const ev = [], st = [], cards = {};
+    Object.keys(this.G.cards).forEach((k) => { cards[k] = { on: -1, off: -1 }; });
+    const run = (ops, t) => {
+      ops.forEach((op) => {
+        const k = op[0];
+        if (k === 'S') st.push({ n: op[1], s: t });
+        else if (k === 'n') { ev.push({ k: 'n', id: op[1], s: t, d: op[2], w: !!op[3] }); t += op[2]; }
+        else if (k === 'e') { ev.push({ k: 'e', key: op[1], s: t, d: op[2], l: op[3] || null, rev: !!op[4] }); t += op[2]; }
+        else if (k === 'w') t += op[1];
+        else if (k === 'par') { let m = t; op[1].forEach((br) => { m = Math.max(m, run(br, t)); }); t = m; }
+        else if (k === 'span') { const s = t; t = run(op[2], t); ev.push({ k: 'n', id: op[1], s: s, d: t - s, w: false }); }
+        else if (k === 'card') { cards[op[1]][op[2]] = t; }
+      });
+      return t;
+    };
+    const end = run(this.G.ops, 200);
+    const doneAt = st.length ? st[st.length - 1].s : end;
+    Object.keys(cards).forEach((k) => { if (cards[k].on >= 0 && cards[k].off < 0) cards[k].off = end + 6500; });
+    return { ev: ev, st: st, cards: cards, doneAt: doneAt, total: end + 6500 };
+  }
+  renderVals() {
+    const t = this.state.t, paused = this.state.paused;
+    const TL = this.TL, G = this.G, ease = this.ease, cl = (x) => Math.max(0, Math.min(1, x));
+    const ns = {};
+    Object.keys(G.nodes).forEach((id) => { ns[id] = { run: false, done: false, w: false, rs: 0 }; });
+    const edone = {}, packets = [];
+    let focus = null, focusS = -1;
+    TL.ev.forEach((e) => {
+      if (t < e.s) return;
+      const end = e.s + e.d;
+      if (e.k === 'n') {
+        const s = ns[e.id];
+        if (t < end) { s.run = true; s.rs = e.s; if (e.s > focusS) { focusS = e.s; focus = G.nodes[e.id].x; } }
+        else { s.done = true; if (e.w) s.w = true; }
+      } else {
+        const ed = G.edges[e.key];
+        if (t < end) {
+          const u = ease((t - e.s) / e.d), q = this.bez(ed.pts, e.rev ? 1 - u : u);
+          packets.push({ x: q.x, y: q.y, c: ed.c, l: e.l });
+        } else edone[e.key] = true;
+      }
+    });
+    if (focus !== null) this.focus = focus; else if (t < 300) this.focus = 0;
+    const ringOff = -((t * 0.045) % 32), flowOff = -((t * 0.029) % 32);
+    const nd = {};
+    Object.keys(G.nodes).forEach((id) => {
+      const g = G.nodes[id], s = ns[id], lit = s.run || s.done;
+      let pr = 38, po = 0;
+      if (g.inp && s.run) { const f = ((t - s.rs) % 1200) / 1200; pr = 38 + 34 * f; po = 0.9 * (1 - f); }
+      nd[id] = { ringOp: s.run ? 1 : 0, body: lit ? g.c : '#2a3456', filt: s.run ? 'url(#wfGlow)' : 'none', icOp: lit ? 1 : 0.6,
+        bOp: s.done ? 1 : 0, ckOp: (s.done && !s.run) ? 1 : 0, ckc: s.w ? '#f59e0b' : '#10b981', pr: pr, po: po };
+    });
+    const eg = {};
+    G.keys.forEach((k) => { const dn = !!edone[k]; eg[k.replace(/[^a-zA-Z0-9]/g, '_')] = { st: dn ? '#3d4f86' : '#283356', fop: dn ? 0.9 : 0 }; });
+    const pk = {};
+    for (let i = 0; i < 8; i++) { const p = packets[i]; pk['p' + i] = p ? { x: p.x, y: p.y, op: 1, c: p.c } : { x: -200, y: -200, op: 0, c: '#000000' }; }
+    const lb = {};
+    G.labels.forEach((x, j) => { lb['L' + j] = { x: -300, y: -300, op: 0, c: '#000000' }; });
+    packets.forEach((p) => { const j = G.labels.indexOf(p.l); if (j >= 0) lb['L' + j] = { x: p.x, y: p.y, op: 1, c: p.c }; });
+    const cd = {};
+    Object.keys(TL.cards).forEach((k) => {
+      const c = TL.cards[k];
+      const o = (c.on >= 0 && t >= c.on && t < c.off) ? cl((t - c.on) / 500) : 0;
+      cd[k] = { op: o, dy: (1 - o) * 8 };
+    });
+    let cur = TL.st[0];
+    TL.st.forEach((s) => { if (t >= s.s) cur = s; });
+    const n = cur ? cur.n : 1, NS = G.stages.length;
+    const steps = G.stages.map((x, i) => ({ w: i === n - 1 ? '28px' : '14px', bg: i < n - 1 ? '#4b5a92' : (i === n - 1 ? '#FF6A2B' : '#222b4a') }));
+    const running = t < TL.doneAt;
+    return {
+      nd: nd, eg: eg, pk: pk, lb: lb, cd: cd, ringOff: ringOff, flowOff: flowOff,
+      steps: steps, capN: n + '/' + NS, capT: G.stages[n - 1][0], capX: G.stages[n - 1][1],
+      statusText: running ? '● Running' : '✓ Succeeded',
+      statusStyle: 'font-family: \'JetBrains Mono\', monospace; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; white-space: nowrap; border: 1px solid ' + (running ? 'rgba(253,230,138,0.4); color: #fde68a' : 'rgba(52,211,153,0.5); color: #bbf7d0'),
+      togglePause: () => this.setState({ paused: !this.state.paused }),
+      replay: () => this.setState({ t: 0, paused: false }),
+      pauseLabel: paused ? 'Play animation' : 'Pause animation',
+      pauseIcon: paused ? 'M7 5l12 7-12 7z' : 'M8 5v14M16 5v14',
+      wrapRef: this.wrapRef
+    };
+  }
+}
+
+</script>
+</body>
+</html>

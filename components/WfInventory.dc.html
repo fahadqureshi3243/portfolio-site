@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Inventory: RFP → PO → GRN → 3-Way Match</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 100%; box-sizing: border-box; font-family: 'Inter Tight', system-ui, sans-serif; color: #e6eaf5; background: #0b1020; border: 1px solid #26305a; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(11, 15, 23, 0.35)">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #232d4d; background: #0e1426">
+    <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+      <span style="font-size: 17px; font-weight: 800; color: #ffffff">Inventory: RFP → PO → GRN → 3-Way Match</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8b95b5">n8n · 23 nodes · reorder logic · AI vendor pick · PO / GRN / invoice matching</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <button type="button" aria-label="{{pauseLabel}}" onClick="{{togglePause}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{pauseIcon}}"></path></svg></button>
+      <button type="button" aria-label="Replay from the start" onClick="{{replay}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"></path></svg></button>
+      <span style="{{statusStyle}}">{{statusText}}</span>
+    </div>
+  </div>
+  <div ref="{{wrapRef}}" style="overflow-x: auto; background: #0a0f1e">
+    <div style="min-width: 1000px">
+<svg viewBox="0 0 1600 760" role="img" aria-label="Animated n8n inventory workflow from reorder and RFP to PO, goods receipt and 3-way invoice match" style="display: block; width: 100%; height: auto; font-family: 'Inter Tight', Inter, system-ui, sans-serif">
+<defs>
+<pattern id="wfDots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" style="fill: #1a2240"></circle></pattern>
+<filter id="wfGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+<filter id="wfSoft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"></feGaussianBlur></filter>
+</defs>
+<rect width="1600" height="760" style="fill: url(#wfDots)"></rect>
+<rect x="18" y="62" width="160" height="640" rx="18" style="fill: #3b82f6; fill-opacity: 0.05; stroke: #3b82f6; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="98.0" y="82.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #3b82f6; letter-spacing: 2px">INPUTS</text>
+<rect x="1418" y="92" width="164" height="650" rx="18" style="fill: #34d399; fill-opacity: 0.05; stroke: #34d399; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="1500.0" y="112.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #34d399; letter-spacing: 2px">OUTPUTS</text>
+<path d="M134.0 150.0 C174.0 150.0, 174.0 220.0, 214.0 220.0" style="fill: none; stroke: {{eg.lowst_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 150.0 C174.0 150.0, 174.0 220.0, 214.0 220.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.lowst_merge.fop}}"></path>
+<circle cx="214.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M134.0 290.0 C174.0 290.0, 174.0 220.0, 214.0 220.0" style="fill: none; stroke: {{eg.mreq_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 290.0 C174.0 290.0, 174.0 220.0, 214.0 220.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.mreq_merge.fop}}"></path>
+<circle cx="214.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M286.0 220.0 C326.0 220.0, 324.0 220.0, 364.0 220.0" style="fill: none; stroke: {{eg.merge_reorder.st}}; stroke-width: 2.4"></path>
+<path d="M286.0 220.0 C326.0 220.0, 324.0 220.0, 364.0 220.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.merge_reorder.fop}}"></path>
+<circle cx="364.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M436.0 220.0 C476.0 220.0, 474.0 220.0, 514.0 220.0" style="fill: none; stroke: {{eg.reorder_rfp.st}}; stroke-width: 2.4"></path>
+<path d="M436.0 220.0 C476.0 220.0, 474.0 220.0, 514.0 220.0" style="fill: none; stroke: #ef4444; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.reorder_rfp.fop}}"></path>
+<circle cx="514.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M586.0 220.0 C626.0 220.0, 624.0 220.0, 664.0 220.0" style="fill: none; stroke: {{eg.rfp_quotes.st}}; stroke-width: 2.4"></path>
+<path d="M586.0 220.0 C626.0 220.0, 624.0 220.0, 664.0 220.0" style="fill: none; stroke: #38bdf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.rfp_quotes.fop}}"></path>
+<circle cx="664.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M736.0 220.0 C776.0 220.0, 758.0 220.0, 798.0 220.0" style="fill: none; stroke: {{eg.quotes_aisel.st}}; stroke-width: 2.4"></path>
+<path d="M736.0 220.0 C776.0 220.0, 758.0 220.0, 798.0 220.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.quotes_aisel.fop}}"></path>
+<circle cx="798.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1002.0 220.0 C1042.0 220.0, 1024.0 220.0, 1064.0 220.0" style="fill: none; stroke: {{eg.aisel_approve.st}}; stroke-width: 2.4"></path>
+<path d="M1002.0 220.0 C1042.0 220.0, 1024.0 220.0, 1064.0 220.0" style="fill: none; stroke: #c084fc; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.aisel_approve.fop}}"></path>
+<circle cx="1064.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1136.0 220.0 C1180.0 220.0, 1180.0 220.0, 1224.0 220.0" style="fill: none; stroke: {{eg.approve_createpo.st}}; stroke-width: 2.4"></path>
+<path d="M1136.0 220.0 C1180.0 220.0, 1180.0 220.0, 1224.0 220.0" style="fill: none; stroke: #818cf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.approve_createpo.fop}}"></path>
+<circle cx="1224.0" cy="220.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1296.0 220.0 C1380.0 220.0, 1380.0 180.0, 1464.0 180.0" style="fill: none; stroke: {{eg.createpo_poreg.st}}; stroke-width: 2.4"></path>
+<path d="M1296.0 220.0 C1380.0 220.0, 1380.0 180.0, 1464.0 180.0" style="fill: none; stroke: #818cf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.createpo_poreg.fop}}"></path>
+<circle cx="1464.0" cy="180.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M134.0 470.0 C199.0 470.0, 199.0 470.0, 264.0 470.0" style="fill: none; stroke: {{eg.grnin_grn.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 470.0 C199.0 470.0, 199.0 470.0, 264.0 470.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.grnin_grn.fop}}"></path>
+<circle cx="264.0" cy="470.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M336.0 470.0 C376.0 470.0, 374.0 470.0, 414.0 470.0" style="fill: none; stroke: {{eg.grn_m2.st}}; stroke-width: 2.4"></path>
+<path d="M336.0 470.0 C376.0 470.0, 374.0 470.0, 414.0 470.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.grn_m2.fop}}"></path>
+<circle cx="414.0" cy="470.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M486.0 470.0 C535.0 470.0, 535.0 370.0, 584.0 370.0" style="fill: none; stroke: {{eg.m2_stockup.st}}; stroke-width: 2.4"></path>
+<path d="M486.0 470.0 C535.0 470.0, 535.0 370.0, 584.0 370.0" style="fill: none; stroke: #818cf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.m2_stockup.fop}}"></path>
+<circle cx="584.0" cy="370.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M656.0 370.0 C1060.0 370.0, 1060.0 330.0, 1464.0 330.0" style="fill: none; stroke: {{eg.stockup_ledger.st}}; stroke-width: 2.4"></path>
+<path d="M656.0 370.0 C1060.0 370.0, 1060.0 330.0, 1464.0 330.0" style="fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.stockup_ledger.fop}}"></path>
+<circle cx="1464.0" cy="330.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M134.0 620.0 C199.0 620.0, 199.0 620.0, 264.0 620.0" style="fill: none; stroke: {{eg.invin_invx.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 620.0 C199.0 620.0, 199.0 620.0, 264.0 620.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.invin_invx.fop}}"></path>
+<circle cx="264.0" cy="620.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M336.0 620.0 C560.0 620.0, 560.0 560.0, 784.0 560.0" style="fill: none; stroke: {{eg.invx_m3.st}}; stroke-width: 2.4"></path>
+<path d="M336.0 620.0 C560.0 620.0, 560.0 560.0, 784.0 560.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.invx_m3.fop}}"></path>
+<circle cx="784.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M486.0 470.0 C635.0 470.0, 635.0 560.0, 784.0 560.0" style="fill: none; stroke: {{eg.m2_m3.st}}; stroke-width: 2.4"></path>
+<path d="M486.0 470.0 C635.0 470.0, 635.0 560.0, 784.0 560.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.m2_m3.fop}}"></path>
+<circle cx="784.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M856.0 560.0 C896.0 560.0, 894.0 560.0, 934.0 560.0" style="fill: none; stroke: {{eg.m3_ifm.st}}; stroke-width: 2.4"></path>
+<path d="M856.0 560.0 C896.0 560.0, 894.0 560.0, 934.0 560.0" style="fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.m3_ifm.fop}}"></path>
+<circle cx="934.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1006.0 560.0 C1055.0 560.0, 1055.0 640.0, 1104.0 640.0" style="fill: none; stroke: {{eg.ifm_payq.st}}; stroke-width: 2.4"></path>
+<path d="M1006.0 560.0 C1055.0 560.0, 1055.0 640.0, 1104.0 640.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifm_payq.fop}}"></path>
+<circle cx="1104.0" cy="640.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1051.3" y="587.0" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">yes</text>
+<path d="M1006.0 560.0 C1055.0 560.0, 1055.0 460.0, 1104.0 460.0" style="fill: none; stroke: {{eg.ifm_debit.st}}; stroke-width: 2.4"></path>
+<path d="M1006.0 560.0 C1055.0 560.0, 1055.0 460.0, 1104.0 460.0" style="fill: none; stroke: #ef4444; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifm_debit.fop}}"></path>
+<circle cx="1104.0" cy="460.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="1051.3" y="510.5" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">no</text>
+<path d="M1176.0 640.0 C1320.0 640.0, 1320.0 640.0, 1464.0 640.0" style="fill: none; stroke: {{eg.payq_apq.st}}; stroke-width: 2.4"></path>
+<path d="M1176.0 640.0 C1320.0 640.0, 1320.0 640.0, 1464.0 640.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.payq_apq.fop}}"></path>
+<circle cx="1464.0" cy="640.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1176.0 460.0 C1320.0 460.0, 1320.0 480.0, 1464.0 480.0" style="fill: none; stroke: {{eg.debit_pbi.st}}; stroke-width: 2.4"></path>
+<path d="M1176.0 460.0 C1320.0 460.0, 1320.0 480.0, 1464.0 480.0" style="fill: none; stroke: #f2c811; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.debit_pbi.fop}}"></path>
+<circle cx="1464.0" cy="480.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1176.0 640.0 C1320.0 640.0, 1320.0 480.0, 1464.0 480.0" style="fill: none; stroke: {{eg.payq_pbi.st}}; stroke-width: 2.4"></path>
+<path d="M1176.0 640.0 C1320.0 640.0, 1320.0 480.0, 1464.0 480.0" style="fill: none; stroke: #f2c811; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.payq_pbi.fop}}"></path>
+<circle cx="1464.0" cy="480.0" r="3.5" style="fill: #3a4672"></circle>
+<circle cx="98" cy="150" r="{{nd.lowst.pr}}" style="fill: none; stroke: #f59e0b; stroke-width: 2; opacity: {{nd.lowst.po}}"></circle>
+<circle cx="98" cy="290" r="{{nd.mreq.pr}}" style="fill: none; stroke: #60a5fa; stroke-width: 2; opacity: {{nd.mreq.po}}"></circle>
+<circle cx="98" cy="470" r="{{nd.grnin.pr}}" style="fill: none; stroke: #22c55e; stroke-width: 2; opacity: {{nd.grnin.po}}"></circle>
+<circle cx="98" cy="620" r="{{nd.invin.pr}}" style="fill: none; stroke: #ef4444; stroke-width: 2; opacity: {{nd.invin.po}}"></circle>
+<g transform="translate(98 150)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.lowst.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.lowst.body}}; stroke-width: 2; filter: {{nd.lowst.filt}}"></rect>
+<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M12 7v5l3.5 2" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #f59e0b; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.lowst.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Low Stock Check</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(nightly)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.lowst.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #f59e0b"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 items</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.lowst.ckOp}}"><circle r="9" style="fill: {{nd.lowst.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(98 290)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.mreq.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.mreq.body}}; stroke-width: 2; filter: {{nd.mreq.filt}}"></rect>
+<path d="M7 4h10a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM9 2.5h6v3H9zM8.5 11h7M8.5 14.5h7M8.5 18h4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #60a5fa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.mreq.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Material Request</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(site form)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.mreq.bOp}}"><rect x="-11.0" y="-10" width="22.0" height="20" rx="10" style="fill: #60a5fa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">2</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.mreq.ckOp}}"><circle r="9" style="fill: {{nd.mreq.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(98 470)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.grnin.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.grnin.body}}; stroke-width: 2; filter: {{nd.grnin.filt}}"></rect>
+<path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16M8 9h8M8 12h8M8 15h5" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.grnin.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Goods Received</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(warehouse scan)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.grnin.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1 truck</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.grnin.ckOp}}"><circle r="9" style="fill: {{nd.grnin.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(98 620)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.invin.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.invin.body}}; stroke-width: 2; filter: {{nd.invin.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.invin.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Vendor Invoice</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(Gmail)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.invin.bOp}}"><rect x="-11.0" y="-10" width="22.0" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.invin.ckOp}}"><circle r="9" style="fill: {{nd.invin.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(250 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.merge.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.merge.body}}; stroke-width: 2; filter: {{nd.merge.filt}}"></rect>
+<path d="M5 5c0 6 7 5 7 11v4M19 5c0 6-7 5-7 11M9 17l3 3 3-3" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.merge.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Merge Demand</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.merge.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #94a3b8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 items</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.merge.ckOp}}"><circle r="9" style="fill: {{nd.merge.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(400 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.reorder.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.reorder.body}}; stroke-width: 2; filter: {{nd.reorder.filt}}"></rect>
+<path d="M9 6l-5 6 5 6M15 6l5 6-5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #fb923c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.reorder.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Calc Reorder</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Qty (min/max)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.reorder.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #fb923c"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 lines</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.reorder.ckOp}}"><circle r="9" style="fill: {{nd.reorder.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(550 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.rfp.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.rfp.body}}; stroke-width: 2; filter: {{nd.rfp.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.rfp.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Send RFP</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">to Vendors</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.rfp.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3 vendors</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.rfp.ckOp}}"><circle r="9" style="fill: {{nd.rfp.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(700 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.quotes.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.quotes.body}}; stroke-width: 2; filter: {{nd.quotes.filt}}"></rect>
+<path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2zM3 13h5l1.5 2.5h5L16 13h5" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #38bdf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.quotes.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Collect</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Quotes</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.quotes.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #38bdf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">9 quotes</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.quotes.ckOp}}"><circle r="9" style="fill: {{nd.quotes.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(900 220)">
+<rect x="-108.0" y="-42.0" width="216" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.aisel.ringOp}}"></rect>
+<rect x="-102.0" y="-36.0" width="204" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.aisel.body}}; stroke-width: 2; filter: {{nd.aisel.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-86.0 -16) scale(1.35)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.aisel.icOp}}"></path>
+<text x="-42.0" y="-5.0" text-anchor="start" style="font-size: 11px; font-weight: 500; fill: #8b95b5; letter-spacing: 1.5px">AI AGENT</text>
+<text x="-42.0" y="14.0" text-anchor="start" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Compare &amp; Recommend</text>
+<g transform="translate(96.0 -42.0)" style="opacity: {{nd.aisel.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 picks</text></g>
+<g transform="translate(98.0 32.0)" style="opacity: {{nd.aisel.ckOp}}"><circle r="9" style="fill: {{nd.aisel.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1100 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #c084fc; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.approve.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.approve.body}}; stroke-width: 2; filter: {{nd.approve.filt}}"></rect>
+<path d="M8 8a4 4 0 1 0 8 0a4 4 0 1 0 -8 0M4.5 20c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #c084fc; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.approve.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Approve PO</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(Send &amp; Wait)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.approve.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #c084fc"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">approved</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.approve.ckOp}}"><circle r="9" style="fill: {{nd.approve.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1260 220)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #818cf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.createpo.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.createpo.body}}; stroke-width: 2; filter: {{nd.createpo.filt}}"></rect>
+<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #818cf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.createpo.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Create PO</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(ERP API)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.createpo.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #818cf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">PO-4471</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.createpo.ckOp}}"><circle r="9" style="fill: {{nd.createpo.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(300 470)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.grn.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.grn.body}}; stroke-width: 2; filter: {{nd.grn.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.grn.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Record GRN</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(qty, batch)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.grn.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">98 / 100</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.grn.ckOp}}"><circle r="9" style="fill: {{nd.grn.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(450 470)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.m2.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.m2.body}}; stroke-width: 2; filter: {{nd.m2.filt}}"></rect>
+<path d="M9 6l-5 6 5 6M15 6l5 6-5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #fb923c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.m2.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">2-Way Match</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">PO ↔ GRN</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.m2.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #fb923c"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">2 short</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.m2.ckOp}}"><circle r="9" style="fill: {{nd.m2.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(620 370)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #818cf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.stockup.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.stockup.body}}; stroke-width: 2; filter: {{nd.stockup.filt}}"></rect>
+<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #818cf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.stockup.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Update Stock</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(ERP)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.stockup.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #818cf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">+98 units</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.stockup.ckOp}}"><circle r="9" style="fill: {{nd.stockup.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(300 620)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.invx.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.invx.body}}; stroke-width: 2; filter: {{nd.invx.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.invx.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">AI Extract</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Invoice</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.invx.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">INV-2291</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.invx.ckOp}}"><circle r="9" style="fill: {{nd.invx.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(820 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.m3.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.m3.body}}; stroke-width: 2; filter: {{nd.m3.filt}}"></rect>
+<path d="M9 6l-5 6 5 6M15 6l5 6-5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #fb923c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.m3.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">3-Way Match</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">PO · GRN · INV</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.m3.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #fb923c"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">qty diff</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.m3.ckOp}}"><circle r="9" style="fill: {{nd.m3.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(970 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.ifm.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.ifm.body}}; stroke-width: 2; filter: {{nd.ifm.filt}}"></rect>
+<path d="M12 3l9 9-9 9-9-9zM12 8v5M12 16h.01" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #2dd4bf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.ifm.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Within</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Tolerance?</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.ifm.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #2dd4bf"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">98 ✓ 2 ✗</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.ifm.ckOp}}"><circle r="9" style="fill: {{nd.ifm.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1140 460)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.debit.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.debit.body}}; stroke-width: 2; filter: {{nd.debit.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.debit.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Debit Note</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(2 units)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.debit.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">SAR 1,040</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.debit.ckOp}}"><circle r="9" style="fill: {{nd.debit.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1140 640)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.payq.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.payq.body}}; stroke-width: 2; filter: {{nd.payq.filt}}"></rect>
+<path d="M5 6h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2zM3 10h18M7 15h4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.payq.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Release for</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Payment</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.payq.bOp}}"><rect x="-40.0" y="-10" width="80.0" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">SAR 58,760</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.payq.ckOp}}"><circle r="9" style="fill: {{nd.payq.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 180)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #818cf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.poreg.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.poreg.body}}; stroke-width: 2; filter: {{nd.poreg.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #818cf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.poreg.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">PO Register</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.poreg.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #818cf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">PO-4471</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.poreg.ckOp}}"><circle r="9" style="fill: {{nd.poreg.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 330)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.ledger.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.ledger.body}}; stroke-width: 2; filter: {{nd.ledger.filt}}"></rect>
+<path d="M12 3l9 5-9 5-9-5zM3 12.5l9 5 9-5M3 17l9 5 9-5" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #2dd4bf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.ledger.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Inventory</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Ledger</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.ledger.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #2dd4bf"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">updated</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.ledger.ckOp}}"><circle r="9" style="fill: {{nd.ledger.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 480)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #f2c811; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.pbi.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.pbi.body}}; stroke-width: 2; filter: {{nd.pbi.filt}}"></rect>
+<path d="M5.2 12h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v6.1a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-6.1a1.2 1.2 0 0 1 1.2 -1.2zM11.1 7.5h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v10.6a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-10.6a1.2 1.2 0 0 1 1.2 -1.2zM17.0 3.5h1.8000000000000003a1.2 1.2 0 0 1 1.2 1.2v14.6a1.2 1.2 0 0 1 -1.2 1.2h-1.8000000000000003a1.2 1.2 0 0 1 -1.2 -1.2v-14.6a1.2 1.2 0 0 1 1.2 -1.2z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #f2c811; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.pbi.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Power BI</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Inventory</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.pbi.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #f2c811"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">refreshed</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.pbi.ckOp}}"><circle r="9" style="fill: {{nd.pbi.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 640)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.apq.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.apq.body}}; stroke-width: 2; filter: {{nd.apq.filt}}"></rect>
+<path d="M5 6h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2zM3 10h18M7 15h4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.apq.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">AP Payment</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Queue</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.apq.bOp}}"><rect x="-33.4" y="-10" width="66.8" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1 queued</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.apq.ckOp}}"><circle r="9" style="fill: {{nd.apq.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(0 {{cd.qcard.dy}})" style="opacity: {{cd.qcard.op}}">
+<rect x="690" y="302" width="340" height="97" rx="12" style="fill: #1a1636; stroke: #a78bfa; stroke-width: 1.2"></rect>
+<text x="704.0" y="325.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #a78bfa; letter-spacing: 0.6px">AI PICK · HYDRAULIC HOSE × 100</text>
+<text x="704.0" y="346.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor XXX</text>
+<text x="1016.0" y="346.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">SAR 520 · 7 days · ★4.6</text>
+<text x="704.0" y="365.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor YYY</text>
+<text x="1016.0" y="365.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">SAR 498 · 30 days · ★4.1</text>
+<text x="704.0" y="384.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor ZZZ</text>
+<text x="1016.0" y="384.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">SAR 540 · 10 days · ★3.9</text>
+</g>
+<g transform="translate(0 {{cd.mcard.dy}})" style="opacity: {{cd.mcard.op}}">
+<rect x="690" y="302" width="340" height="116" rx="12" style="fill: #0f2a2a; stroke: #5eead4; stroke-width: 1.2"></rect>
+<text x="704.0" y="325.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #5eead4; letter-spacing: 0.6px">3-WAY MATCH · PO-4471</text>
+<text x="704.0" y="346.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">PO</text>
+<text x="1016.0" y="346.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">100 × SAR 520</text>
+<text x="704.0" y="365.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">GRN</text>
+<text x="1016.0" y="365.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fde68a">98 received</text>
+<text x="704.0" y="384.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Invoice</text>
+<text x="1016.0" y="384.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fca5a5">100 × SAR 520</text>
+<text x="704.0" y="403.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Action</text>
+<text x="1016.0" y="403.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">pay 98 · debit note 2</text>
+</g>
+<g transform="translate({{pk.p0.x}} {{pk.p0.y}})" style="opacity: {{pk.p0.op}}"><circle r="15" style="fill: {{pk.p0.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p0.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p1.x}} {{pk.p1.y}})" style="opacity: {{pk.p1.op}}"><circle r="15" style="fill: {{pk.p1.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p1.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p2.x}} {{pk.p2.y}})" style="opacity: {{pk.p2.op}}"><circle r="15" style="fill: {{pk.p2.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p2.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p3.x}} {{pk.p3.y}})" style="opacity: {{pk.p3.op}}"><circle r="15" style="fill: {{pk.p3.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p3.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p4.x}} {{pk.p4.y}})" style="opacity: {{pk.p4.op}}"><circle r="15" style="fill: {{pk.p4.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p4.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p5.x}} {{pk.p5.y}})" style="opacity: {{pk.p5.op}}"><circle r="15" style="fill: {{pk.p5.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p5.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p6.x}} {{pk.p6.y}})" style="opacity: {{pk.p6.op}}"><circle r="15" style="fill: {{pk.p6.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p6.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p7.x}} {{pk.p7.y}})" style="opacity: {{pk.p7.op}}"><circle r="15" style="fill: {{pk.p7.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p7.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{lb.L0.x}} {{lb.L0.y}})" style="opacity: {{lb.L0.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L0.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">4 low</text></g>
+<g transform="translate({{lb.L1.x}} {{lb.L1.y}})" style="opacity: {{lb.L1.op}}"><rect x="-39.5" y="-33" width="79.0" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L1.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">2 requests</text></g>
+<g transform="translate({{lb.L2.x}} {{lb.L2.y}})" style="opacity: {{lb.L2.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L2.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">6 items</text></g>
+<g transform="translate({{lb.L3.x}} {{lb.L3.y}})" style="opacity: {{lb.L3.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L3.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">6 lines</text></g>
+<g transform="translate({{lb.L4.x}} {{lb.L4.y}})" style="opacity: {{lb.L4.op}}"><rect x="-26.9" y="-33" width="53.8" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L4.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">3 RFPs</text></g>
+<g transform="translate({{lb.L5.x}} {{lb.L5.y}})" style="opacity: {{lb.L5.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L5.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">9 quotes</text></g>
+<g transform="translate({{lb.L6.x}} {{lb.L6.y}})" style="opacity: {{lb.L6.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L6.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">6 picks</text></g>
+<g transform="translate({{lb.L7.x}} {{lb.L7.y}})" style="opacity: {{lb.L7.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L7.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">PO-4471</text></g>
+<g transform="translate({{lb.L8.x}} {{lb.L8.y}})" style="opacity: {{lb.L8.op}}"><rect x="-36.3" y="-33" width="72.7" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L8.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">98 of 100</text></g>
+<g transform="translate({{lb.L9.x}} {{lb.L9.y}})" style="opacity: {{lb.L9.op}}"><rect x="-17.4" y="-33" width="34.9" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L9.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">+98</text></g>
+<g transform="translate({{lb.L10.x}} {{lb.L10.y}})" style="opacity: {{lb.L10.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L10.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">INV-2291</text></g>
+<g transform="translate({{lb.L11.x}} {{lb.L11.y}})" style="opacity: {{lb.L11.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L11.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">invoice</text></g>
+<g transform="translate({{lb.L12.x}} {{lb.L12.y}})" style="opacity: {{lb.L12.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L12.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">PO + GRN</text></g>
+<g transform="translate({{lb.L13.x}} {{lb.L13.y}})" style="opacity: {{lb.L13.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L13.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">98 units</text></g>
+<g transform="translate({{lb.L14.x}} {{lb.L14.y}})" style="opacity: {{lb.L14.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L14.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">2 units</text></g>
+<g transform="translate({{lb.L15.x}} {{lb.L15.y}})" style="opacity: {{lb.L15.op}}"><rect x="-20.6" y="-33" width="41.2" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L15.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">paid</text></g>
+</svg>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px; border-top: 1px solid #232d4d; background: #0e1426; min-height: 64px; box-sizing: border-box">
+    <div style="display: flex; gap: 5px; align-items: center">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="8">
+        <span style="display: block; height: 5px; border-radius: 3px; width: {{s.w}}; background: {{s.bg}}"></span>
+      </sc-for>
+    </div>
+    <div style="font-size: 13px; font-weight: 800; color: #ffffff; white-space: nowrap"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: #8b95b5; margin-right: 8px">{{capN}}</span>{{capT}}</div>
+    <div style="flex: 1 1 320px; min-width: 0; color: #b7bfd8; font-size: 13.5px; line-height: 1.45">{{capX}}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1392,"height":760}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { t: 0, paused: false };
+    this.G = {"W": 1600, "nodes": {"lowst": {"x": 98, "c": "#f59e0b", "inp": true}, "mreq": {"x": 98, "c": "#60a5fa", "inp": true}, "grnin": {"x": 98, "c": "#22c55e", "inp": true}, "invin": {"x": 98, "c": "#ef4444", "inp": true}, "merge": {"x": 250, "c": "#94a3b8", "inp": false}, "reorder": {"x": 400, "c": "#fb923c", "inp": false}, "rfp": {"x": 550, "c": "#ef4444", "inp": false}, "quotes": {"x": 700, "c": "#38bdf8", "inp": false}, "aisel": {"x": 900, "c": "#a78bfa", "inp": false}, "approve": {"x": 1100, "c": "#c084fc", "inp": false}, "createpo": {"x": 1260, "c": "#818cf8", "inp": false}, "grn": {"x": 300, "c": "#22c55e", "inp": false}, "m2": {"x": 450, "c": "#fb923c", "inp": false}, "stockup": {"x": 620, "c": "#818cf8", "inp": false}, "invx": {"x": 300, "c": "#a78bfa", "inp": false}, "m3": {"x": 820, "c": "#fb923c", "inp": false}, "ifm": {"x": 970, "c": "#2dd4bf", "inp": false}, "debit": {"x": 1140, "c": "#ef4444", "inp": false}, "payq": {"x": 1140, "c": "#22c55e", "inp": false}, "poreg": {"x": 1500, "c": "#818cf8", "inp": false}, "ledger": {"x": 1500, "c": "#2dd4bf", "inp": false}, "pbi": {"x": 1500, "c": "#f2c811", "inp": false}, "apq": {"x": 1500, "c": "#22c55e", "inp": false}}, "edges": {"lowst-merge": {"pts": [134.0, 150, 174.0, 150, 174.0, 220, 214.0, 220], "c": "#94a3b8"}, "mreq-merge": {"pts": [134.0, 290, 174.0, 290, 174.0, 220, 214.0, 220], "c": "#94a3b8"}, "merge-reorder": {"pts": [286.0, 220, 326.0, 220, 324.0, 220, 364.0, 220], "c": "#fb923c"}, "reorder-rfp": {"pts": [436.0, 220, 476.0, 220, 474.0, 220, 514.0, 220], "c": "#ef4444"}, "rfp-quotes": {"pts": [586.0, 220, 626.0, 220, 624.0, 220, 664.0, 220], "c": "#38bdf8"}, "quotes-aisel": {"pts": [736.0, 220, 776.0, 220, 758.0, 220, 798.0, 220], "c": "#a78bfa"}, "aisel-approve": {"pts": [1002.0, 220, 1042.0, 220, 1024.0, 220, 1064.0, 220], "c": "#c084fc"}, "approve-createpo": {"pts": [1136.0, 220, 1180.0, 220, 1180.0, 220, 1224.0, 220], "c": "#818cf8"}, "createpo-poreg": {"pts": [1296.0, 220, 1380.0, 220, 1380.0, 180, 1464.0, 180], "c": "#818cf8"}, "grnin-grn": {"pts": [134.0, 470, 199.0, 470, 199.0, 470, 264.0, 470], "c": "#22c55e"}, "grn-m2": {"pts": [336.0, 470, 376.0, 470, 374.0, 470, 414.0, 470], "c": "#fb923c"}, "m2-stockup": {"pts": [486.0, 470, 535.0, 470, 535.0, 370, 584.0, 370], "c": "#818cf8"}, "stockup-ledger": {"pts": [656.0, 370, 1060.0, 370, 1060.0, 330, 1464.0, 330], "c": "#2dd4bf"}, "invin-invx": {"pts": [134.0, 620, 199.0, 620, 199.0, 620, 264.0, 620], "c": "#a78bfa"}, "invx-m3": {"pts": [336.0, 620, 560.0, 620, 560.0, 560, 784.0, 560], "c": "#fb923c"}, "m2-m3": {"pts": [486.0, 470, 635.0, 470, 635.0, 560, 784.0, 560], "c": "#fb923c"}, "m3-ifm": {"pts": [856.0, 560, 896.0, 560, 894.0, 560, 934.0, 560], "c": "#2dd4bf"}, "ifm-payq": {"pts": [1006.0, 560, 1055.0, 560, 1055.0, 640, 1104.0, 640], "c": "#22c55e"}, "ifm-debit": {"pts": [1006.0, 560, 1055.0, 560, 1055.0, 460, 1104.0, 460], "c": "#ef4444"}, "payq-apq": {"pts": [1176.0, 640, 1320.0, 640, 1320.0, 640, 1464.0, 640], "c": "#22c55e"}, "debit-pbi": {"pts": [1176.0, 460, 1320.0, 460, 1320.0, 480, 1464.0, 480], "c": "#f2c811"}, "payq-pbi": {"pts": [1176.0, 640, 1320.0, 640, 1320.0, 480, 1464.0, 480], "c": "#f2c811"}}, "keys": ["lowst-merge", "mreq-merge", "merge-reorder", "reorder-rfp", "rfp-quotes", "quotes-aisel", "aisel-approve", "approve-createpo", "createpo-poreg", "grnin-grn", "grn-m2", "m2-stockup", "stockup-ledger", "invin-invx", "invx-m3", "m2-m3", "m3-ifm", "ifm-payq", "ifm-debit", "payq-apq", "debit-pbi", "payq-pbi"], "labels": ["4 low", "2 requests", "6 items", "6 lines", "3 RFPs", "9 quotes", "6 picks", "PO-4471", "98 of 100", "+98", "INV-2291", "invoice", "PO + GRN", "98 units", "2 units", "paid"], "cards": {"qcard": 1, "mcard": 1}, "ops": [["S", 1], ["par", [[["n", "lowst", 1200]], [["n", "mreq", 1200]]]], ["par", [[["e", "lowst-merge", 900, "4 low"]], [["e", "mreq-merge", 900, "2 requests"]]]], ["n", "merge", 700], ["S", 2], ["e", "merge-reorder", 900, "6 items"], ["n", "reorder", 1000], ["e", "reorder-rfp", 900, "6 lines"], ["n", "rfp", 900], ["S", 3], ["e", "rfp-quotes", 1000, "3 RFPs"], ["n", "quotes", 1300], ["e", "quotes-aisel", 900, "9 quotes"], ["n", "aisel", 1600], ["card", "qcard", "on"], ["S", 4], ["e", "aisel-approve", 900, "6 picks"], ["n", "approve", 1300], ["e", "approve-createpo", 800], ["n", "createpo", 900], ["e", "createpo-poreg", 900, "PO-4471"], ["n", "poreg", 700], ["card", "qcard", "off"], ["S", 5], ["n", "grnin", 1200], ["e", "grnin-grn", 900, "98 of 100"], ["n", "grn", 900], ["e", "grn-m2", 800], ["n", "m2", 900, 1], ["e", "m2-stockup", 800, "+98"], ["n", "stockup", 800], ["e", "stockup-ledger", 1100], ["n", "ledger", 700], ["S", 6], ["n", "invin", 1200], ["e", "invin-invx", 900, "INV-2291"], ["n", "invx", 1000], ["par", [[["e", "invx-m3", 1000, "invoice"]], [["e", "m2-m3", 1000, "PO + GRN"]]]], ["n", "m3", 1200, 1], ["card", "mcard", "on"], ["e", "m3-ifm", 800], ["n", "ifm", 600], ["par", [[["e", "ifm-payq", 900, "98 units"], ["n", "payq", 800], ["e", "payq-apq", 900], ["n", "apq", 700]], [["e", "ifm-debit", 900, "2 units"], ["n", "debit", 800, 1]]]], ["S", 7], ["par", [[["e", "debit-pbi", 900]], [["e", "payq-pbi", 900, "paid"]]]], ["n", "pbi", 900], ["S", 8]], "stages": [["Demand", "Demand comes from two inputs: a nightly stock check that flags items below their minimum, and material requests from site teams."], ["Reorder & RFP", "A Code node works out reorder quantities (max − on hand − on order), then an RFP goes out to the approved vendors for each item."], ["Quotes & AI pick", "Quotes are collected as they arrive, and an AI Agent compares price, lead time and vendor rating to recommend a vendor for each line."], ["Purchase order", "The recommendation goes to the approver with Send & Wait. Once it is approved, the PO is created in the ERP and logged in the PO Register."], ["Goods receipt", "When the truck arrives, the warehouse scans the delivery. The GRN is recorded and checked against the PO (2-way match): 98 of 100 received, and stock is updated."], ["Invoice & 3-way match", "The vendor invoice arrives by email and the AI extracts it. n8n matches PO, GRN and invoice: 98 units are released for payment and a debit note covers the 2 missing."], ["Outputs", "Outputs: the PO Register, the inventory ledger, the AP payment queue and a Power BI inventory dashboard, all updated from one flow."], ["Complete", "Done: 6 items reordered, 1 PO raised and approved, goods received, invoice matched, 98 units paid and 2 debited. Nothing was keyed in by hand."]]};
+    this.TL = this.timeline();
+    this.last = null; this.raf = 0; this.fxp = -1; this.wrap = null; this.focus = 0;
+    this.wrapRef = (el) => { this.wrap = el; };
+  }
+  componentDidMount() {
+    let reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    if (reduce) this.setState({ paused: true, t: this.TL.doneAt + 100 });
+    const loop = (ts) => {
+      const hidden = typeof document !== 'undefined' && document.hidden;
+      if (this.last !== null && !this.state.paused && !hidden) {
+        let t = this.state.t + Math.min(ts - this.last, 100);
+        if (t >= this.TL.total) t = 0;
+        this.setState({ t: t });
+      }
+      this.last = ts;
+      this.raf = requestAnimationFrame(loop);
+    };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); }
+  componentDidUpdate() {
+    const w = this.wrap;
+    if (!w || !w.scrollWidth || w.scrollWidth <= w.clientWidth + 4) return;
+    const fx = this.focus || 0;
+    if (Math.abs(fx - this.fxp) < 1) return;
+    this.fxp = fx;
+    try { w.scrollTo({ left: Math.max(0, fx / this.G.W * w.scrollWidth - w.clientWidth / 2), behavior: 'smooth' }); } catch (e) {}
+  }
+  ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+  bez(p, u) {
+    const m = 1 - u, a = m * m * m, b = 3 * m * m * u, c = 3 * m * u * u, d = u * u * u;
+    return { x: a * p[0] + b * p[2] + c * p[4] + d * p[6], y: a * p[1] + b * p[3] + c * p[5] + d * p[7] };
+  }
+  timeline() {
+    const ev = [], st = [], cards = {};
+    Object.keys(this.G.cards).forEach((k) => { cards[k] = { on: -1, off: -1 }; });
+    const run = (ops, t) => {
+      ops.forEach((op) => {
+        const k = op[0];
+        if (k === 'S') st.push({ n: op[1], s: t });
+        else if (k === 'n') { ev.push({ k: 'n', id: op[1], s: t, d: op[2], w: !!op[3] }); t += op[2]; }
+        else if (k === 'e') { ev.push({ k: 'e', key: op[1], s: t, d: op[2], l: op[3] || null, rev: !!op[4] }); t += op[2]; }
+        else if (k === 'w') t += op[1];
+        else if (k === 'par') { let m = t; op[1].forEach((br) => { m = Math.max(m, run(br, t)); }); t = m; }
+        else if (k === 'span') { const s = t; t = run(op[2], t); ev.push({ k: 'n', id: op[1], s: s, d: t - s, w: false }); }
+        else if (k === 'card') { cards[op[1]][op[2]] = t; }
+      });
+      return t;
+    };
+    const end = run(this.G.ops, 200);
+    const doneAt = st.length ? st[st.length - 1].s : end;
+    Object.keys(cards).forEach((k) => { if (cards[k].on >= 0 && cards[k].off < 0) cards[k].off = end + 6500; });
+    return { ev: ev, st: st, cards: cards, doneAt: doneAt, total: end + 6500 };
+  }
+  renderVals() {
+    const t = this.state.t, paused = this.state.paused;
+    const TL = this.TL, G = this.G, ease = this.ease, cl = (x) => Math.max(0, Math.min(1, x));
+    const ns = {};
+    Object.keys(G.nodes).forEach((id) => { ns[id] = { run: false, done: false, w: false, rs: 0 }; });
+    const edone = {}, packets = [];
+    let focus = null, focusS = -1;
+    TL.ev.forEach((e) => {
+      if (t < e.s) return;
+      const end = e.s + e.d;
+      if (e.k === 'n') {
+        const s = ns[e.id];
+        if (t < end) { s.run = true; s.rs = e.s; if (e.s > focusS) { focusS = e.s; focus = G.nodes[e.id].x; } }
+        else { s.done = true; if (e.w) s.w = true; }
+      } else {
+        const ed = G.edges[e.key];
+        if (t < end) {
+          const u = ease((t - e.s) / e.d), q = this.bez(ed.pts, e.rev ? 1 - u : u);
+          packets.push({ x: q.x, y: q.y, c: ed.c, l: e.l });
+        } else edone[e.key] = true;
+      }
+    });
+    if (focus !== null) this.focus = focus; else if (t < 300) this.focus = 0;
+    const ringOff = -((t * 0.045) % 32), flowOff = -((t * 0.029) % 32);
+    const nd = {};
+    Object.keys(G.nodes).forEach((id) => {
+      const g = G.nodes[id], s = ns[id], lit = s.run || s.done;
+      let pr = 38, po = 0;
+      if (g.inp && s.run) { const f = ((t - s.rs) % 1200) / 1200; pr = 38 + 34 * f; po = 0.9 * (1 - f); }
+      nd[id] = { ringOp: s.run ? 1 : 0, body: lit ? g.c : '#2a3456', filt: s.run ? 'url(#wfGlow)' : 'none', icOp: lit ? 1 : 0.6,
+        bOp: s.done ? 1 : 0, ckOp: (s.done && !s.run) ? 1 : 0, ckc: s.w ? '#f59e0b' : '#10b981', pr: pr, po: po };
+    });
+    const eg = {};
+    G.keys.forEach((k) => { const dn = !!edone[k]; eg[k.replace(/[^a-zA-Z0-9]/g, '_')] = { st: dn ? '#3d4f86' : '#283356', fop: dn ? 0.9 : 0 }; });
+    const pk = {};
+    for (let i = 0; i < 8; i++) { const p = packets[i]; pk['p' + i] = p ? { x: p.x, y: p.y, op: 1, c: p.c } : { x: -200, y: -200, op: 0, c: '#000000' }; }
+    const lb = {};
+    G.labels.forEach((x, j) => { lb['L' + j] = { x: -300, y: -300, op: 0, c: '#000000' }; });
+    packets.forEach((p) => { const j = G.labels.indexOf(p.l); if (j >= 0) lb['L' + j] = { x: p.x, y: p.y, op: 1, c: p.c }; });
+    const cd = {};
+    Object.keys(TL.cards).forEach((k) => {
+      const c = TL.cards[k];
+      const o = (c.on >= 0 && t >= c.on && t < c.off) ? cl((t - c.on) / 500) : 0;
+      cd[k] = { op: o, dy: (1 - o) * 8 };
+    });
+    let cur = TL.st[0];
+    TL.st.forEach((s) => { if (t >= s.s) cur = s; });
+    const n = cur ? cur.n : 1, NS = G.stages.length;
+    const steps = G.stages.map((x, i) => ({ w: i === n - 1 ? '28px' : '14px', bg: i < n - 1 ? '#4b5a92' : (i === n - 1 ? '#FF6A2B' : '#222b4a') }));
+    const running = t < TL.doneAt;
+    return {
+      nd: nd, eg: eg, pk: pk, lb: lb, cd: cd, ringOff: ringOff, flowOff: flowOff,
+      steps: steps, capN: n + '/' + NS, capT: G.stages[n - 1][0], capX: G.stages[n - 1][1],
+      statusText: running ? '● Running' : '✓ Succeeded',
+      statusStyle: 'font-family: \'JetBrains Mono\', monospace; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; white-space: nowrap; border: 1px solid ' + (running ? 'rgba(253,230,138,0.4); color: #fde68a' : 'rgba(52,211,153,0.5); color: #bbf7d0'),
+      togglePause: () => this.setState({ paused: !this.state.paused }),
+      replay: () => this.setState({ t: 0, paused: false }),
+      pauseLabel: paused ? 'Play animation' : 'Pause animation',
+      pauseIcon: paused ? 'M7 5l12 7-12 7z' : 'M8 5v14M16 5v14',
+      wrapRef: this.wrapRef
+    };
+  }
+}
+
+</script>
+</body>
+</html>

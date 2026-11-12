@@ -104,6 +104,13 @@
       return t;
     }
     if (p.category === 'pbi' && p.mock) t.appendChild(mockPbi(p.mock));
+    else if (p.category === 'n8n' && p.kind && window.DCLite) {
+      t.style.padding = '12px 12px 26px';
+      var btn = el('button', 'flowbtn'); btn.type = 'button'; btn.setAttribute('aria-label', 'Watch the ' + p.title + ' workflow');
+      btn.onclick = function () { openFlow(p); };
+      var box = el('div'); box.style.height = '158px'; btn.appendChild(box); t.appendChild(btn);
+      thumbs.push(window.DCLite.mount(box, 'components/WfThumb.dc.html', { kind: p.kind }));
+    }
     else if (p.category === 'n8n') t.appendChild(mockFlow(p.nodes));
     else if (p.category === 'erp') { t.style.padding = '12px'; t.appendChild(mockErp(p)); }
     return t;
@@ -117,7 +124,7 @@
     f.appendChild(m);
     var act = el('span', 'actions'), href = p.category === 'erp' ? 'erp-workflows.html#' + p.erp : (p.link || '');
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
-    else if (p.category === 'n8n') act.appendChild(el('span', '', 'Demo coming soon'));
+    else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     if (p.download && p.category !== 'erp' && p.category !== 'n8n') {
       var dl = el('a', 'dl'); dl.href = p.download; dl.setAttribute('download', ''); dl.setAttribute('aria-label', 'Download ' + p.title);
       dl.innerHTML = icon('M12 4v11M7 10l5 5 5-5M5 20h14', 15) + 'Download'; act.appendChild(dl);
@@ -125,7 +132,23 @@
     f.appendChild(act); b.appendChild(f); a.appendChild(b); return a;
   }
 
+  /* animated n8n workflows */
+  var thumbs = [], FLOW = { rfq: 'WfRequest', inv: 'WfInventory', hr: 'WfHiring', ops: 'WfOperations' }, flowInst = null;
+  var dlg = document.getElementById('flowDlg');
+  function openFlow(p) {
+    if (!window.DCLite || !FLOW[p.kind]) return;
+    document.getElementById('flowTitle').textContent = 'n8n workflow · ' + p.title;
+    var host = document.getElementById('flowHost'); if (flowInst) flowInst.unmount();
+    flowInst = window.DCLite.mount(host, 'components/' + FLOW[p.kind] + '.dc.html', {});
+    dlg.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('flowClose').focus();
+  }
+  function closeFlow() { if (flowInst) { flowInst.unmount(); flowInst = null; } dlg.hidden = true; document.body.style.overflow = ''; }
+  document.getElementById('flowClose').addEventListener('click', closeFlow);
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) closeFlow(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) closeFlow(); });
+
   function renderCards() {
+    thumbs.forEach(function (x) { x.unmount(); }); thumbs = [];
     var box = document.getElementById('cards'), l = list(), soon = SOON.indexOf(st.tab) >= 0; box.textContent = '';
     l.forEach(function (p) { box.appendChild(card(p)); });
     document.getElementById('soon').hidden = !soon;
@@ -139,4 +162,6 @@
   document.getElementById('sort').addEventListener('change', function (e) { st.sort = e.target.value; renderCards(); });
   Array.prototype.forEach.call(document.querySelectorAll('[data-clear]'), function (b) { b.addEventListener('click', function () { st.fns = []; st.inds = []; st.q = ''; document.getElementById('q').value = ''; render(); }); });
   render();
+  var hero = document.getElementById('heroDemo');
+  if (hero && window.DCLite) window.DCLite.mount(hero, 'components/HeroDemo.dc.html', {});
 })();

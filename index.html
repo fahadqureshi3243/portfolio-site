@@ -31,7 +31,9 @@
     </div>
   </section>
 
-  <div class="wrap"><div class="statrow" id="stats"></div></div>
+  <section aria-label="Live demo" class="wrap"><div id="heroDemo" style="min-height:420px"></div></section>
+
+  <div class="wrap"><div class="statrow" id="stats" style="margin-top:28px"></div></div>
 
   <section class="gallery" id="work" aria-label="Work">
     <aside class="filters" aria-label="Filters">
@@ -76,6 +78,14 @@
 
 <footer><div><span>© 2026 Fahad Qureshi · Al Khobar, Saudi Arabia</span><span>All dashboards and models use sample data.</span></div></footer>
 
+<div class="flowdlg" id="flowDlg" role="dialog" aria-modal="true" aria-labelledby="flowTitle" hidden>
+  <div class="flowin">
+    <div class="flowhead"><span id="flowTitle">n8n workflow</span><button type="button" id="flowClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>Close</button></div>
+    <div id="flowHost"></div>
+  </div>
+</div>
+
+<script src="assets/dc-lite.js"></script>
 <script src="data/projects.js"></script>
 <script src="data/erp-data.js"></script>
 <script src="assets/gallery.js"></script>

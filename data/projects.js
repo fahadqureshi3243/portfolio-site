@@ -14,6 +14,7 @@
                (if empty, a drawn preview is shown instead)
     download   optional: a file in /downloads (e.g. 'downloads/rig-cost.pbix') or a OneDrive / Google Drive link
     link       optional: page the "View" button opens (e.g. a Power BI "Publish to web" link)
+    kind       n8n only: which animation plays ('rfq' | 'inv' | 'hr' | 'ops'), from /components
 */
 
 window.SITE = {
@@ -43,16 +44,16 @@ window.SITE = {
       mock: { short: 'Workforce', kpis: [['HEADCT','1,240'],['PAYROLL','9.8m'],['GOSI','1.1m'],['SAUDI%','31%']], bars: [55,57,54,60,63,61,66,69,67,72], donut: 31 } },
 
     /* ---------- n8n automations ---------- */
-    { category: 'n8n', title: 'Purchase Request to Vendor RFQ', industry: 'All industries', fn: 'Procurement', meta: '19 nodes',
+    { category: 'n8n', kind: 'rfq', title: 'Purchase Request to Vendor RFQ', industry: 'All industries', fn: 'Procurement', meta: '19 nodes',
       desc: 'Requests from a form or email are classified by AI, budget-checked and matched to approved vendors, and RFQs go out automatically.',
       nodes: ['Form', 'AI', 'Budget', 'RFQ'], images: [], link: '' },
-    { category: 'n8n', title: 'Inventory: RFP to 3-Way Match', industry: 'Oil & Gas', fn: 'Procurement', meta: '23 nodes',
+    { category: 'n8n', kind: 'inv', title: 'Inventory: RFP to 3-Way Match', industry: 'Oil & Gas', fn: 'Procurement', meta: '23 nodes',
       desc: 'Low stock triggers an RFP, AI picks the vendor, the PO is raised, and goods receipt and invoice are matched before payment.',
       nodes: ['Stock', 'RFP', 'PO', 'Match'], images: [], link: '' },
-    { category: 'n8n', title: 'Hiring: Request to Shortlist', industry: 'All industries', fn: 'HR & Payroll', meta: '22 nodes',
+    { category: 'n8n', kind: 'hr', title: 'Hiring: Request to Shortlist', industry: 'All industries', fn: 'HR & Payroll', meta: '22 nodes',
       desc: 'Checks the talent pool first, then AI writes and posts the job, screens every CV and books interviews for the shortlist.',
       nodes: ['Request', 'Post', 'Screen', 'Book'], images: [], link: '' },
-    { category: 'n8n', title: 'Operations: Order to Production Plan', industry: 'Manufacturing', fn: 'Operations', meta: '19 nodes',
+    { category: 'n8n', kind: 'ops', title: 'Operations: Order to Production Plan', industry: 'Manufacturing', fn: 'Operations', meta: '19 nodes',
       desc: 'Customer orders are exploded into BOMs and checked for material, labor and capacity, then AI builds the production schedule.',
       nodes: ['Order', 'BOM', 'Capacity', 'Plan'], images: [], link: '' },
 

@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Purchase Request → Vendor RFQ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 100%; box-sizing: border-box; font-family: 'Inter Tight', system-ui, sans-serif; color: #e6eaf5; background: #0b1020; border: 1px solid #26305a; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 80px rgba(11, 15, 23, 0.35)">
+  <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #232d4d; background: #0e1426">
+    <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+      <span style="font-size: 17px; font-weight: 800; color: #ffffff">Purchase Request → Vendor RFQ</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8b95b5">n8n · 19 nodes · AI classification · vendor master · AI-drafted RFQs</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <button type="button" aria-label="{{pauseLabel}}" onClick="{{togglePause}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{pauseIcon}}"></path></svg></button>
+      <button type="button" aria-label="Replay from the start" onClick="{{replay}}" style="width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: #0a0f1e; border: 1px solid #232d4d; border-radius: 10px; color: #e6eaf5; cursor: pointer; padding: 0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"></path></svg></button>
+      <span style="{{statusStyle}}">{{statusText}}</span>
+    </div>
+  </div>
+  <div ref="{{wrapRef}}" style="overflow-x: auto; background: #0a0f1e">
+    <div style="min-width: 1000px">
+<svg viewBox="0 0 1600 760" role="img" aria-label="Animated n8n workflow from purchase request to vendor RFQ emails" style="display: block; width: 100%; height: auto; font-family: 'Inter Tight', Inter, system-ui, sans-serif">
+<defs>
+<pattern id="wfDots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" style="fill: #1a2240"></circle></pattern>
+<filter id="wfGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur><feMerge><feMergeNode in="b"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter>
+<filter id="wfSoft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"></feGaussianBlur></filter>
+</defs>
+<rect width="1600" height="760" style="fill: url(#wfDots)"></rect>
+<rect x="18" y="88" width="160" height="322" rx="18" style="fill: #3b82f6; fill-opacity: 0.05; stroke: #3b82f6; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="98.0" y="108.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #3b82f6; letter-spacing: 2px">INPUTS</text>
+<rect x="1418" y="318" width="164" height="432" rx="18" style="fill: #34d399; fill-opacity: 0.05; stroke: #34d399; stroke-opacity: 0.45; stroke-width: 1.4; stroke-dasharray: 6 6"></rect>
+<text x="1500.0" y="338.0" text-anchor="middle" style="font-size: 11px; font-weight: 800; fill: #34d399; letter-spacing: 2px">OUTPUTS</text>
+<path d="M134.0 180.0 C179.0 180.0, 179.0 250.0, 224.0 250.0" style="fill: none; stroke: {{eg.form_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 180.0 C179.0 180.0, 179.0 250.0, 224.0 250.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.form_merge.fop}}"></path>
+<circle cx="224.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M134.0 330.0 C179.0 330.0, 179.0 250.0, 224.0 250.0" style="fill: none; stroke: {{eg.mreq_merge.st}}; stroke-width: 2.4"></path>
+<path d="M134.0 330.0 C179.0 330.0, 179.0 250.0, 224.0 250.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.mreq_merge.fop}}"></path>
+<circle cx="224.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M296.0 250.0 C336.0 250.0, 318.0 250.0, 358.0 250.0" style="fill: none; stroke: {{eg.merge_classify.st}}; stroke-width: 2.4"></path>
+<path d="M296.0 250.0 C336.0 250.0, 318.0 250.0, 358.0 250.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.merge_classify.fop}}"></path>
+<circle cx="358.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M562.0 250.0 C602.0 250.0, 584.0 250.0, 624.0 250.0" style="fill: none; stroke: {{eg.classify_budget.st}}; stroke-width: 2.4"></path>
+<path d="M562.0 250.0 C602.0 250.0, 584.0 250.0, 624.0 250.0" style="fill: none; stroke: #818cf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.classify_budget.fop}}"></path>
+<circle cx="624.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M696.0 250.0 C736.0 250.0, 734.0 250.0, 774.0 250.0" style="fill: none; stroke: {{eg.budget_ifb.st}}; stroke-width: 2.4"></path>
+<path d="M696.0 250.0 C736.0 250.0, 734.0 250.0, 774.0 250.0" style="fill: none; stroke: #f59e0b; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.budget_ifb.fop}}"></path>
+<circle cx="774.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M846.0 250.0 C886.0 250.0, 884.0 110.0, 924.0 110.0" style="fill: none; stroke: {{eg.ifb_escal.st}}; stroke-width: 2.4"></path>
+<path d="M846.0 250.0 C886.0 250.0, 884.0 110.0, 924.0 110.0" style="fill: none; stroke: #ef4444; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifb_escal.fop}}"></path>
+<circle cx="924.0" cy="110.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="882.1" y="183.5" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">no</text>
+<path d="M846.0 250.0 C886.0 250.0, 884.0 250.0, 924.0 250.0" style="fill: none; stroke: {{eg.ifb_vm.st}}; stroke-width: 2.4"></path>
+<path d="M846.0 250.0 C886.0 250.0, 884.0 250.0, 924.0 250.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.ifb_vm.fop}}"></path>
+<circle cx="924.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<text x="882.1" y="243.0" text-anchor="middle" style="font-size: 10.5px; font-weight: 700; fill: #7f8bb3">yes</text>
+<path d="M996.0 250.0 C1036.0 250.0, 1034.0 250.0, 1074.0 250.0" style="fill: none; stroke: {{eg.vm_filt.st}}; stroke-width: 2.4"></path>
+<path d="M996.0 250.0 C1036.0 250.0, 1034.0 250.0, 1074.0 250.0" style="fill: none; stroke: #2dd4bf; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.vm_filt.fop}}"></path>
+<circle cx="1074.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1146.0 250.0 C1186.0 250.0, 1184.0 250.0, 1224.0 250.0" style="fill: none; stroke: {{eg.filt_rank.st}}; stroke-width: 2.4"></path>
+<path d="M1146.0 250.0 C1186.0 250.0, 1184.0 250.0, 1224.0 250.0" style="fill: none; stroke: #fb923c; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.filt_rank.fop}}"></path>
+<circle cx="1224.0" cy="250.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M696.0 560.0 C737.0 560.0, 737.0 560.0, 778.0 560.0" style="fill: none; stroke: {{eg.loop_draft.st}}; stroke-width: 2.4"></path>
+<path d="M696.0 560.0 C737.0 560.0, 737.0 560.0, 778.0 560.0" style="fill: none; stroke: #a78bfa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.loop_draft.fop}}"></path>
+<circle cx="778.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M982.0 560.0 C1022.0 560.0, 1014.0 560.0, 1054.0 560.0" style="fill: none; stroke: {{eg.draft_send.st}}; stroke-width: 2.4"></path>
+<path d="M982.0 560.0 C1022.0 560.0, 1014.0 560.0, 1054.0 560.0" style="fill: none; stroke: #ef4444; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.draft_send.fop}}"></path>
+<circle cx="1054.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1126.0 560.0 C1175.0 560.0, 1175.0 560.0, 1224.0 560.0" style="fill: none; stroke: {{eg.send_log.st}}; stroke-width: 2.4"></path>
+<path d="M1126.0 560.0 C1175.0 560.0, 1175.0 560.0, 1224.0 560.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.send_log.fop}}"></path>
+<circle cx="1224.0" cy="560.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1296.0 560.0 C1380.0 560.0, 1380.0 545.0, 1464.0 545.0" style="fill: none; stroke: {{eg.log_rfqreg.st}}; stroke-width: 2.4"></path>
+<path d="M1296.0 560.0 C1380.0 560.0, 1380.0 545.0, 1464.0 545.0" style="fill: none; stroke: #22c55e; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.log_rfqreg.fop}}"></path>
+<circle cx="1464.0" cy="545.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1296.0 560.0 C1380.0 560.0, 1380.0 675.0, 1464.0 675.0" style="fill: none; stroke: {{eg.log_notify.st}}; stroke-width: 2.4"></path>
+<path d="M1296.0 560.0 C1380.0 560.0, 1380.0 675.0, 1464.0 675.0" style="fill: none; stroke: #60a5fa; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.log_notify.fop}}"></path>
+<circle cx="1464.0" cy="675.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1260.0 286.0 C1260.0 430.0, 660.0 410.0, 660.0 524.0" style="fill: none; stroke: {{eg.rank_loop.st}}; stroke-width: 2.4"></path>
+<path d="M1260.0 286.0 C1260.0 430.0, 660.0 410.0, 660.0 524.0" style="fill: none; stroke: #94a3b8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.rank_loop.fop}}"></path>
+<circle cx="660.0" cy="524.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M1090.0 524.0 C1090.0 430.0, 1300.0 410.0, 1464.0 410.0" style="fill: none; stroke: {{eg.send_vinbox.st}}; stroke-width: 2.4"></path>
+<path d="M1090.0 524.0 C1090.0 430.0, 1300.0 410.0, 1464.0 410.0" style="fill: none; stroke: #38bdf8; stroke-width: 2.4; stroke-dasharray: 5 11; stroke-dashoffset: {{flowOff}}; opacity: {{eg.send_vinbox.fop}}"></path>
+<circle cx="1464.0" cy="410.0" r="3.5" style="fill: #3a4672"></circle>
+<path d="M460.0 286.0 C460.0 311.0, 460.0 327.0, 460.0 352.0" style="fill: none; stroke: #7c6fd0; stroke-width: 2; stroke-dasharray: 4 5; opacity: 0.8"></path>
+<path d="M880.0 596.0 C880.0 621.0, 880.0 632.0, 880.0 657.0" style="fill: none; stroke: #7c6fd0; stroke-width: 2; stroke-dasharray: 4 5; opacity: 0.8"></path>
+<rect x="455" y="281" width="10" height="10" transform="rotate(45 460 286)" style="fill: #0a0f1e; stroke: #a78bfa; stroke-width: 1.6"></rect>
+<rect x="875" y="591" width="10" height="10" transform="rotate(45 880 596)" style="fill: #0a0f1e; stroke: #a78bfa; stroke-width: 1.6"></rect>
+<circle cx="98" cy="180" r="{{nd.form.pr}}" style="fill: none; stroke: #60a5fa; stroke-width: 2; opacity: {{nd.form.po}}"></circle>
+<circle cx="98" cy="330" r="{{nd.mreq.pr}}" style="fill: none; stroke: #ef4444; stroke-width: 2; opacity: {{nd.mreq.po}}"></circle>
+<g transform="translate(98 180)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.form.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.form.body}}; stroke-width: 2; filter: {{nd.form.filt}}"></rect>
+<path d="M7 4h10a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM9 2.5h6v3H9zM8.5 11h7M8.5 14.5h7M8.5 18h4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #60a5fa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.form.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Purchase Request</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(n8n Form)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.form.bOp}}"><rect x="-11.0" y="-10" width="22.0" height="20" rx="10" style="fill: #60a5fa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">3</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.form.ckOp}}"><circle r="9" style="fill: {{nd.form.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(98 330)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.mreq.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="36" style="fill: #131a2f; stroke: {{nd.mreq.body}}; stroke-width: 2; filter: {{nd.mreq.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.mreq.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Email Request</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(Gmail)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.mreq.bOp}}"><rect x="-11.0" y="-10" width="22.0" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">2</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.mreq.ckOp}}"><circle r="9" style="fill: {{nd.mreq.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(260 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.merge.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.merge.body}}; stroke-width: 2; filter: {{nd.merge.filt}}"></rect>
+<path d="M5 5c0 6 7 5 7 11v4M19 5c0 6-7 5-7 11M9 17l3 3 3-3" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.merge.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Merge &amp;</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Normalize</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.merge.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #94a3b8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">5 req</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.merge.ckOp}}"><circle r="9" style="fill: {{nd.merge.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(460 250)">
+<rect x="-108.0" y="-42.0" width="216" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.classify.ringOp}}"></rect>
+<rect x="-102.0" y="-36.0" width="204" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.classify.body}}; stroke-width: 2; filter: {{nd.classify.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-86.0 -16) scale(1.35)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.classify.icOp}}"></path>
+<text x="-42.0" y="-5.0" text-anchor="start" style="font-size: 11px; font-weight: 500; fill: #8b95b5; letter-spacing: 1.5px">AI AGENT</text>
+<text x="-42.0" y="14.0" text-anchor="start" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Classify Item &amp; Category</text>
+<g transform="translate(96.0 -42.0)" style="opacity: {{nd.classify.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">5 lines</text></g>
+<g transform="translate(98.0 32.0)" style="opacity: {{nd.classify.ckOp}}"><circle r="9" style="fill: {{nd.classify.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(460 380)">
+<circle r="34" style="fill: none; stroke: #f472b6; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.model1.ringOp}}"></circle>
+<circle r="28" style="fill: #131a2f; stroke: {{nd.model1.body}}; stroke-width: 2; filter: {{nd.model1.filt}}"></circle>
+<path d="M8.5 7h7.0a1.5 1.5 0 0 1 1.5 1.5v7.0a1.5 1.5 0 0 1 -1.5 1.5h-7.0a1.5 1.5 0 0 1 -1.5 -1.5v-7.0a1.5 1.5 0 0 1 1.5 -1.5zM10 3.5v3.5M14 3.5v3.5M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5" transform="translate(-13 -13) scale(1.08)" style="fill: none; stroke: #f472b6; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.model1.icOp}}"></path>
+<text x="0.0" y="48.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Chat Model</text>
+<g transform="translate(20 20)" style="opacity: {{nd.model1.ckOp}}"><circle r="9" style="fill: {{nd.model1.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(660 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #818cf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.budget.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.budget.body}}; stroke-width: 2; filter: {{nd.budget.filt}}"></rect>
+<path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #818cf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.budget.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Budget Check</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(ERP API)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.budget.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #818cf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">5 checked</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.budget.ckOp}}"><circle r="9" style="fill: {{nd.budget.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(810 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.ifb.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.ifb.body}}; stroke-width: 2; filter: {{nd.ifb.filt}}"></rect>
+<path d="M12 3l9 9-9 9-9-9zM12 8v5M12 16h.01" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #f59e0b; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.ifb.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Within</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Budget?</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.ifb.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #f59e0b"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 ✓ 1 ✗</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.ifb.ckOp}}"><circle r="9" style="fill: {{nd.ifb.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(960 110)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.escal.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.escal.body}}; stroke-width: 2; filter: {{nd.escal.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.escal.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Escalate to</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Manager</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.escal.bOp}}"><rect x="-26.8" y="-10" width="53.6" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">1 sent</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.escal.ckOp}}"><circle r="9" style="fill: {{nd.escal.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(960 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.vm.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.vm.body}}; stroke-width: 2; filter: {{nd.vm.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.vm.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Lookup Vendor</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Master</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.vm.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">9 vendors</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.vm.ckOp}}"><circle r="9" style="fill: {{nd.vm.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1110 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #2dd4bf; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.filt.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.filt.body}}; stroke-width: 2; filter: {{nd.filt.filt}}"></rect>
+<path d="M4 5h16l-6 7.5V19l-4 1.5v-8z" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #2dd4bf; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.filt.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Filter Approved</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Vendors</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.filt.bOp}}"><rect x="-26.8" y="-10" width="53.6" height="20" rx="10" style="fill: #2dd4bf"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">6 pass</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.filt.ckOp}}"><circle r="9" style="fill: {{nd.filt.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1260 250)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #fb923c; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.rank.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.rank.body}}; stroke-width: 2; filter: {{nd.rank.filt}}"></rect>
+<path d="M9 6l-5 6 5 6M15 6l5 6-5 6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #fb923c; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.rank.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Rank Vendors</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(score)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.rank.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #fb923c"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">top 3</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.rank.ckOp}}"><circle r="9" style="fill: {{nd.rank.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(660 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.loop.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.loop.body}}; stroke-width: 2; filter: {{nd.loop.filt}}"></rect>
+<path d="M17 2.5l3 3-3 3M4 11.5v-1a5 5 0 0 1 5-5h11M7 21.5l-3-3 3-3M20 12.5v1a5 5 0 0 1-5 5H4" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #94a3b8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.loop.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Loop Over</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Requests</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.loop.bOp}}"><rect x="-23.5" y="-10" width="47.0" height="20" rx="10" style="fill: #94a3b8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 × 3</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.loop.ckOp}}"><circle r="9" style="fill: {{nd.loop.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(880 560)">
+<rect x="-108.0" y="-42.0" width="216" height="84" rx="21" style="fill: none; stroke: #a78bfa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.draft.ringOp}}"></rect>
+<rect x="-102.0" y="-36.0" width="204" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.draft.body}}; stroke-width: 2; filter: {{nd.draft.filt}}"></rect>
+<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" transform="translate(-86.0 -16) scale(1.35)" style="fill: none; stroke: #a78bfa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.draft.icOp}}"></path>
+<text x="-42.0" y="-5.0" text-anchor="start" style="font-size: 11px; font-weight: 500; fill: #8b95b5; letter-spacing: 1.5px">AI AGENT</text>
+<text x="-42.0" y="14.0" text-anchor="start" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Draft RFQ Email</text>
+<g transform="translate(96.0 -42.0)" style="opacity: {{nd.draft.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #a78bfa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">12 drafts</text></g>
+<g transform="translate(98.0 32.0)" style="opacity: {{nd.draft.ckOp}}"><circle r="9" style="fill: {{nd.draft.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(880 685)">
+<circle r="34" style="fill: none; stroke: #f472b6; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.model2.ringOp}}"></circle>
+<circle r="28" style="fill: #131a2f; stroke: {{nd.model2.body}}; stroke-width: 2; filter: {{nd.model2.filt}}"></circle>
+<path d="M8.5 7h7.0a1.5 1.5 0 0 1 1.5 1.5v7.0a1.5 1.5 0 0 1 -1.5 1.5h-7.0a1.5 1.5 0 0 1 -1.5 -1.5v-7.0a1.5 1.5 0 0 1 1.5 -1.5zM10 3.5v3.5M14 3.5v3.5M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5" transform="translate(-13 -13) scale(1.08)" style="fill: none; stroke: #f472b6; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.model2.icOp}}"></path>
+<text x="0.0" y="48.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Chat Model</text>
+<g transform="translate(20 20)" style="opacity: {{nd.model2.ckOp}}"><circle r="9" style="fill: {{nd.model2.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1090 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #ef4444; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.send.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.send.body}}; stroke-width: 2; filter: {{nd.send.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #ef4444; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.send.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Send RFQ</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">(Gmail)</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.send.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #ef4444"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">12 sent</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.send.ckOp}}"><circle r="9" style="fill: {{nd.send.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1260 560)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.log.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #131a2f; stroke: {{nd.log.body}}; stroke-width: 2; filter: {{nd.log.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.log.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Log RFQ &amp;</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Quote Due Date</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.log.bOp}}"><rect x="-26.8" y="-10" width="53.6" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">4 RFQs</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.log.ckOp}}"><circle r="9" style="fill: {{nd.log.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 410)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.vinbox.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.vinbox.body}}; stroke-width: 2; filter: {{nd.vinbox.filt}}"></rect>
+<path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2zM3 13h5l1.5 2.5h5L16 13h5" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #38bdf8; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.vinbox.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Vendor Inboxes</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.vinbox.bOp}}"><rect x="-36.7" y="-10" width="73.4" height="20" rx="10" style="fill: #38bdf8"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">12 emails</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.vinbox.ckOp}}"><circle r="9" style="fill: {{nd.vinbox.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 545)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #22c55e; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.rfqreg.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.rfqreg.body}}; stroke-width: 2; filter: {{nd.rfqreg.filt}}"></rect>
+<path d="M6 3.5h12a2 2 0 0 1 2 2v13a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-13a2 2 0 0 1 2 -2zM4 9h16M4 14.5h16M10 3.5v17" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #22c55e; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.rfqreg.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">RFQ Register</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.rfqreg.bOp}}"><rect x="-30.1" y="-10" width="60.2" height="20" rx="10" style="fill: #22c55e"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">updated</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.rfqreg.ckOp}}"><circle r="9" style="fill: {{nd.rfqreg.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(1500 675)">
+<rect x="-42.0" y="-42.0" width="84" height="84" rx="21" style="fill: none; stroke: #60a5fa; stroke-width: 2; stroke-dasharray: 9 7; stroke-dashoffset: {{ringOff}}; opacity: {{nd.notify.ringOp}}"></rect>
+<rect x="-36.0" y="-36.0" width="72" height="72" rx="16" style="fill: #0f2320; stroke: {{nd.notify.body}}; stroke-width: 2; filter: {{nd.notify.filt}}"></rect>
+<path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2zM3.5 7l8.5 6 8.5-6" transform="translate(-17 -17) scale(1.42)" style="fill: none; stroke: #60a5fa; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; opacity: {{nd.notify.icOp}}"></path>
+<text x="0.0" y="56.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Notify</text>
+<text x="0.0" y="71.0" text-anchor="middle" style="font-size: 12.5px; font-weight: 600; fill: #c6cde3">Requester</text>
+<g transform="translate(30.0 -42.0)" style="opacity: {{nd.notify.bOp}}"><rect x="-26.8" y="-10" width="53.6" height="20" rx="10" style="fill: #60a5fa"></rect><text x="0.0" y="4.0" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #0b1020">5 sent</text></g>
+<g transform="translate(32.0 32.0)" style="opacity: {{nd.notify.ckOp}}"><circle r="9" style="fill: {{nd.notify.ckc}}; stroke: #0a0f1e; stroke-width: 2"></circle><path d="M-4 0l2.8 3 5-6" style="fill: none; stroke: #ffffff; stroke-width: 2; stroke-linecap: round"></path></g>
+</g>
+<g transform="translate(0 {{cd.vcard.dy}})" style="opacity: {{cd.vcard.op}}">
+<rect x="1310" y="36" width="272" height="135" rx="12" style="fill: #0f2a2a; stroke: #5eead4; stroke-width: 1.2"></rect>
+<text x="1324.0" y="59.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #5eead4; letter-spacing: 0.6px">VENDOR MASTER · HOSES</text>
+<text x="1324.0" y="80.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor XXX</text>
+<text x="1568.0" y="80.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">★4.6 · IKTVA ✓</text>
+<text x="1324.0" y="99.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor YYY</text>
+<text x="1568.0" y="99.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">★4.2 · IKTVA ✓</text>
+<text x="1324.0" y="118.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor ZZZ</text>
+<text x="1568.0" y="118.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #86efac">★3.9 · IKTVA ✓</text>
+<text x="1324.0" y="137.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor QQQ</text>
+<text x="1568.0" y="137.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fca5a5">★2.7 · excluded</text>
+<text x="1324.0" y="156.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Vendor WWW</text>
+<text x="1568.0" y="156.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #fca5a5">CR expired</text>
+</g>
+<g transform="translate(0 {{cd.ecard.dy}})" style="opacity: {{cd.ecard.op}}">
+<rect x="30" y="470" width="420" height="135" rx="12" style="fill: #1a1636; stroke: #a78bfa; stroke-width: 1.2"></rect>
+<text x="44.0" y="493.0" text-anchor="start" style="font-size: 11.5px; font-weight: 800; fill: #a78bfa; letter-spacing: 0.6px">AI-DRAFTED RFQ · VENDOR XXX</text>
+<text x="44.0" y="514.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Subject</text>
+<text x="436.0" y="514.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">RFQ-2026-118 · Hydraulic hose</text>
+<text x="44.0" y="533.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Item / qty</text>
+<text x="436.0" y="533.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">2" hose × 100 m</text>
+<text x="44.0" y="552.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Need by</text>
+<text x="436.0" y="552.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">20 Nov 2026</text>
+<text x="44.0" y="571.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Quote due</text>
+<text x="436.0" y="571.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">10 Nov 2026</text>
+<text x="44.0" y="590.0" text-anchor="start" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 500; fill: #c6cde3">Asks for</text>
+<text x="436.0" y="590.0" text-anchor="end" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 700; fill: #ffffff">price · VAT · lead time</text>
+</g>
+<g transform="translate({{pk.p0.x}} {{pk.p0.y}})" style="opacity: {{pk.p0.op}}"><circle r="15" style="fill: {{pk.p0.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p0.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p1.x}} {{pk.p1.y}})" style="opacity: {{pk.p1.op}}"><circle r="15" style="fill: {{pk.p1.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p1.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p2.x}} {{pk.p2.y}})" style="opacity: {{pk.p2.op}}"><circle r="15" style="fill: {{pk.p2.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p2.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p3.x}} {{pk.p3.y}})" style="opacity: {{pk.p3.op}}"><circle r="15" style="fill: {{pk.p3.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p3.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p4.x}} {{pk.p4.y}})" style="opacity: {{pk.p4.op}}"><circle r="15" style="fill: {{pk.p4.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p4.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p5.x}} {{pk.p5.y}})" style="opacity: {{pk.p5.op}}"><circle r="15" style="fill: {{pk.p5.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p5.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p6.x}} {{pk.p6.y}})" style="opacity: {{pk.p6.op}}"><circle r="15" style="fill: {{pk.p6.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p6.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{pk.p7.x}} {{pk.p7.y}})" style="opacity: {{pk.p7.op}}"><circle r="15" style="fill: {{pk.p7.c}}; opacity: 0.28; filter: url(#wfSoft)"></circle><circle r="6.5" style="fill: {{pk.p7.c}}; stroke: #ffffff; stroke-width: 1.6"></circle></g>
+<g transform="translate({{lb.L0.x}} {{lb.L0.y}})" style="opacity: {{lb.L0.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L0.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">3 forms</text></g>
+<g transform="translate({{lb.L1.x}} {{lb.L1.y}})" style="opacity: {{lb.L1.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L1.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">2 emails</text></g>
+<g transform="translate({{lb.L2.x}} {{lb.L2.y}})" style="opacity: {{lb.L2.op}}"><rect x="-39.5" y="-33" width="79.0" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L2.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">5 requests</text></g>
+<g transform="translate({{lb.L3.x}} {{lb.L3.y}})" style="opacity: {{lb.L3.op}}"><rect x="-26.9" y="-33" width="53.8" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L3.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">prompt</text></g>
+<g transform="translate({{lb.L4.x}} {{lb.L4.y}})" style="opacity: {{lb.L4.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L4.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">items</text></g>
+<g transform="translate({{lb.L5.x}} {{lb.L5.y}})" style="opacity: {{lb.L5.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L5.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">5 lines</text></g>
+<g transform="translate({{lb.L6.x}} {{lb.L6.y}})" style="opacity: {{lb.L6.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L6.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">1 · over</text></g>
+<g transform="translate({{lb.L7.x}} {{lb.L7.y}})" style="opacity: {{lb.L7.op}}"><rect x="-26.9" y="-33" width="53.8" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L7.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">4 · ok</text></g>
+<g transform="translate({{lb.L8.x}} {{lb.L8.y}})" style="opacity: {{lb.L8.op}}"><rect x="-36.3" y="-33" width="72.7" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L8.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">9 vendors</text></g>
+<g transform="translate({{lb.L9.x}} {{lb.L9.y}})" style="opacity: {{lb.L9.op}}"><rect x="-11.2" y="-33" width="22.3" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L9.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">6</text></g>
+<g transform="translate({{lb.L10.x}} {{lb.L10.y}})" style="opacity: {{lb.L10.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L10.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">top 3</text></g>
+<g transform="translate({{lb.L11.x}} {{lb.L11.y}})" style="opacity: {{lb.L11.op}}"><rect x="-23.8" y="-33" width="47.5" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L11.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">email</text></g>
+<g transform="translate({{lb.L12.x}} {{lb.L12.y}})" style="opacity: {{lb.L12.op}}"><rect x="-36.3" y="-33" width="72.7" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L12.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">12 drafts</text></g>
+<g transform="translate({{lb.L13.x}} {{lb.L13.y}})" style="opacity: {{lb.L13.op}}"><rect x="-30.1" y="-33" width="60.1" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L13.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">12 RFQs</text></g>
+<g transform="translate({{lb.L14.x}} {{lb.L14.y}})" style="opacity: {{lb.L14.op}}"><rect x="-33.2" y="-33" width="66.4" height="19" rx="9.5" style="fill: #0b1124; stroke: {{lb.L14.c}}; stroke-width: 1.2"></rect><text x="0.0" y="-19.5" text-anchor="middle" style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; font-weight: 600; fill: #e6eaf5">5 people</text></g>
+</svg>
+    </div>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px; border-top: 1px solid #232d4d; background: #0e1426; min-height: 64px; box-sizing: border-box">
+    <div style="display: flex; gap: 5px; align-items: center">
+      <sc-for list="{{steps}}" as="s" hint-placeholder-count="7">
+        <span style="display: block; height: 5px; border-radius: 3px; width: {{s.w}}; background: {{s.bg}}"></span>
+      </sc-for>
+    </div>
+    <div style="font-size: 13px; font-weight: 800; color: #ffffff; white-space: nowrap"><span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: #8b95b5; margin-right: 8px">{{capN}}</span>{{capT}}</div>
+    <div style="flex: 1 1 320px; min-width: 0; color: #b7bfd8; font-size: 13.5px; line-height: 1.45">{{capX}}</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1392,"height":760}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { t: 0, paused: false };
+    this.G = {"W": 1600, "nodes": {"form": {"x": 98, "c": "#60a5fa", "inp": true}, "mreq": {"x": 98, "c": "#ef4444", "inp": true}, "merge": {"x": 260, "c": "#94a3b8", "inp": false}, "classify": {"x": 460, "c": "#a78bfa", "inp": false}, "model1": {"x": 460, "c": "#f472b6", "inp": false}, "budget": {"x": 660, "c": "#818cf8", "inp": false}, "ifb": {"x": 810, "c": "#f59e0b", "inp": false}, "escal": {"x": 960, "c": "#ef4444", "inp": false}, "vm": {"x": 960, "c": "#22c55e", "inp": false}, "filt": {"x": 1110, "c": "#2dd4bf", "inp": false}, "rank": {"x": 1260, "c": "#fb923c", "inp": false}, "loop": {"x": 660, "c": "#94a3b8", "inp": false}, "draft": {"x": 880, "c": "#a78bfa", "inp": false}, "model2": {"x": 880, "c": "#f472b6", "inp": false}, "send": {"x": 1090, "c": "#ef4444", "inp": false}, "log": {"x": 1260, "c": "#22c55e", "inp": false}, "vinbox": {"x": 1500, "c": "#38bdf8", "inp": false}, "rfqreg": {"x": 1500, "c": "#22c55e", "inp": false}, "notify": {"x": 1500, "c": "#60a5fa", "inp": false}}, "edges": {"form-merge": {"pts": [134.0, 180, 179.0, 180, 179.0, 250, 224.0, 250], "c": "#94a3b8"}, "mreq-merge": {"pts": [134.0, 330, 179.0, 330, 179.0, 250, 224.0, 250], "c": "#94a3b8"}, "merge-classify": {"pts": [296.0, 250, 336.0, 250, 318.0, 250, 358.0, 250], "c": "#a78bfa"}, "classify-budget": {"pts": [562.0, 250, 602.0, 250, 584.0, 250, 624.0, 250], "c": "#818cf8"}, "budget-ifb": {"pts": [696.0, 250, 736.0, 250, 734.0, 250, 774.0, 250], "c": "#f59e0b"}, "ifb-escal": {"pts": [846.0, 250, 886.0, 250, 884.0, 110, 924.0, 110], "c": "#ef4444"}, "ifb-vm": {"pts": [846.0, 250, 886.0, 250, 884.0, 250, 924.0, 250], "c": "#22c55e"}, "vm-filt": {"pts": [996.0, 250, 1036.0, 250, 1034.0, 250, 1074.0, 250], "c": "#2dd4bf"}, "filt-rank": {"pts": [1146.0, 250, 1186.0, 250, 1184.0, 250, 1224.0, 250], "c": "#fb923c"}, "loop-draft": {"pts": [696.0, 560, 737.0, 560, 737.0, 560, 778.0, 560], "c": "#a78bfa"}, "draft-send": {"pts": [982.0, 560, 1022.0, 560, 1014.0, 560, 1054.0, 560], "c": "#ef4444"}, "send-log": {"pts": [1126.0, 560, 1175.0, 560, 1175.0, 560, 1224.0, 560], "c": "#22c55e"}, "log-rfqreg": {"pts": [1296.0, 560, 1380.0, 560, 1380.0, 545, 1464.0, 545], "c": "#22c55e"}, "log-notify": {"pts": [1296.0, 560, 1380.0, 560, 1380.0, 675, 1464.0, 675], "c": "#60a5fa"}, "rank-loop": {"pts": [1260, 286, 1260, 430, 660, 410, 660, 524], "c": "#94a3b8"}, "send-vinbox": {"pts": [1090, 524, 1090, 430, 1300, 410, 1464, 410], "c": "#38bdf8"}, "classify-model1": {"pts": [460, 286, 460, 311, 460, 327, 460, 352], "c": "#a78bfa"}, "draft-model2": {"pts": [880, 596, 880, 621, 880, 632, 880, 657], "c": "#a78bfa"}}, "keys": ["form-merge", "mreq-merge", "merge-classify", "classify-budget", "budget-ifb", "ifb-escal", "ifb-vm", "vm-filt", "filt-rank", "loop-draft", "draft-send", "send-log", "log-rfqreg", "log-notify", "rank-loop", "send-vinbox"], "labels": ["3 forms", "2 emails", "5 requests", "prompt", "items", "5 lines", "1 · over", "4 · ok", "9 vendors", "6", "top 3", "email", "12 drafts", "12 RFQs", "5 people"], "cards": {"vcard": 1, "ecard": 1}, "ops": [["S", 1], ["par", [[["n", "form", 1200]], [["n", "mreq", 1200]]]], ["par", [[["e", "form-merge", 900, "3 forms"]], [["e", "mreq-merge", 900, "2 emails"]]]], ["n", "merge", 700], ["e", "merge-classify", 900, "5 requests"], ["S", 2], ["span", "classify", [["w", 300], ["e", "classify-model1", 600, "prompt"], ["n", "model1", 1000], ["e", "classify-model1", 500, "items", 1]]], ["S", 3], ["e", "classify-budget", 900, "5 lines"], ["n", "budget", 1000], ["e", "budget-ifb", 800], ["n", "ifb", 600], ["par", [[["e", "ifb-escal", 900, "1 · over"], ["n", "escal", 800, 1]], [["e", "ifb-vm", 900, "4 · ok"]]]], ["S", 4], ["n", "vm", 900], ["e", "vm-filt", 800, "9 vendors"], ["n", "filt", 900], ["card", "vcard", "on"], ["e", "filt-rank", 800, "6"], ["n", "rank", 900], ["S", 5], ["e", "rank-loop", 1300, "top 3"], ["n", "loop", 600], ["e", "loop-draft", 800], ["span", "draft", [["w", 300], ["e", "draft-model2", 600, "prompt"], ["n", "model2", 1000], ["e", "draft-model2", 500, "email", 1]]], ["card", "ecard", "on"], ["e", "draft-send", 800, "12 drafts"], ["n", "send", 1000], ["S", 6], ["card", "vcard", "off"], ["par", [[["e", "send-vinbox", 1100, "12 RFQs"], ["n", "vinbox", 800]], [["e", "send-log", 800], ["n", "log", 800], ["par", [[["e", "log-rfqreg", 900], ["n", "rfqreg", 700]], [["e", "log-notify", 900, "5 people"], ["n", "notify", 700]]]]]]], ["S", 7]], "stages": [["Intake", "Requests come in from the n8n purchase form (item, quantity, need-by date, cost centre) and from emails to procurement. Both are merged into one standard format."], ["AI classification", "An AI Agent reads each free-text request and assigns a clean item name, category and unit, so \"hose for rig 12 hydraulics\" becomes a proper catalogue line."], ["Budget check", "The ERP budget API checks each cost centre. One request is over budget and is escalated to the manager; four continue."], ["Vendor master", "Approved vendors for each category come from the vendor master, filtered to active, IKTVA-registered vendors rated 3 or higher, then ranked by score."], ["AI-drafted RFQs", "For each request, the top 3 vendors get an RFQ email drafted by the AI with item, quantity, need-by date and quote deadline, asking for price, VAT and lead time."], ["Outputs", "Vendors receive their RFQs, every RFQ is logged with its quote due date in the RFQ Register, and requesters are told their request is out to quote."], ["Complete", "Done: 5 requests, 1 escalated, 12 RFQ emails to approved vendors, all logged. Replies then flow into the RFQ follow-up workflow."]]};
+    this.TL = this.timeline();
+    this.last = null; this.raf = 0; this.fxp = -1; this.wrap = null; this.focus = 0;
+    this.wrapRef = (el) => { this.wrap = el; };
+  }
+  componentDidMount() {
+    let reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+    if (reduce) this.setState({ paused: true, t: this.TL.doneAt + 100 });
+    const loop = (ts) => {
+      const hidden = typeof document !== 'undefined' && document.hidden;
+      if (this.last !== null && !this.state.paused && !hidden) {
+        let t = this.state.t + Math.min(ts - this.last, 100);
+        if (t >= this.TL.total) t = 0;
+        this.setState({ t: t });
+      }
+      this.last = ts;
+      this.raf = requestAnimationFrame(loop);
+    };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); }
+  componentDidUpdate() {
+    const w = this.wrap;
+    if (!w || !w.scrollWidth || w.scrollWidth <= w.clientWidth + 4) return;
+    const fx = this.focus || 0;
+    if (Math.abs(fx - this.fxp) < 1) return;
+    this.fxp = fx;
+    try { w.scrollTo({ left: Math.max(0, fx / this.G.W * w.scrollWidth - w.clientWidth / 2), behavior: 'smooth' }); } catch (e) {}
+  }
+  ease(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+  bez(p, u) {
+    const m = 1 - u, a = m * m * m, b = 3 * m * m * u, c = 3 * m * u * u, d = u * u * u;
+    return { x: a * p[0] + b * p[2] + c * p[4] + d * p[6], y: a * p[1] + b * p[3] + c * p[5] + d * p[7] };
+  }
+  timeline() {
+    const ev = [], st = [], cards = {};
+    Object.keys(this.G.cards).forEach((k) => { cards[k] = { on: -1, off: -1 }; });
+    const run = (ops, t) => {
+      ops.forEach((op) => {
+        const k = op[0];
+        if (k === 'S') st.push({ n: op[1], s: t });
+        else if (k === 'n') { ev.push({ k: 'n', id: op[1], s: t, d: op[2], w: !!op[3] }); t += op[2]; }
+        else if (k === 'e') { ev.push({ k: 'e', key: op[1], s: t, d: op[2], l: op[3] || null, rev: !!op[4] }); t += op[2]; }
+        else if (k === 'w') t += op[1];
+        else if (k === 'par') { let m = t; op[1].forEach((br) => { m = Math.max(m, run(br, t)); }); t = m; }
+        else if (k === 'span') { const s = t; t = run(op[2], t); ev.push({ k: 'n', id: op[1], s: s, d: t - s, w: false }); }
+        else if (k === 'card') { cards[op[1]][op[2]] = t; }
+      });
+      return t;
+    };
+    const end = run(this.G.ops, 200);
+    const doneAt = st.length ? st[st.length - 1].s : end;
+    Object.keys(cards).forEach((k) => { if (cards[k].on >= 0 && cards[k].off < 0) cards[k].off = end + 6500; });
+    return { ev: ev, st: st, cards: cards, doneAt: doneAt, total: end + 6500 };
+  }
+  renderVals() {
+    const t = this.state.t, paused = this.state.paused;
+    const TL = this.TL, G = this.G, ease = this.ease, cl = (x) => Math.max(0, Math.min(1, x));
+    const ns = {};
+    Object.keys(G.nodes).forEach((id) => { ns[id] = { run: false, done: false, w: false, rs: 0 }; });
+    const edone = {}, packets = [];
+    let focus = null, focusS = -1;
+    TL.ev.forEach((e) => {
+      if (t < e.s) return;
+      const end = e.s + e.d;
+      if (e.k === 'n') {
+        const s = ns[e.id];
+        if (t < end) { s.run = true; s.rs = e.s; if (e.s > focusS) { focusS = e.s; focus = G.nodes[e.id].x; } }
+        else { s.done = true; if (e.w) s.w = true; }
+      } else {
+        const ed = G.edges[e.key];
+        if (t < end) {
+          const u = ease((t - e.s) / e.d), q = this.bez(ed.pts, e.rev ? 1 - u : u);
+          packets.push({ x: q.x, y: q.y, c: ed.c, l: e.l });
+        } else edone[e.key] = true;
+      }
+    });
+    if (focus !== null) this.focus = focus; else if (t < 300) this.focus = 0;
+    const ringOff = -((t * 0.045) % 32), flowOff = -((t * 0.029) % 32);
+    const nd = {};
+    Object.keys(G.nodes).forEach((id) => {
+      const g = G.nodes[id], s = ns[id], lit = s.run || s.done;
+      let pr = 38, po = 0;
+      if (g.inp && s.run) { const f = ((t - s.rs) % 1200) / 1200; pr = 38 + 34 * f; po = 0.9 * (1 - f); }
+      nd[id] = { ringOp: s.run ? 1 : 0, body: lit ? g.c : '#2a3456', filt: s.run ? 'url(#wfGlow)' : 'none', icOp: lit ? 1 : 0.6,
+        bOp: s.done ? 1 : 0, ckOp: (s.done && !s.run) ? 1 : 0, ckc: s.w ? '#f59e0b' : '#10b981', pr: pr, po: po };
+    });
+    const eg = {};
+    G.keys.forEach((k) => { const dn = !!edone[k]; eg[k.replace(/[^a-zA-Z0-9]/g, '_')] = { st: dn ? '#3d4f86' : '#283356', fop: dn ? 0.9 : 0 }; });
+    const pk = {};
+    for (let i = 0; i < 8; i++) { const p = packets[i]; pk['p' + i] = p ? { x: p.x, y: p.y, op: 1, c: p.c } : { x: -200, y: -200, op: 0, c: '#000000' }; }
+    const lb = {};
+    G.labels.forEach((x, j) => { lb['L' + j] = { x: -300, y: -300, op: 0, c: '#000000' }; });
+    packets.forEach((p) => { const j = G.labels.indexOf(p.l); if (j >= 0) lb['L' + j] = { x: p.x, y: p.y, op: 1, c: p.c }; });
+    const cd = {};
+    Object.keys(TL.cards).forEach((k) => {
+      const c = TL.cards[k];
+      const o = (c.on >= 0 && t >= c.on && t < c.off) ? cl((t - c.on) / 500) : 0;
+      cd[k] = { op: o, dy: (1 - o) * 8 };
+    });
+    let cur = TL.st[0];
+    TL.st.forEach((s) => { if (t >= s.s) cur = s; });
+    const n = cur ? cur.n : 1, NS = G.stages.length;
+    const steps = G.stages.map((x, i) => ({ w: i === n - 1 ? '28px' : '14px', bg: i < n - 1 ? '#4b5a92' : (i === n - 1 ? '#FF6A2B' : '#222b4a') }));
+    const running = t < TL.doneAt;
+    return {
+      nd: nd, eg: eg, pk: pk, lb: lb, cd: cd, ringOff: ringOff, flowOff: flowOff,
+      steps: steps, capN: n + '/' + NS, capT: G.stages[n - 1][0], capX: G.stages[n - 1][1],
+      statusText: running ? '● Running' : '✓ Succeeded',
+      statusStyle: 'font-family: \'JetBrains Mono\', monospace; font-size: 11.5px; font-weight: 700; padding: 6px 10px; border-radius: 999px; white-space: nowrap; border: 1px solid ' + (running ? 'rgba(253,230,138,0.4); color: #fde68a' : 'rgba(52,211,153,0.5); color: #bbf7d0'),
+      togglePause: () => this.setState({ paused: !this.state.paused }),
+      replay: () => this.setState({ t: 0, paused: false }),
+      pauseLabel: paused ? 'Play animation' : 'Pause animation',
+      pauseIcon: paused ? 'M7 5l12 7-12 7z' : 'M8 5v14M16 5v14',
+      wrapRef: this.wrapRef
+    };
+  }
+}
+
+</script>
+</body>
+</html>
