@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERP Workflow Maps by Industry — Fahad Qureshi</title>
+<meta name="description" content="How work runs through an ERP in eight industries: every task, its owner, ERP or manual, and what AI, n8n or Power BI could automate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.erp{max-width:1240px;margin:0 auto;padding:8px 24px 72px;display:flex;flex-direction:column;gap:18px}
+.ctl{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.ctl .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.ctl .pickind{display:flex;align-items:center;gap:10px;flex:1 1 300px;min-width:0}
+.ctl .pickind span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+.ctl select{flex:1 1 auto;min-width:0;background:var(--surface);border:1.5px solid var(--ink);border-radius:10px;padding:0 12px;min-height:48px;font-size:16px;font-weight:600;cursor:pointer}
+.ctl .search{background:var(--bg);flex:1 1 280px}
+.pillbtn{cursor:pointer;font-size:14px;font-weight:600;padding:0 16px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center;gap:8px;background:var(--surface);color:var(--text);border:1px solid var(--line2)}
+.pillbtn[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.key{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:13px;color:var(--muted);margin-left:auto}
+.key span{display:inline-flex;align-items:center;gap:6px}.key i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.sum{display:flex;flex-wrap:wrap;gap:14px}
+.dark{flex:1 1 360px;min-width:0;background:var(--ink);color:#fff;border-radius:16px;padding:22px;display:flex;gap:22px;align-items:center}
+.ring{flex:0 0 auto;width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ring div{width:84px;height:84px;border-radius:50%;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.ring b{font-size:26px;font-weight:800}.ring small{font-size:10px;color:var(--grey)}
+.dark .t{min-width:0;display:flex;flex-direction:column;gap:6px}
+.dark .eyebrow{color:var(--accent);font-size:11px;letter-spacing:.14em}
+.dark .nm{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.dark .tg{font-size:14px;line-height:1.45;color:var(--grey)}
+.stats4{flex:1 1 360px;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-size:28px;font-weight:800;letter-spacing:-.02em}.stat span{font-size:13px;color:var(--muted)}
+.grp{display:flex;flex-direction:column;gap:12px}
+.gh{display:flex;align-items:center;gap:10px;padding-top:6px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--text);text-transform:uppercase}
+.gh i{width:12px;height:12px;border-radius:50%;background:var(--ink)}.g-support .gh i{background:var(--accent)}
+.trunk{margin-left:5px;padding-left:22px;border-left:2px solid var(--line2);display:flex;flex-direction:column;gap:12px}
+.dept{position:relative;display:flex;flex-direction:column;gap:10px}
+.dept::before{content:"";position:absolute;left:-22px;top:36px;width:20px;height:2px;background:var(--line2)}
+.dcard,.fcard{cursor:pointer;text-align:left;color:var(--ink);width:100%;display:flex;align-items:center}
+.dcard{gap:14px;padding:14px 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:0 1px 2px rgba(20,26,36,.04)}
+.dcard.open{border-color:var(--ink);box-shadow:0 6px 18px rgba(20,26,36,.08)}
+.dcard .ic{flex:0 0 auto;width:48px;height:48px;border-radius:12px;background:#EEF1F6;color:var(--ink);display:flex;align-items:center;justify-content:center}
+.g-support .dcard .ic{background:var(--accent-soft);color:var(--accent-text)}
+.dcard .mid,.fcard .fm{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:6px}
+.dcard .mid>b{font-size:17px;letter-spacing:-.01em}
+.dcard .about{font-size:13px;color:var(--muted)}
+.dcard .mix{height:8px;max-width:360px}
+.nums,.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);align-items:center}
+.meta{gap:6px;font-size:12px}
+.autoc{font-weight:600;color:var(--accent-text)}
+.noauto .autoc{display:none}
+.chev{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#EEF1F6;color:var(--ink);transition:transform .2s}
+.fcard .chev{width:28px;height:28px}
+.open>.chev{background:var(--ink);color:#fff;transform:rotate(180deg)}
+.kids{margin-left:28px;padding-left:20px;border-left:2px solid #AEB8C8;display:flex;flex-direction:column;gap:10px}
+.g-support .kids{border-left-color:#F2B79C}
+.fn{position:relative;display:flex;flex-direction:column;gap:10px}
+.fn::before{content:"";position:absolute;left:-20px;top:28px;width:18px;height:2px;background:#AEB8C8}
+.g-support .fn::before{background:#F2B79C}
+.fcard{gap:12px;padding:12px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.fcard.open{background:var(--surface);border-color:var(--ink)}
+.fcard .fm>b{font-size:15px}
+.fcard .mix{height:6px;max-width:280px}
+.hit{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(255,106,43,.3)!important}
+.pill{font-weight:600;padding:2px 9px;border-radius:999px;font-size:12px;white-space:nowrap}
+.p-E{background:var(--erp-bg);color:var(--erp-fg)}.p-B{background:var(--both-bg);color:var(--both-fg)}.p-M{background:var(--man-bg);color:var(--man-fg)}
+.tasks{list-style:none;margin:0 0 4px 14px;padding:0 0 0 30px;border-left:2px dashed #AEB8C8;display:flex;flex-direction:column;gap:12px}
+.g-support .tasks{border-left-color:#F2B79C}
+.task{position:relative}
+.num{position:absolute;left:-47px;top:10px;width:30px;height:30px;border-radius:50%;background:#fff;border:2px solid #AEB8C8;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.g-support .num{border-color:#F2B79C}
+.tcard{background:#fff;border:1px solid var(--line);border-top:3px solid var(--erp);border-radius:12px;padding:14px 16px;box-shadow:0 1px 2px rgba(20,26,36,.04)}
+.tcard.m-B{border-top-color:var(--both)}.tcard.m-M{border-top-color:var(--man)}
+.th{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.th b{font-size:15px;font-weight:600;line-height:1.3}
+.tcard .who{display:flex;align-items:center;gap:10px;margin-top:10px}
+.av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:#EEF1F6;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.who>span:last-child{display:flex;flex-direction:column;min-width:0;font-size:14px;font-weight:500}
+.who small{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400}
+.idea{margin-top:12px;border-radius:10px;padding:10px 12px;background:#FFF4EE;border:1px solid #FFD9C7;display:flex;flex-direction:column;gap:6px}
+.idea .top{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.idea .eyebrow{font-size:11px;letter-spacing:.12em}
+.tool{font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px}
+.t-ai{background:var(--accent);color:var(--on-accent)}.t-n8n{background:var(--ink);color:#fff}.t-pbi{background:#F5B700;color:#2A2000}
+.how{font-size:14px;line-height:1.45;color:var(--text)}
+.none{margin-top:12px;border-radius:10px;padding:9px 12px;background:var(--bg);font-size:13px;color:var(--muted)}
+.note{margin:6px 0 0;font-size:13px;color:var(--muted)}
+@media (max-width:560px){.kids{margin-left:12px;padding-left:14px}.fn::before{left:-14px;width:12px}.tasks{margin-left:6px}.dcard .ic{width:40px;height:40px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <nav aria-label="Main">
+    <a href="index.html">Gallery</a>
+    <a href="erp-workflows.html" aria-current="page">ERP Workflows</a>
+    <a href="about.html">About</a>
+    <a href="#contact">Contact</a>
+    <a class="cta" href="#contact">Book a demo</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-top:64px;padding-bottom:28px">
+    <div class="eyebrow">ERP workflow maps · 8 industries</div>
+    <h1 style="font-size:clamp(34px,5vw,62px)">How work runs through an ERP, industry by industry.</h1>
+    <p>Pick an industry, open a department, then a function. Every task shows who owns it, whether it runs in the ERP or by hand, and what AI, n8n or Power BI could take over.</p>
+  </section>
+
+  <section class="erp" aria-label="ERP workflow map">
+    <div class="ctl">
+      <div class="row">
+        <label class="pickind" for="industry"><span>INDUSTRY</span><select id="industry"></select></label>
+        <label class="search" for="q">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E6878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <span class="sr">Find a task or person</span>
+          <input type="search" id="q" placeholder="Find a task or person, e.g. AP Accountant">
+        </label>
+      </div>
+      <div class="row">
+        <button type="button" class="pillbtn" id="autoBtn" aria-pressed="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"></path></svg>Automation ideas</button>
+        <button type="button" class="pillbtn" id="openAll">Open all</button>
+        <button type="button" class="pillbtn" id="closeAll">Close all</button>
+        <span class="key"><span><i style="background:var(--erp)"></i>ERP</span><span><i style="background:var(--both)"></i>ERP + manual</span><span><i style="background:var(--man)"></i>Manual</span><span><i style="background:var(--accent)"></i>Can be automated</span></span>
+      </div>
+    </div>
+
+    <div class="sum">
+      <div class="dark">
+        <div class="ring" id="ring"><div><b id="erpPct"></b><small>fully in ERP</small></div></div>
+        <div class="t"><span class="eyebrow">ERP · one shared system</span><span class="nm" id="indName"></span><span class="tg" id="indTag"></span></div>
+      </div>
+      <div class="stats4" id="stats"></div>
+    </div>
+
+    <div id="tree" style="display:flex;flex-direction:column;gap:18px"></div>
+    <p class="note">Roles, ERP coverage and automation ideas are typical for a Saudi company in each industry, not taken from a real company.</p>
+  </section>
+
+  <section class="band" id="contact">
+    <div>
+      <div class="txt">
+        <h2>Want this mapped for your company?</h2>
+        <p>I'll walk your finance and operations teams through it, mark what's still manual and build the first automations.</p>
+      </div>
+      <div class="act">
+        <a class="btn-dark" href="mailto:fahadqureshi3243@gmail.com?subject=ERP%20workflow%20mapping">Book a 20-min demo</a>
+        <span class="mail">fahadqureshi3243@gmail.com</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div><span>© 2026 Fahad Qureshi · Al Khobar, Saudi Arabia</span><a href="index.html">Back to the work</a></div></footer>
+
+<script src="data/erp-data.js"></script>
+<script src="assets/erp-map.js"></script>
+</body>
+</html>

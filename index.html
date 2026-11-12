@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fahad Qureshi — Finance Work Gallery</title>
+<meta name="description" content="Power BI dashboards, n8n automations and ERP workflow maps built for CFOs and finance teams.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top">
+  <nav aria-label="Main">
+    <a href="index.html" aria-current="page">Gallery</a>
+    <a href="erp-workflows.html">ERP Workflows</a>
+    <a href="about.html">About</a>
+    <a href="#contact">Contact</a>
+    <a class="cta" href="#contact">Book a demo</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <h1>The finance work gallery: dashboards, automations and training.</h1>
+    <p>Browse Power BI dashboards, n8n workflows, ERP workflow maps and finance models built for CFOs and finance teams. Open any project to see it in detail.</p>
+    <div class="checks">
+      <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Free to preview</span>
+      <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF6A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg>Sample data only</span>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="statrow" id="stats"></div></div>
+
+  <section class="gallery" id="work" aria-label="Work">
+    <aside class="filters" aria-label="Filters">
+      <div class="head"><b>Filters</b><button type="button" class="linkbtn" data-clear>Clear all</button></div>
+      <fieldset><legend>FUNCTION</legend><div id="fnList"></div></fieldset>
+      <div class="divider"></div>
+      <fieldset><legend>INDUSTRY</legend><div id="indList"></div></fieldset>
+    </aside>
+
+    <div class="main">
+      <div class="tabsrow"><b>Categories:</b><div class="tabs" role="tablist" aria-label="Categories" id="tabs"></div></div>
+      <div class="searchrow">
+        <label class="search" for="q">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E6878" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <span class="sr">Search projects</span>
+          <input type="search" id="q" placeholder="Search dashboards, workflows, models…">
+        </label>
+        <label class="sort" for="sort">Sort by
+          <select id="sort"><option value="featured">Featured</option><option value="az">Name A–Z</option></select>
+        </label>
+      </div>
+      <div class="showing"><span>Showing:<b id="showing">Power BI</b></span><span id="count"></span></div>
+      <div class="cards" id="cards"></div>
+      <div class="soon" id="soon" hidden><span class="eyebrow">In progress</span><b>Coming soon</b></div>
+      <div class="empty" id="empty" hidden><b>No projects match these filters.</b><button type="button" class="btn-accent" data-clear>Clear filters</button></div>
+    </div>
+  </section>
+
+  <section class="band" id="contact">
+    <div>
+      <div class="txt">
+        <h2>Want one of these built for your team?</h2>
+        <p>Show me the spreadsheet. I'll show you the dashboard or the automation that replaces it.</p>
+      </div>
+      <div class="act">
+        <a class="btn-dark" href="mailto:fahadqureshi3243@gmail.com?subject=20-min%20demo">Book a 20-min demo</a>
+        <span class="mail">fahadqureshi3243@gmail.com</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div><span>© 2026 Fahad Qureshi · Al Khobar, Saudi Arabia</span><span>All dashboards and models use sample data.</span></div></footer>
+
+<script src="data/projects.js"></script>
+<script src="data/erp-data.js"></script>
+<script src="assets/gallery.js"></script>
+</body>
+</html>
