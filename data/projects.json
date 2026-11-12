@@ -1,5 +1,19 @@
 [
   {
+    "title": "API 6A / 16A Workshop: Production Costing",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "Operations",
+    "desc": "Production costing for a wellhead equipment workshop: revenue, cost and margin by product and customer, standard vs actual cost, plus labour hours, overtime and machine utilisation.",
+    "meta": "2 pages · FY2026 · SAR",
+    "images": [
+      "/images/production-costing-overview.png",
+      "/images/production-labour-machine.png"
+    ],
+    "download": "/downloads/api-workshop-production-costing.pbix",
+    "link": ""
+  },
+  {
     "title": "Finance Hub: Oilfield Supplies (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
