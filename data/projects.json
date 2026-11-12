@@ -1,5 +1,20 @@
 [
   {
+    "title": "Finance Hub: Oilfield Supplies (KSA)",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "FP&A",
+    "desc": "Five-page finance dashboard for a Saudi oilfield supplies distributor: net sales, gross margin, EBITDA and operating profit vs prior year and budget, a P&L bridge from gross sales to operating profit, margins by product, quarter and region, and sales by customer, rep and product with drill-through.",
+    "meta": "5 pages · FY2024–FY2025 · SAR",
+    "images": [
+      "/images/oilfield-supplies-overview.png",
+      "/images/oilfield-supplies-profitability.png",
+      "/images/oilfield-supplies-sales.png"
+    ],
+    "download": "/downloads/oilfield-supplies-finance-hub.pbix",
+    "link": ""
+  },
+  {
     "title": "Construction Company - Power BI ",
     "category": "pbi",
     "industry": "Construction",
