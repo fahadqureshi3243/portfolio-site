@@ -1,6 +1,7 @@
 /* Gallery page: tabs, filters, search and cards, all built from data/projects.js */
-(function () {
-  var S = window.SITE, ALL = S.PROJECTS, SOON = S.comingSoon || [];
+function startGallery(S) {
+  var ALL = S.PROJECTS.filter(function (p) { return p && p.title && p.category; }), SOON = S.comingSoon || [], MOCKS = window.MOCKS || {};
+  ALL.forEach(function (p) { var m = MOCKS[p.title] || {}; if (!p.mock && m.kpis) p.mock = m; if (!p.nodes && m.nodes) p.nodes = m.nodes; p.industry = p.industry || 'All industries'; p.fn = p.fn || ''; p.desc = p.desc || ''; });
   var CATS = [
     { k: 'pbi', label: 'Power BI', icon: 'M5 20V12M10 20V8M15 20V4M20 20v-6' },
     { k: 'n8n', label: 'n8n Automation', icon: 'M5 7a2 2 0 1 0 0-.01M19 17a2 2 0 1 0 0-.01M7 7h5a3 3 0 0 1 3 3v4a3 3 0 0 0 3 3' },
@@ -120,12 +121,12 @@
     var a = el('article', 'card'); a.appendChild(thumb(p));
     var b = el('div', 'body'); b.appendChild(el('h3', '', p.title)); b.appendChild(el('span', 'sub', p.industry + ' · ' + p.fn)); b.appendChild(el('p', '', p.desc));
     var f = el('div', 'foot'), m = el('span', 'meta'); m.appendChild(el('span', '', p._meta || p.meta || ''));
-    if (p.download && FILE[p.category]) m.appendChild(el('small', '', FILE[p.category]));
+    if (p.download) { var ext = (p.download.split('?')[0].match(/\.([a-z0-9]+)$/i) || [])[1]; if (ext) m.appendChild(el('small', '', '.' + ext.toLowerCase())); }
     f.appendChild(m);
     var act = el('span', 'actions'), href = p.category === 'erp' ? 'erp-workflows.html#' + p.erp : (p.link || '');
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
-    if (p.download && p.category !== 'erp' && p.category !== 'n8n') {
+    if (p.download && p.category !== 'erp') {
       var dl = el('a', 'dl'); dl.href = p.download; dl.setAttribute('download', ''); dl.setAttribute('aria-label', 'Download ' + p.title);
       dl.innerHTML = icon('M12 4v11M7 10l5 5 5-5M5 20h14', 15) + 'Download'; act.appendChild(dl);
     }
@@ -164,4 +165,16 @@
   render();
   var hero = document.getElementById('heroDemo');
   if (hero && window.DCLite) window.DCLite.mount(hero, 'components/HeroDemo.dc.html', {});
+}
+
+/* Load the editable lists (changed through the admin screen) and start the page. */
+(function () {
+  function get(u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); }
+  Promise.all([get('data/projects.json'), get('data/settings.json').catch(function () { return {}; })]).then(function (r) {
+    startGallery({
+      PROJECTS: r[0] || [], comingSoon: r[1].comingSoon || [],
+      FUNCTIONS: ['FP&A', 'Accounting & Close', 'Procurement', 'Operations', 'Tax & Compliance', 'Treasury', 'HR & Payroll', 'Valuation', 'ERP & Process'],
+      INDUSTRIES: ['Oil & Gas', 'Petrochemicals', 'Construction', 'Manufacturing', 'Logistics', 'Entertainment', 'Healthcare', 'All industries']
+    });
+  }).catch(function (e) { console.error(e); document.getElementById('cards').textContent = 'Could not load the projects list.'; });
 })();

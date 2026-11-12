@@ -1,4 +1,5 @@
 /* Fahad Qureshi portfolio — shared styles. Colours match the original design. */
+[hidden]{display:none!important}
 :root{
   --bg:#F6F7FA; --surface:#FFFFFF; --soft:#F1F3F8; --ink:#141A24; --text:#374151; --text2:#4B5563;
   --muted:#5E6878; --line:#E3E7EE; --line2:#D3D9E3; --grey:#C9D1DE;

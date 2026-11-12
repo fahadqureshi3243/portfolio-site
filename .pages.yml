@@ -1,0 +1,123 @@
+# Admin screen for the website (Pages CMS: https://app.pagescms.org)
+media:
+  - name: images
+    label: Screenshots & photos
+    input: images
+    output: /images
+    extensions: [png, jpg, jpeg, webp]
+  - name: downloads
+    label: Downloads
+    input: downloads
+    output: /downloads
+    extensions: [pbix, xlsx, xlsm, pdf, pptx, zip, json]
+
+content:
+  - name: projects
+    label: Gallery projects
+    type: file
+    path: data/projects.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: category
+        label: Category (tab)
+        type: select
+        required: true
+        options:
+          values:
+            - name: pbi
+              label: Power BI
+            - name: n8n
+              label: n8n Automation
+            - name: erp
+              label: ERP Workflows
+            - name: training
+              label: Training
+            - name: finance
+              label: Finance Samples
+      - name: industry
+        label: Industry
+        type: select
+        options:
+          values: [Oil & Gas, Petrochemicals, Construction, Manufacturing, Logistics, Entertainment, Healthcare, All industries]
+      - name: fn
+        label: Function
+        type: select
+        options:
+          values: [FP&A, Accounting & Close, Procurement, Operations, Tax & Compliance, Treasury, HR & Payroll, Valuation, ERP & Process]
+      - name: desc
+        label: Short description
+        type: text
+      - name: meta
+        label: Small note under the card (e.g. 5 pages, 19 nodes)
+        type: string
+      - name: images
+        label: Screenshots (first one shows first; up to 6)
+        type: image
+        options:
+          media: images
+          multiple:
+            max: 6
+      - name: download
+        label: Download file (.pbix, .xlsx, .pdf — under 25 MB)
+        type: file
+        options:
+          media: downloads
+      - name: link
+        label: Live link (e.g. Power BI "Publish to web" or a OneDrive link)
+        type: string
+      - name: kind
+        label: Animation to play (n8n cards only)
+        type: select
+        options:
+          values:
+            - name: rfq
+              label: Purchase Request to RFQ
+            - name: inv
+              label: Inventory to 3-way match
+            - name: hr
+              label: Hiring
+            - name: ops
+              label: Order to production plan
+      - name: erp
+        label: Industry map to open (ERP cards only)
+        type: select
+        options:
+          values: [drilling, petrochem, ofs, manufacturing, logistics, entertainment, healthcare, construction]
+
+  - name: settings
+    label: Site settings
+    type: file
+    path: data/settings.json
+    format: json
+    fields:
+      - name: comingSoon
+        label: Tabs that show "Coming soon"
+        type: select
+        options:
+          multiple: true
+          values:
+            - name: pbi
+              label: Power BI
+            - name: n8n
+              label: n8n Automation
+            - name: erp
+              label: ERP Workflows
+            - name: training
+              label: Training
+            - name: finance
+              label: Finance Samples
+      - name: aboutPhoto
+        label: Your photo (About page)
+        type: image
+        options:
+          media: images
+      - name: cv
+        label: Your CV (PDF, About page)
+        type: file
+        options:
+          media: downloads

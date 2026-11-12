@@ -24,8 +24,8 @@
 <main>
   <section class="about-hero">
     <div class="side">
-      <!-- To add your photo: put it in /images as photo.jpg and replace the text below with <img src="images/photo.jpg" alt="Fahad Qureshi"> -->
-      <div class="photo">[YOUR PHOTO]</div>
+      <!-- Photo and CV are set in the admin screen (Site settings). -->
+      <div class="photo" id="photo">[YOUR PHOTO]</div>
       <div class="place"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg>Al Khobar, Saudi Arabia</div>
     </div>
     <div class="txt">
@@ -86,8 +86,7 @@
       </div>
       <div class="act">
         <a class="btn-dark" href="https://www.linkedin.com/in/fahad-q/" target="_blank" rel="noopener">Connect on LinkedIn</a>
-        <!-- To add your CV: put it in /downloads as cv.pdf and change href="#contact" to href="downloads/cv.pdf" -->
-        <a class="outline" href="#contact">Download CV (PDF)</a>
+        <a class="outline" id="cvLink" href="#contact" hidden>Download CV (PDF)</a>
         <span class="mail">fahadqureshi3243@gmail.com</span>
       </div>
     </div>
@@ -95,5 +94,11 @@
 </main>
 
 <footer><div><span>© 2026 Fahad Qureshi · Al Khobar, Saudi Arabia</span><a href="index.html">Back to the work</a></div></footer>
+<script>
+fetch('data/settings.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (s) {
+  if (s.aboutPhoto) { var b = document.getElementById('photo'), i = document.createElement('img'); i.src = s.aboutPhoto; i.alt = 'Fahad Qureshi'; b.textContent = ''; b.style.border = '0'; b.style.padding = '0'; b.appendChild(i); }
+  if (s.cv) { var a = document.getElementById('cvLink'); a.href = s.cv; a.hidden = false; a.setAttribute('download', ''); }
+}).catch(function () {});
+</script>
 </body>
 </html>

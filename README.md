@@ -10,10 +10,9 @@ Fahad Qureshi's finance work gallery: Power BI dashboards, n8n automations and E
 ## How to update
 | To change | Edit |
 |---|---|
-| Add or edit a gallery card | `data/projects.js` (one block per card) |
-| Add screenshots | put the image in `images/`, then list it under `images` in that card |
-| Add a download | put the file in `downloads/` (under 25 MB), then set `download` in that card |
-| Turn the Training or Finance Samples tab on | remove it from `comingSoon` in `data/projects.js` |
+| Add or edit a gallery card, screenshots, downloads | **Admin screen:** app.pagescms.org → this repo → Gallery projects |
+| Photo, CV, which tabs say "Coming soon" | Admin screen → Site settings |
+| (same, by hand) | `data/projects.json`, `data/settings.json`, files in `images/` and `downloads/` |
 | ERP tasks, owners, automation ideas | `data/erp-data.js` |
 | Colours and fonts | `assets/site.css` (top of the file) |
 
