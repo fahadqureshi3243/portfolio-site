@@ -129,7 +129,7 @@ function startGallery(S) {
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     if (p.download && p.category !== 'erp') {
-      var dl = el('a', 'dl'); dl.href = p.download; dl.setAttribute('download', ''); dl.setAttribute('aria-label', 'Download ' + p.title);
+      var dl = el('a', 'dl'); dl.href = p.download; if (/^https?:/.test(p.download)) { dl.target = '_blank'; dl.rel = 'noopener'; } else dl.setAttribute('download', ''); dl.setAttribute('aria-label', 'Download ' + p.title);
       dl.innerHTML = icon('M12 4v11M7 10l5 5 5-5M5 20h14', 15) + 'Download'; act.appendChild(dl);
     }
     f.appendChild(act); b.appendChild(f); a.appendChild(b); return a;

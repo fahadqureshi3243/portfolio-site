@@ -1,5 +1,19 @@
 [
   {
+    "title": "Hospital Performance & Profitability (KSA)",
+    "category": "pbi",
+    "industry": "Healthcare",
+    "fn": "FP&A",
+    "desc": "Revenue, profit and operations for a 110-bed Saudi private hospital: payer mix, service lines, occupancy, insurance claims, payroll and operating costs vs prior year and budget.",
+    "meta": "9 pages · 2024–2026 · SAR",
+    "images": [
+      "/images/hospital-executive-summary.png",
+      "/images/hospital-revenue-payers.png",
+      "/images/hospital-operating-expenses.png"
+    ],
+    "download": "https://drive.google.com/file/d/1C8ftnbeU9fZ178YMjFc4nehuYCoyJMrR/view?usp=drive_link"
+  },
+  {
     "title": "API 6A / 16A Workshop: Production Costing",
     "category": "pbi",
     "industry": "Oil & Gas",
