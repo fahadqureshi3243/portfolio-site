@@ -137,12 +137,19 @@ function startGallery(S) {
 
   /* animated n8n workflows */
   var thumbs = [], FLOW = { rfq: 'WfRequest', inv: 'WfInventory', hr: 'WfHiring', ops: 'WfOperations' }, flowInst = null;
+  var PAGE = { ar: 'flows/ar-automation.html' };
   var dlg = document.getElementById('flowDlg');
   function openFlow(p) {
-    if (!window.DCLite || !FLOW[p.kind]) return;
+    if (!PAGE[p.kind] && (!window.DCLite || !FLOW[p.kind])) return;
     document.getElementById('flowTitle').textContent = 'n8n workflow · ' + p.title;
     var host = document.getElementById('flowHost'); if (flowInst) flowInst.unmount();
-    flowInst = window.DCLite.mount(host, 'components/' + FLOW[p.kind] + '.dc.html', {});
+    if (PAGE[p.kind]) {
+      var fr = el('iframe', 'flowframe'); fr.title = p.title + ' animated workflow'; fr.src = PAGE[p.kind] + '?embed=1';
+      var fit = function () { try { fr.style.height = fr.contentDocument.documentElement.scrollHeight + 'px'; } catch (e) {} };
+      fr.onload = function () { fit(); setTimeout(fit, 400); }; window.addEventListener('resize', fit);
+      host.textContent = ''; host.appendChild(fr);
+      flowInst = { unmount: function () { window.removeEventListener('resize', fit); host.textContent = ''; } };
+    } else flowInst = window.DCLite.mount(host, 'components/' + FLOW[p.kind] + '.dc.html', {});
     dlg.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('flowClose').focus();
   }
   function closeFlow() { if (flowInst) { flowInst.unmount(); flowInst = null; } dlg.hidden = true; document.body.style.overflow = ''; }

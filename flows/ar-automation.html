@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR Automation — Invoice-to-Cash n8n Workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b1020;--panel:#0e1426;--panel2:#121a31;--line:#232d4d;--txt:#e6eaf5;--mut:#8b95b5}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+  body{padding:14px}
+  .wrap{max-width:1560px;margin:0 auto;background:var(--bg);border:1px solid #26305a;border-radius:20px;padding:14px}
+  header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .title h1{margin:0;font-size:19px;font-weight:800;letter-spacing:-.02em}
+  .title h1 span{background:linear-gradient(90deg,#34d399,#38bdf8 40%,#a78bfa 70%,#f2c811);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .title p{margin:4px 0 0;color:var(--mut);font-size:12.5px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  button{font:600 13px Inter,sans-serif;color:var(--txt);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 13px;cursor:pointer;transition:.2s;min-height:40px}
+  button:hover{border-color:#3d4a78;background:#18213d}
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:3px}
+  .seg button{border:0;background:transparent;border-radius:9px;padding:7px 12px;color:var(--mut);min-height:34px}
+  .seg button.on.ext{background:rgba(244,114,182,.16);color:#fbcfe8;box-shadow:inset 0 0 0 1px rgba(244,114,182,.5)}
+  .seg button.on.int{background:rgba(52,211,153,.14);color:#bbf7d0;box-shadow:inset 0 0 0 1px rgba(52,211,153,.5)}
+  .seg button.on.spd{background:#1d2747;color:var(--txt)}
+  label.loop{font-size:13px;color:var(--mut);display:flex;gap:6px;align-items:center;cursor:pointer}
+  .status{font:600 12px 'JetBrains Mono',monospace;padding:7px 11px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+  .status.run{color:#fde68a;border-color:rgba(253,230,138,.4)}
+  .status.ok{color:#bbf7d0;border-color:rgba(52,211,153,.5)}
+  .progress{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:10px}
+  .progress div{font-size:11px;color:var(--mut);padding:6px 8px;border-radius:8px;background:var(--panel);border:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:.3s}
+  .progress div b{font-family:'JetBrains Mono',monospace;margin-right:5px;opacity:.7}
+  .progress div.active{color:#fff;border-color:#c9a40e;background:linear-gradient(180deg,rgba(242,200,17,.2),rgba(242,200,17,.05))}
+  .progress div.past{color:#c7d0ea;border-color:#2c3a63}
+  @media (max-width:900px){.progress{grid-template-columns:repeat(3,1fr)}}
+  .canvasScroll{overflow-x:auto;border-radius:16px;border:1px solid var(--line);background:#0a0f1e}
+  .canvas{position:relative;min-width:1050px}
+  svg#flow{display:block;width:100%;height:auto}
+  .overlay{position:absolute;pointer-events:none}
+  .node .body{fill:#131a2f;stroke:#2a3456;stroke-width:2;transition:stroke .3s}
+  .node .ring{fill:none;stroke:var(--c);stroke-width:2;opacity:0;stroke-dasharray:9 7}
+  .node.running .ring{opacity:1;animation:dash .7s linear infinite}
+  .node.running .body{stroke:var(--c);filter:url(#glow)}
+  .node.done .body{stroke:var(--c)}
+  .node .ic{color:var(--c);opacity:.6;transition:opacity .3s}
+  .node.running .ic,.node.done .ic{opacity:1}
+  .node .lbl{fill:#c6cde3;font:600 12.5px Inter,sans-serif;text-anchor:middle}
+  .node .lbl2{fill:var(--mut);font:500 11px Inter,sans-serif}
+  .node .badge{opacity:0;transition:opacity .3s}
+  .node .badge.show{opacity:1}
+  .node .badge rect{fill:var(--c)}
+  .node .badge text{fill:#0b1020;font:700 10.5px 'JetBrains Mono',monospace;text-anchor:middle}
+  .node .check{opacity:0;transition:opacity .3s}
+  .node.done .check{opacity:1}
+  .node.warnst .check circle{fill:#f59e0b}
+  .node{transition:opacity .5s}
+  .node.dim{opacity:.22}
+  @keyframes dash{to{stroke-dashoffset:-32}}
+  .edge{fill:none;stroke:#283356;stroke-width:2.4;transition:stroke .4s}
+  .edge.done{stroke:#3d4f86}
+  .flowline{fill:none;stroke-width:2.4;stroke-dasharray:5 11;opacity:0;transition:opacity .4s}
+  .flowline.on{opacity:.9;animation:dash 1.1s linear infinite}
+  .elabel{font:600 10.5px Inter,sans-serif;fill:#6f7aa0}
+  .lane{font:700 11.5px Inter,sans-serif;letter-spacing:1.6px;fill:#4f5b85}
+  .subedge{fill:none;stroke:#4a3f80;stroke-width:2;stroke-dasharray:4 5;transition:.4s}
+  .subedge.off{opacity:.15}
+  .subedge.on{stroke:#a78bfa}
+  .subedge.ext.on{stroke:#f472b6}
+  .subedge.int.on{stroke:#34d399}
+  .pulse{fill:none;stroke-width:2;animation:pulse 1.2s ease-out infinite}
+  @keyframes pulse{from{r:38;opacity:.9}to{r:74;opacity:0}}
+  .breach{fill:none;stroke:#f87171;stroke-width:3;animation:breach 1s ease-out 3}
+  @keyframes breach{from{r:6;opacity:1}to{r:46;opacity:0}}
+  #dash .frame{fill:#0d1326;stroke:#2a3150;stroke-width:1.6;transition:stroke .5s}
+  #dash.live .frame{stroke:#f2c811;filter:url(#glowY)}
+  #dash .t1{fill:#fff;font:800 14px Inter}
+  #dash .t2{fill:#9aa4c4;font:500 10.5px 'JetBrains Mono'}
+  #dash .kpi{fill:#121a33;stroke:#232c4c}
+  #dash .kl{fill:#8b95b5;font:600 9.5px Inter;letter-spacing:.04em}
+  #dash .kv{fill:#fff;font:800 21px Inter}
+  #dash .kd{font:700 9.5px 'JetBrains Mono'}
+  #dash .sec{fill:#c6cde3;font:700 11.5px Inter}
+  #dash .bl{fill:#9aa4c4;font:600 10.5px Inter}
+  #dash .bv{fill:#e6eaf5;font:700 10.5px 'JetBrains Mono'}
+  #dash .ax{fill:#5b6688;font:500 9.5px 'JetBrains Mono';text-anchor:middle}
+  #dash .grid{stroke:#1c2442;stroke-width:1}
+  #dash .content{transition:opacity .5s}
+  #dash .shimmer{opacity:0}
+  #dash.loading .shimmer{opacity:1;animation:shim 1s linear infinite}
+  @keyframes shim{from{transform:translateX(-300px)}to{transform:translateX(300px)}}
+  .card{background:linear-gradient(180deg,rgba(30,24,58,.97),rgba(16,20,40,.97));border:1px solid rgba(167,139,250,.55);border-radius:12px;
+    padding:.65% .8%;font-size:clamp(8px,.72vw,12px);line-height:1.5;box-shadow:0 10px 40px rgba(167,139,250,.22);opacity:0;transform:translateY(8px);transition:.5s}
+  .card.show{opacity:1;transform:none}
+  .card h4{margin:0 0 4px;font-size:1em;color:#ddd6fe;letter-spacing:.04em}
+  .card .row{display:flex;justify-content:space-between;gap:10px;font-family:'JetBrains Mono',monospace;font-size:.95em;color:#c6cde3}
+  .card .row b{color:#fff;font-weight:700}
+  .card .ok{color:#86efac;font-weight:700}
+  .card .bad{color:#fca5a5;font-weight:700}
+  .card.zat{border-color:rgba(52,211,153,.6);box-shadow:0 10px 40px rgba(52,211,153,.2)}
+  .card.zat h4{color:#a7f3d0}
+  .tag{font:700 clamp(8px,.72vw,12px) Inter,sans-serif;padding:.4em .9em;border-radius:999px;white-space:nowrap;opacity:0;transform:translate(-50%,-50%) scale(.85);transition:.4s}
+  .tag.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .tag.warn{background:rgba(127,29,29,.92);color:#fecaca;border:1px solid #f87171}
+  .tag.safe{background:rgba(6,78,59,.92);color:#bbf7d0;border:1px solid #34d399}
+  .tag.amber{background:rgba(120,53,15,.92);color:#fde68a;border:1px solid #f59e0b}
+  .grid3{display:grid;grid-template-columns:1.15fr 1fr 1.15fr;gap:12px;margin-top:12px}
+  @media (max-width:1050px){.grid3{grid-template-columns:1fr}}
+  .pcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .pcard h3{margin:0 0 8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-weight:700}
+  #stageTitle{font-size:19px;font-weight:800;margin:0 0 6px}
+  #stageText{color:#c3cae0;font-size:14px;line-height:1.55;margin:0;min-height:66px}
+  #log{font:12px/1.65 'JetBrains Mono',monospace;height:168px;overflow:auto;color:#aab3cf}
+  #log div{opacity:0;animation:in .35s forwards;white-space:nowrap}
+  #log .t{color:#5b6688;margin-right:8px}
+  #log .ok{color:#86efac}#log .warn{color:#fca5a5}#log .safe{color:#6ee7b7}#log .ai{color:#c4b5fd}#log .amb{color:#fde68a}
+  @keyframes in{to{opacity:1}}
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{border:1px solid var(--line);border-radius:11px;padding:10px 11px;font-size:12.5px;line-height:1.5;transition:.4s;opacity:.45}
+  .opt.on{opacity:1}
+  .opt.ext.on{border-color:rgba(244,114,182,.6);background:rgba(244,114,182,.06)}
+  .opt.int.on{border-color:rgba(52,211,153,.6);background:rgba(52,211,153,.06)}
+  .opt h5{margin:0 0 6px;font-size:13.5px}
+  .opt ul{margin:0;padding-left:16px}
+  .opt li.p::marker{content:"＋ ";color:#86efac}
+  .opt li.m::marker{content:"－ ";color:#fca5a5}
+  .hint{margin-top:10px;font:12px/1.5 'JetBrains Mono',monospace;color:#9aa4c4;background:#0a1020;border:1px dashed #2a3560;border-radius:10px;padding:8px 10px}
+  .hint b{color:#e9d5ff}
+  .note{font-size:11.5px;color:#6f7aa0;margin:10px 2px 0}
+  /* inside the website pop-up */
+  .embed body{padding:0;background:transparent}
+  .embed .wrap{max-width:none}
+</style>
+<script>if(/[?&]embed/.test(location.search))document.documentElement.classList.add('embed');</script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="title">
+      <h1><span>AR Automation</span> · invoice-to-cash in n8n</h1>
+      <p>ERP trigger → ZATCA e-invoice clearance → delivery → dunning ladder → disputes → bank feed → AI cash application → AR ledger → Power BI</p>
+    </div>
+    <div class="controls">
+      <div class="seg" id="modeSeg">
+        <button class="ext on" data-mode="ext">☁ External AI</button>
+        <button class="int" data-mode="int">🔒 Internal · LLaMA</button>
+      </div>
+      <div class="seg" id="spdSeg">
+        <button class="spd" data-s="0.6">0.6×</button>
+        <button class="spd on" data-s="1">1×</button>
+        <button class="spd" data-s="2">2×</button>
+      </div>
+      <button id="playBtn">⏸ Pause</button>
+      <button id="replayBtn">↻ Replay</button>
+      <label class="loop"><input type="checkbox" id="loopChk" checked> Loop</label>
+      <span class="status run" id="status">● Running</span>
+    </div>
+  </header>
+
+  <div class="progress" id="progress"></div>
+
+  <div class="canvasScroll" id="cwrap">
+    <div class="canvas" id="canvas">
+      <svg id="flow" viewBox="0 0 2000 1050" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated n8n accounts-receivable invoice-to-cash workflow">
+        <defs>
+          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" fill="#1a2240"/></pattern>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glowY" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#f2c811" flood-opacity=".35"/></filter>
+          <filter id="soft" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4"/></filter>
+          <linearGradient id="netGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34d399" stop-opacity=".05"/><stop offset="1" stop-color="#34d399" stop-opacity=".015"/></linearGradient>
+          <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c811" stop-opacity=".35"/><stop offset="1" stop-color="#f2c811" stop-opacity="0"/></linearGradient>
+          <linearGradient id="shimG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <clipPath id="dashClip"><rect x="1690" y="62" width="296" height="860" rx="16"/></clipPath>
+        </defs>
+        <rect width="2000" height="1050" fill="url(#dots)"/>
+        <rect x="16" y="38" width="1968" height="897" rx="22" fill="url(#netGrad)" stroke="#2f6b56" stroke-width="1.6" stroke-dasharray="8 7"/>
+        <text x="36" y="64" fill="#5fbf98" font-family="Inter" font-weight="700" font-size="13" letter-spacing="1.5">COMPANY NETWORK · ON-PREMISES</text>
+        <text x="36" y="980" fill="#c7779f" font-family="Inter" font-weight="700" font-size="13" letter-spacing="1.5">PUBLIC INTERNET</text>
+        <text class="lane" x="36" y="140">① INVOICE &amp; CLEAR</text>
+        <text class="lane" x="36" y="405">② COLLECT</text>
+        <text class="lane" x="36" y="615">③ RECEIVE &amp; APPLY</text>
+        <g id="edges"></g><g id="subedges"></g><g id="fx"></g><g id="dash"></g><g id="nodes"></g><g id="packets"></g>
+      </svg>
+
+      <div class="overlay card zat" id="zatcaCard" style="left:55.5%;top:15.7%;width:15.5%">
+        <h4>ZATCA CLEARANCE · AR-1042</h4>
+        <div class="row"><span>UUID</span><b>3f9c…a71e</b></div>
+        <div class="row"><span>ICV / PIH</span><b>1042 · chained</b></div>
+        <div class="row"><span>Buyer VAT</span><b>3002•••••0003</b></div>
+        <div class="row"><span>Net / VAT 15%</span><b>200,000 / 30,000</b></div>
+        <div class="row"><span>Total SAR</span><b>230,000</b></div>
+        <div class="row"><span>Status</span><span class="ok">✓ CLEARED</span></div>
+        <div class="row"><span>AR-1047</span><span class="bad">✗ buyer VAT</span></div>
+      </div>
+      <div class="overlay card" id="matchCard" style="left:55.5%;top:59%;width:14.6%">
+        <h4>AI CASH MATCH · RCPT-0931</h4>
+        <div class="row"><span>Payer</span><b>Client XXX</b></div>
+        <div class="row"><span>Via</span><b>virtual IBAN …4471</b></div>
+        <div class="row"><span>Received</span><b>412,450</b></div>
+        <div class="row"><span>AR-1042 + AR-1043</span><b>412,500</b></div>
+        <div class="row"><span>Difference</span><b>−50 bank fee</b></div>
+        <div class="row"><span>Rule</span><span class="ok">write-off ≤ 100</span></div>
+        <div class="row"><span>Confidence</span><span class="ok">✓ 98%</span></div>
+      </div>
+      <div class="overlay tag warn" id="tagWarn">⚠ Customer &amp; bank data leave the company network</div>
+      <div class="overlay tag safe" id="tagSafe" style="left:13.1%;top:79.8%">🛡 Bank data stays in-house</div>
+      <div class="overlay tag amber" id="tagRej" style="left:62%;top:8.6%">⚠ ZATCA rejected AR-1047 · buyer VAT invalid</div>
+      <div class="overlay tag amber" id="tagHold" style="left:38.5%;top:56.7%">⛔ Credit hold · 2 customers &gt; 45 days</div>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="pcard">
+      <h3 id="stageNum">Step 1 / 9</h3>
+      <div id="stageTitle">Billable event</div>
+      <p id="stageText"></p>
+    </div>
+    <div class="pcard">
+      <h3>Execution log</h3>
+      <div id="log"></div>
+    </div>
+    <div class="pcard">
+      <h3>Where does the AI read bank &amp; remittance data?</h3>
+      <div class="cmp">
+        <div class="opt ext on" id="optExt">
+          <h5>☁ External: cloud AI API</h5>
+          <ul>
+            <li class="p">Best at messy remittances, scanned cheques and Arabic/English emails</li>
+            <li class="p">No hardware; pay per receipt</li>
+            <li class="m">Customer names, IBANs and amounts go to a third party</li>
+            <li class="m">Needs a DPA and a PDPL review</li>
+          </ul>
+        </div>
+        <div class="opt int" id="optInt">
+          <h5>🔒 Internal: LLaMA on Ollama</h5>
+          <ul>
+            <li class="p">Bank and customer data never leave your servers</li>
+            <li class="p">Fixed cost at any receipt volume</li>
+            <li class="m">Needs a GPU server and IT upkeep</li>
+            <li class="m">More prompt tuning for vague bank references</li>
+          </ul>
+        </div>
+      </div>
+      <div class="hint" id="hint"></div>
+    </div>
+  </div>
+  <p class="note">Sample data for illustration only.</p>
+</div>
+
+<script>
+const ICON={
+  mail:'<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+  wa:'<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8c-1-.5-1.8-1.3-2.3-2.3l.8-1-1-2z"/>',
+  merge:'<path d="M5 5c0 6 7 5 7 11v4M19 5c0 6-7 5-7 11"/><path d="M9 17l3 3 3-3"/>',
+  ai:'<path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M18.5 15l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"/>',
+  ifn:'<path d="M12 3l9 9-9 9-9-9z"/><path d="M12 8v5M12 16h.01"/>',
+  sheet:'<rect x="4" y="3.5" width="16" height="17" rx="2"/><path d="M4 9h16M4 14.5h16M10 3.5v17"/>',
+  sw:'<path d="M3 12h5M8 12c3 0 3-6 7-6h4M8 12c3 0 3 6 7 6h4"/><path d="M17 4l2 2-2 2M17 16l2 2-2 2"/>',
+  http:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>',
+  code:'<path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4.5 20c.8-3.8 3.8-6 7.5-6s6.7 2.2 7.5 6"/>',
+  pbi:'<rect x="4" y="12" width="4.2" height="8.5" rx="1.2" fill="currentColor" stroke="none" opacity=".55"/><rect x="9.9" y="7.5" width="4.2" height="13" rx="1.2" fill="currentColor" stroke="none" opacity=".8"/><rect x="15.8" y="3.5" width="4.2" height="17" rx="1.2" fill="currentColor" stroke="none"/>',
+  chip:'<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3.5v3.5M14 3.5v3.5M10 17v3.5M14 17v3.5M3.5 10H7M3.5 14H7M17 10h3.5M17 14h3.5"/>',
+  braces:'<path d="M8.5 4C6.5 4 6.5 5.5 6.5 8S5 12 4 12c1 0 2.5 1.5 2.5 4s0 4 2 4M15.5 4c2 0 2 1.5 2 4s1.5 4 2.5 4c-1 0-2.5 1.5-2.5 4s0 4-2 4"/>',
+  server:'<rect x="3.5" y="4" width="17" height="6.5" rx="1.5"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="1.5"/><path d="M7 7.25h.01M7 16.75h.01M11 7.25h6M11 16.75h6"/>',
+  cloud:'<path d="M7 18.5h10.5a4 4 0 0 0 .3-8 6 6 0 0 0-11.6 1.6A3.3 3.3 0 0 0 7 18.5z"/>',
+  truck:'<path d="M3 6.5h11v9H3zM14 9.5h3.5l3 3v3H14z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  qr:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18.5h1.5M18.5 14h1.5"/>',
+  gov:'<path d="M3 9.5L12 4l9 5.5"/><path d="M5.5 10.5v6.5M10 10.5v6.5M14 10.5v6.5M18.5 10.5v6.5M3.5 20h17M4 17.5h16"/>',
+  doc:'<path d="M7 3.5h7l4.5 4.5v11A1.5 1.5 0 0 1 17 20.5H7A1.5 1.5 0 0 1 5.5 19V5A1.5 1.5 0 0 1 7 3.5z"/><path d="M14 3.5V8h4.5M8.5 12.5h7M8.5 16h5"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  bank:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14.5h4"/>',
+  msg:'<path d="M4 5.5h16v10H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>',
+  flag:'<path d="M5.5 21V4M5.5 4.5h11l-2.2 4 2.2 4h-11"/>'
+};
+const N={
+  /* lane 1: invoice & clear */
+  erp:     {x:80,  y:210,icon:'truck', c:'#38bdf8',label:'ERP Trigger\n(work approved)',trig:true},
+  build:   {x:230, y:210,icon:'code',  c:'#fb923c',label:'Build e-Invoice\n(UBL 2.1 XML)'},
+  sign:    {x:380, y:210,icon:'qr',    c:'#a78bfa',label:'Sign · Hash · QR\n(CSID stamp)'},
+  zatca:   {x:530, y:210,icon:'gov',   c:'#34d399',label:'ZATCA Fatoora\nClearance API'},
+  cleared: {x:680, y:210,icon:'ifn',   c:'#2dd4bf',label:'Cleared?'},
+  reject:  {x:830, y:90, icon:'sheet', c:'#ef4444',label:'Rejection Queue'},
+  rejalert:{x:980, y:90, icon:'mail',  c:'#ef4444',label:'Alert Billing'},
+  pdf:     {x:830, y:210,icon:'doc',   c:'#94a3b8',label:'PDF/A-3 +\nQR stamp'},
+  deliver: {x:980, y:210,icon:'mail',  c:'#60a5fa',label:'Email + Customer\nPortal Upload'},
+  /* lane 2: collect */
+  sched:   {x:80,  y:470,icon:'clock', c:'#f59e0b',label:'Schedule\n(daily 07:00)',trig:true},
+  aging:   {x:230, y:470,icon:'sheet', c:'#22c55e',label:'Open Items\n& Aging'},
+  due:     {x:380, y:470,icon:'sw',    c:'#60a5fa',label:'Days past due?'},
+  r1:      {x:560, y:345,icon:'mail',  c:'#38bdf8',label:'Friendly reminder\n(due in 3 days)'},
+  r2:      {x:560, y:470,icon:'wa',    c:'#22c55e',label:'WhatsApp nudge\n(+15 days)'},
+  r3:      {x:560, y:595,icon:'flag',  c:'#f97316',label:'Escalate + credit\nhold (+45 days)'},
+  reply:   {x:760, y:470,icon:'msg',   c:'#c084fc',label:'Log Replies &\nPromise-to-Pay'},
+  dispute: {x:910, y:470,icon:'ifn',   c:'#f59e0b',label:'Dispute?'},
+  disp:    {x:1060,y:380,icon:'user',  c:'#ef4444',label:'Dispute Case\n(owner + SLA)'},
+  /* lane 3: receive & apply */
+  bank:    {x:80,  y:670,icon:'bank',  c:'#2dd4bf',label:'Bank API\n(statement)',trig:true},
+  remit:   {x:80,  y:790,icon:'mail',  c:'#ef4444',label:'Gmail\n(remittances)',trig:true},
+  merge:   {x:230, y:730,icon:'merge', c:'#94a3b8',label:'Merge Receipts'},
+  ai:      {x:450, y:730,t:'wide',icon:'ai',c:'#a78bfa',k1:'AI AGENT',k2:'Match Cash to Invoices'},
+  match:   {x:690, y:730,icon:'ifn',   c:'#2dd4bf',label:'Confidence\n≥ 95%?'},
+  post:    {x:840, y:670,icon:'http',  c:'#818cf8',label:'Post Receipt\n(ERP API)'},
+  unapp:   {x:840, y:810,icon:'sheet', c:'#f59e0b',label:'Unapplied Cash\nQueue'},
+  analyst: {x:990, y:810,icon:'user',  c:'#c084fc',label:'AR Analyst\n(Send & Wait)'},
+  /* shared */
+  ledger:  {x:1440,y:470,icon:'sheet', c:'#22c55e',label:'AR Open-Items\nLedger'},
+  pbi:     {x:1590,y:470,icon:'pbi',   c:'#f2c811',label:'Power BI\nRefresh'},
+  model:   {x:420, y:860,t:'sub',icon:'chip',c:'#f472b6',label:'Chat Model\n(Cloud AI)'},
+  parser:  {x:505, y:860,t:'sub',icon:'braces',c:'#a78bfa',label:'Match\nJSON Schema'},
+  onprem:  {x:262, y:890,t:'host',icon:'server',c:'#34d399',label:'On-prem GPU server',sub:'Ollama · Llama 3.1 70B'},
+  cloud:   {x:440, y:995,t:'host',icon:'cloud', c:'#f472b6',label:'Cloud AI API',sub:'Hosted large language model'}
+};
+const EDGES=[['erp','build'],['build','sign'],['sign','zatca'],['zatca','cleared'],['cleared','reject','no'],['reject','rejalert'],['cleared','pdf','yes'],['pdf','deliver'],['deliver','ledger'],
+  ['sched','aging'],['aging','due'],['due','r1','−3d'],['due','r2','+15'],['due','r3','+45'],['r1','reply'],['r2','reply'],['r3','reply'],['reply','dispute'],['dispute','disp','yes'],['dispute','ledger','no'],['disp','ledger'],
+  ['bank','merge'],['remit','merge'],['merge','ai'],['ai','match'],['match','post','yes'],['match','unapp','no'],['unapp','analyst'],['post','ledger'],['analyst','ledger'],
+  ['ledger','pbi']];
+const dims=n=>n.t==='wide'?[204,72]:n.t==='sub'?[56,56]:n.t==='host'?[220,76]:[72,72];
+const NS='http://www.w3.org/2000/svg',$=id=>document.getElementById(id);
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a)if(a[k]!=null)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+const txt=(e,t)=>{e.textContent=t;return e};
+const VH=1050;
+
+/* edges */
+const E={};
+const bez=(x1,y1,x2,y2)=>{const dx=Math.max(40,(x2-x1)/2);return `M${x1} ${y1} C${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`};
+function addEdge(key,d,color,lbl){
+  E[key]={base:el('path',{d,class:'edge'},$('edges')),flow:el('path',{d,class:'flowline',stroke:color},$('edges')),color};
+  if(lbl){const p=E[key].base,L=p.getTotalLength(),pt=p.getPointAtLength(L*(L>500?.2:.42));
+    txt(el('text',{x:pt.x,y:pt.y-7,class:'elabel','text-anchor':'middle'},$('edges')),lbl);}
+}
+EDGES.forEach(([a,b,l])=>{const A=N[a],B=N[b];const x1=A.x+dims(A)[0]/2,x2=B.x-dims(B)[0]/2;
+  addEdge(a+'-'+b,bez(x1,A.y,x2,B.y),B.c,l);el('circle',{cx:x2,cy:B.y,r:3.5,fill:'#3a4672'},$('edges'));});
+addEdge('pbi-dash','M1626 470 L1690 470','#f2c811');
+const SUB={'ai-model':['M420 766 C420 795, 420 805, 420 832','subedge on'],'ai-parser':['M505 766 C505 795, 505 805, 505 832','subedge on'],
+  'model-onprem':['M392 862 C385 885, 380 890, 372 890','subedge int'],'model-cloud':['M420 888 C420 925, 440 930, 440 957','subedge ext']};
+for(const k in SUB)E[k]={base:el('path',{d:SUB[k][0],class:SUB[k][1],id:'s-'+k},$('subedges')),color:'#a78bfa'};
+[[420,766,'Model*'],[505,766,'Output Parser']].forEach(([x,y,t])=>{
+  el('rect',{x:x-5,y:y-5,width:10,height:10,transform:`rotate(45 ${x} ${y})`,fill:'#0a0f1e',stroke:'#a78bfa','stroke-width':1.6},$('subedges'));
+  txt(el('text',{x:x+9,y:y+16,fill:'#7c75a8','font-size':10,'font-family':'Inter'},$('subedges')),t);});
+
+/* nodes */
+const NE={};
+for(const id in N){const n=N[id],[w,h]=dims(n),t=n.t||'sq';
+  const g=el('g',{class:'node',transform:`translate(${n.x},${n.y})`,style:`--c:${n.c}`},$('nodes'));
+  if(t==='sub'){el('circle',{class:'ring',r:34},g);el('circle',{class:'body',r:28},g);}
+  else{const rx=t==='host'?14:16;el('rect',{class:'ring',x:-w/2-6,y:-h/2-6,width:w+12,height:h+12,rx:rx+5},g);
+    el('rect',{class:'body',x:-w/2,y:-h/2,width:w,height:h,rx:n.trig?36:rx},g);}
+  const ic=el('g',{class:'ic',fill:'none',stroke:'currentColor','stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round'},g);ic.innerHTML=ICON[n.icon];
+  let ly=h/2+20;
+  if(t==='sq')ic.setAttribute('transform','translate(-17,-17) scale(1.42)');
+  if(t==='sub')ic.setAttribute('transform','translate(-13,-13) scale(1.08)');
+  if(t==='wide'){ic.setAttribute('transform',`translate(${-w/2+16},-16) scale(1.35)`);
+    const a=txt(el('text',{x:-w/2+60,y:-5,class:'lbl2'},g),n.k1);a.style.letterSpacing='1.5px';
+    const b=txt(el('text',{x:-w/2+60,y:14,class:'lbl'},g),n.k2);b.style.textAnchor='start';ly=null;}
+  if(t==='host'){ic.setAttribute('transform',`translate(${-w/2+14},-17) scale(1.42)`);
+    txt(el('text',{x:-w/2+62,y:-4,class:'lbl'},g),n.label).style.textAnchor='start';
+    txt(el('text',{x:-w/2+62,y:15,class:'lbl2'},g),n.sub);ly=null;}
+  if(n.trig)txt(el('text',{x:-56,y:5,fill:'#f59e0b','font-size':15},g),'⚡');
+  if(ly!==null)n.label.split('\n').forEach((s,i)=>txt(el('text',{class:'lbl',x:0,y:ly+i*15,id:i===1?'l2-'+id:null},g),s));
+  const bg=el('g',{class:'badge',transform:`translate(${t==='sub'?22:w/2-6},${t==='sub'?-30:-h/2-6})`},g);
+  const br=el('rect',{x:-20,y:-10,width:40,height:20,rx:10},bg),bt=el('text',{x:0,y:4},bg);
+  const ck=el('g',{class:'check',transform:`translate(${t==='sub'?20:w/2-4},${t==='sub'?20:h/2-4})`},g);
+  el('circle',{r:9,fill:'#10b981',stroke:'#0a0f1e','stroke-width':2},ck);
+  el('path',{d:'M-4 0l2.8 3 5-6',fill:'none',stroke:'#fff','stroke-width':2,'stroke-linecap':'round'},ck);
+  NE[id]={g,bg,br,bt};}
+
+/* Power BI panel */
+const D=$('dash'),X0=1690,Y0=62,DW=296,DH=860;
+el('rect',{class:'frame',x:X0,y:Y0,width:DW,height:DH,rx:16},D);
+el('rect',{x:X0,y:Y0,width:DW,height:52,fill:'#f2c811',opacity:.1,'clip-path':'url(#dashClip)'},D);
+const pic=el('g',{transform:`translate(${X0+14},${Y0+13}) scale(1.1)`,fill:'none',stroke:'#f2c811',color:'#f2c811'},D);pic.innerHTML=ICON.pbi;
+txt(el('text',{class:'t1',x:X0+48,y:Y0+24},D),'Accounts Receivable · Cash');
+const dSub=txt(el('text',{class:'t2',x:X0+48,y:Y0+40},D),'○ waiting for refresh…');
+const C=el('g',{class:'content'},D);
+const kpis=[
+  {l:'INVOICES CLEARED',v:13,f:v=>Math.round(v),d:'ZATCA · 1 rejected',dc:'#9aa4c4'},
+  {l:'CASH APPLIED',v:4.18,f:v=>'SAR '+v.toFixed(2)+'M',d:'31 bank receipts',dc:'#9aa4c4'},
+  {l:'AI AUTO-MATCH',v:93.5,f:v=>v.toFixed(1)+'%',d:'29 of 31 receipts',dc:'#c4b5fd'},
+  {l:'DSO (DAYS)',v:48,f:v=>Math.round(v),d:'▼ from 74 in Jun',dc:'#34d399'}];
+kpis.forEach((k,i)=>{const x=X0+12+(i%2)*140,y=Y0+64+Math.floor(i/2)*80;
+  el('rect',{class:'kpi',x,y,width:132,height:72,rx:10},C);
+  txt(el('text',{class:'kl',x:x+10,y:y+18},C),k.l);
+  k.el=txt(el('text',{class:'kv',x:x+10,y:y+45},C),'—');
+  k.de=txt(el('text',{class:'kd',x:x+10,y:y+61,fill:k.dc,opacity:0},C),k.d);});
+let by=Y0+262;txt(el('text',{class:'sec',x:X0+14,y:by},C),'Aging buckets (SAR M)');
+const bars=[{l:'Current',v:6.2,c:'#22c55e'},{l:'1–30 days',v:2.9,c:'#a3e635'},{l:'31–60 days',v:1.4,c:'#f59e0b'},{l:'61–90 days',v:0.6,c:'#f97316'},{l:'90+ days',v:0.3,c:'#ef4444'}];
+bars.forEach((b,i)=>{const y=by+16+i*26;txt(el('text',{class:'bl',x:X0+14,y:y+12},C),b.l);
+  el('rect',{x:X0+100,y,width:150,height:15,rx:4,fill:'#151d38'},C);
+  b.r=el('rect',{x:X0+100,y,width:0,height:15,rx:4,fill:b.c},C);
+  b.t=txt(el('text',{class:'bv',x:X0+256,y:y+12,opacity:0},C),b.v.toFixed(1));});
+const ly0=Y0+450;txt(el('text',{class:'sec',x:X0+14,y:ly0},C),'DSO trend (days)');
+const months=['Jun','Jul','Aug','Sep','Oct','Nov'],vals=[74,71,66,60,53,48];
+const cx0=X0+30,cx1=X0+DW-24,cy0=ly0+18,cy1=ly0+138;
+[0,1,2].forEach(i=>el('line',{class:'grid',x1:cx0,x2:cx1,y1:cy0+i*(cy1-cy0)/2,y2:cy0+i*(cy1-cy0)/2},C));
+const px=i=>cx0+i*(cx1-cx0)/5,py=v=>cy1-(v-40)/(80-40)*(cy1-cy0);
+months.forEach((m,i)=>txt(el('text',{class:'ax',x:px(i),y:cy1+16},C),m));
+const lp=vals.map((v,i)=>(i?'L':'M')+px(i)+' '+py(v)).join(' ');
+const area=el('path',{d:lp+` L${px(5)} ${cy1} L${px(0)} ${cy1} Z`,fill:'url(#areaG)',opacity:0},C);
+const line=el('path',{d:lp,fill:'none',stroke:'#f2c811','stroke-width':2.6,'stroke-linejoin':'round','stroke-linecap':'round'},C);
+const LL=line.getTotalLength();line.setAttribute('stroke-dasharray',LL);line.setAttribute('stroke-dashoffset',LL);
+const endDot=el('circle',{cx:px(5),cy:py(48),r:5,fill:'#f2c811',stroke:'#0d1326','stroke-width':2,opacity:0},C);
+const endLbl=txt(el('text',{x:px(5)-2,y:py(48)-14,fill:'#fde68a','font-size':11,'font-weight':800,'font-family':'Inter','text-anchor':'end',opacity:0},C),'48 days  ▼35%');
+const pyb=Y0+700;
+const progs=[{l:'Collection Effectiveness Index (CEI)',v:.84,t:'84%',c:'#34d399',s:'last 90 days'},
+             {l:'Cash applied touchless',v:.91,t:'91%',c:'#a78bfa',s:'last 30 days · 612 receipts'}];
+progs.forEach((p,i)=>{const y=pyb+i*68;txt(el('text',{class:'sec',x:X0+14,y},C),p.l);
+  el('rect',{x:X0+14,y:y+12,width:DW-28,height:12,rx:6,fill:'#151d38'},C);
+  p.r=el('rect',{x:X0+14,y:y+12,width:0,height:12,rx:6,fill:p.c},C);
+  p.te=txt(el('text',{class:'bv',x:X0+DW-14,y:y+42,'text-anchor':'end',opacity:0},C),p.t);
+  txt(el('text',{class:'t2',x:X0+14,y:y+42},C),p.s);});
+txt(el('text',{class:'t2',x:X0+14,y:Y0+DH-16,opacity:.7},D),'Source: AR Open-Items Ledger · scheduled');
+el('rect',{class:'shimmer',x:X0,y:Y0,width:DW,height:DH,fill:'url(#shimG)','clip-path':'url(#dashClip)'},D);
+function dashReset(){D.classList.remove('live','loading');C.style.opacity=.35;dSub.textContent='○ waiting for refresh…';
+  kpis.forEach(k=>{k.el.textContent='—';k.de.setAttribute('opacity',0)});bars.forEach(b=>{b.r.setAttribute('width',0);b.t.setAttribute('opacity',0)});
+  line.setAttribute('stroke-dashoffset',LL);area.setAttribute('opacity',0);endDot.setAttribute('opacity',0);endLbl.setAttribute('opacity',0);
+  progs.forEach(p=>{p.r.setAttribute('width',0);p.te.setAttribute('opacity',0)});}
+
+/* clock */
+let clock=0,last=null,paused=false,speed=1,runId=0,loop=true,waiters=[];const tickers=new Set();
+function frame(ts){if(last!==null&&!paused&&!document.hidden)clock+=Math.min(ts-last,100)*speed;last=ts;
+  waiters=waiters.filter(w=>{if(clock>=w.t){w.fire();return false}return true});tickers.forEach(f=>f());requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+const wait=ms=>{const r=runId;return new Promise((res,rej)=>waiters.push({t:clock+ms,fire:()=>r===runId?res():rej('abort')}))};
+const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+function tween(ms,fn){const r=runId,s=clock;return new Promise(res=>{const f=()=>{if(r!==runId){tickers.delete(f);return}
+  const p=Math.min(1,(clock-s)/ms);fn(ease(p));if(p>=1){tickers.delete(f);res()}};tickers.add(f)})}
+function travel(key,{color,label,dur=900,reverse=false,onPoint}={}){
+  const r=runId,e=E[key],path=e.base,L=path.getTotalLength();color=color||e.color;
+  const g=el('g',{},$('packets'));
+  el('circle',{r:15,fill:color,opacity:.28,filter:'url(#soft)'},g);el('circle',{r:6.5,fill:color,stroke:'#fff','stroke-width':1.6},g);
+  if(label){const w=label.length*6.3+16;el('rect',{x:-w/2,y:-33,width:w,height:19,rx:9.5,fill:'#0b1124',stroke:color,'stroke-width':1.2},g);
+    txt(el('text',{x:0,y:-19.5,fill:'#e6eaf5','font-size':10.5,'font-family':'JetBrains Mono','text-anchor':'middle','font-weight':600},g),label);}
+  if(e.flow)e.flow.classList.remove('on');
+  return new Promise(res=>{const s=clock;const f=()=>{if(r!==runId){tickers.delete(f);return}
+    const p=Math.min(1,(clock-s)/dur),k=ease(p),pt=path.getPointAtLength(reverse?L*(1-k):L*k);
+    g.setAttribute('transform',`translate(${pt.x},${pt.y})`);if(onPoint)onPoint(pt);
+    if(p>=1){tickers.delete(f);g.remove();path.classList.add('done');if(e.flow)e.flow.classList.add('on');res()}};tickers.add(f)});}
+
+/* helpers */
+const cw=$('cwrap');
+function follow(x){if(cw.scrollWidth<=cw.clientWidth+4)return;cw.scrollTo({left:Math.max(0,x/2000*cw.scrollWidth-cw.clientWidth/2),behavior:'smooth'});}
+function setNode(id,s){const g=NE[id].g;g.classList.remove('running','done','warnst');if(s)s.split(' ').forEach(c=>g.classList.add(c));if(s==='running')follow(N[id].x);}
+function badge(id,t){const {bg,br,bt}=NE[id];bt.textContent=t;const w=Math.max(22,t.length*6.6+14);br.setAttribute('x',-w/2);br.setAttribute('width',w);bg.classList.add('show')}
+function simTime(){const s=Math.floor(clock/600);return `07:${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function log(msg,cls=''){const d=document.createElement('div');d.innerHTML=`<span class="t">${simTime()}</span><span class="${cls}">${msg}</span>`;const L=$('log');L.appendChild(d);L.scrollTop=L.scrollHeight;}
+const STAGES=['Billable event','Build & sign','ZATCA clearance','Deliver','Dunning ladder','Replies & disputes','Cash received','AI cash match','Ledger & Power BI'];
+STAGES.forEach((s,i)=>{const d=document.createElement('div');d.innerHTML=`<b>${i+1}</b>${s}`;$('progress').appendChild(d)});
+function stage(n,text){$('stageNum').textContent=`Step ${n} / 9`;$('stageTitle').textContent=STAGES[n-1];$('stageText').textContent=text;
+  [...$('progress').children].forEach((c,i)=>c.className=i<n-1?'past':i===n-1?'active':'')}
+async function act(id,ms,b,msg,cls,warn){setNode(id,'running');await wait(ms);setNode(id,warn?'done warnst':'done');if(b)badge(id,b);if(msg)log(msg,cls)}
+const go=(a,b,l,d)=>travel(a+'-'+b,{label:l,dur:d});
+const pct=(x,y,e)=>{e.style.left=(x/2000*100)+'%';e.style.top=(y/VH*100)+'%'};
+const show=id=>$(id).classList.add('show');
+const hide=id=>$(id).classList.remove('show');
+function pulseOn(ids){return ids.map(id=>el('circle',{class:'pulse',cx:N[id].x,cy:N[id].y,r:38,stroke:N[id].c},$('fx')));}
+
+/* AI mode */
+let mode='ext';
+const MODE={ext:{model:'(Cloud AI)',color:'#f472b6',hint:'n8n: AI Agent → Model* = <b>cloud AI Chat Model</b> · Output Parser = <b>Structured Output Parser</b> returning {receipt_id, invoices[], amounts[], difference, reason, confidence}'},
+            int:{model:'(Llama 3.1)',color:'#34d399',hint:'n8n: AI Agent → Model* = <b>Ollama Chat Model</b> · base URL http://ollama-server:11434 · model llama3.1:70b · same JSON schema, so nothing else changes'}};
+function applyMode(){const M=MODE[mode];$('l2-model').textContent=M.model;NE.model.g.style.setProperty('--c',M.color);
+  NE.cloud.g.classList.toggle('dim',mode!=='ext');NE.onprem.g.classList.toggle('dim',mode!=='int');
+  ['cloud','onprem'].forEach(h=>{const on=(h==='cloud')===(mode==='ext');$('s-model-'+h).classList.toggle('on',on);$('s-model-'+h).classList.toggle('off',!on)});
+  $('optExt').classList.toggle('on',mode==='ext');$('optInt').classList.toggle('on',mode==='int');$('hint').innerHTML=M.hint;
+  [...$('modeSeg').children].forEach(b=>b.classList.toggle('on',b.dataset.mode===mode));
+  if(mode==='ext')hide('tagSafe');else hide('tagWarn');}
+
+/* scenario */
+async function aiStep(){const ext=mode==='ext',M=MODE[mode];
+  stage(8,ext?'The AI Agent reads each bank line next to its remittance advice and the customer\'s open invoices. It works out which invoices were paid, splits multi-invoice payments and explains any difference, using a cloud AI model. This is the most accurate option, but bank and customer data leave your network.'
+             :'Same AI Agent, but the model is Llama on Ollama on your own GPU server. Customer names, IBANs and amounts never leave the building, and the JSON output is identical.');
+  setNode('ai','running');log('AI Agent → 31 receipts + 186 open invoices loaded','ai');await wait(400);
+  await travel('ai-model',{color:M.color,label:'31 rcpts',dur:700});setNode('model','running');
+  if(ext){let hit=false;log('⚠ Bank lines & remittances sent over HTTPS to cloud AI API (external)','warn');
+    await travel('model-cloud',{color:'#f472b6',label:'bank data →',dur:1300,onPoint:pt=>{if(!hit&&pt.y>=935){hit=true;
+      el('circle',{class:'breach',cx:pt.x,cy:935,r:6},$('fx'));const t=$('tagWarn');pct(pt.x+430,935,t);t.classList.add('show')}}});
+    await act('cloud',1300,'~0.7 s/rcpt','Cloud AI API → 31 receipts analysed');
+    await travel('model-cloud',{color:'#f472b6',label:'← matches',dur:1100,reverse:true});
+  }else{log('🔒 Receipts sent to Ollama on internal server (10.0.4.21)','safe');show('tagSafe');
+    await travel('model-onprem',{color:'#34d399',label:'bank data →',dur:1000});
+    await act('onprem',1900,'~1.8 s/rcpt','Llama 3.1 70B → 31 receipts analysed (local GPU)','safe');
+    await travel('model-onprem',{color:'#34d399',label:'← matches',dur:900,reverse:true});}
+  setNode('model','done');await travel('ai-model',{color:M.color,dur:600,reverse:true});
+  await travel('ai-parser',{label:'raw JSON',dur:700});await act('parser',600,'schema ✓','Output Parser → 31 match proposals in schema');
+  await travel('ai-parser',{label:'structured',dur:600,reverse:true});
+  setNode('ai','done');badge('ai','31 read');show('matchCard');log('RCPT-0931 · SAR 412,450 → AR-1042 + AR-1043 · −50 bank fee','ai');await wait(1800);}
+
+async function powerBI(){
+  stage(9,'n8n refreshes the Power BI dataset through the REST API. The AR dashboard shows invoices cleared, cash applied, the AI auto-match rate, aging buckets, the DSO trend and CEI.');
+  hide('matchCard');
+  await go('ledger','pbi','refresh');setNode('pbi','running');await wait(700);
+  await travel('pbi-dash',{label:'refresh',dur:600});
+  D.classList.add('loading');dSub.textContent='⟳ refreshing dataset…';await wait(1100);
+  D.classList.remove('loading');D.classList.add('live');setNode('pbi','done');badge('pbi','200 OK');log('Power BI → dataset refreshed (HTTP 200)','ok');
+  dSub.textContent='● Refreshed 07:02:40 · by n8n';follow(1840);
+  await tween(500,p=>C.style.opacity=.35+.65*p);
+  await tween(1300,p=>{kpis.forEach(k=>k.el.textContent=k.f(k.v*p));bars.forEach(b=>b.r.setAttribute('width',150*b.v/6.2*p))});
+  kpis.forEach(k=>k.de.setAttribute('opacity',1));bars.forEach(b=>b.t.setAttribute('opacity',1));
+  await tween(1400,p=>{line.setAttribute('stroke-dashoffset',LL*(1-p));area.setAttribute('opacity',p)});
+  endDot.setAttribute('opacity',1);endLbl.setAttribute('opacity',1);
+  await tween(900,p=>progs.forEach(g=>g.r.setAttribute('width',(DW-28)*g.v*p)));progs.forEach(g=>g.te.setAttribute('opacity',1));}
+
+async function scenario(){
+  $('status').className='status run';$('status').textContent='● Running';
+  /* 1 */
+  stage(1,'An ERP webhook fires as soon as billable work is approved: a client-signed rig timesheet, a delivery note or a certified contract milestone. Invoicing starts the same minute, without waiting for month-end or for someone to remember.');
+  let pl=pulseOn(['erp']);setNode('erp','running');await wait(1200);pl.forEach(p=>p.remove());
+  setNode('erp','done');badge('erp','14');log('ERP Trigger → 14 billable events (9 timesheets · 3 deliveries · 2 milestones)');
+  await go('erp','build','14 events');await act('build',1000,'14 XML','Build e-Invoice → 14 UBL 2.1 invoices from contract rates · VAT 15%');
+  /* 2 */
+  stage(2,'Each invoice is hashed, chained to the previous one (ICV counter plus previous-invoice hash), signed with the company\'s CSID certificate and given its QR code. Fatoora Phase 2 expects this of every e-invoicing system.');
+  await go('build','sign','14 XML');await act('sign',900,'14 signed','Sign → UUID, ICV, PIH, ECDSA stamp & QR on 14 invoices');
+  /* 3 */
+  stage(3,'Standard B2B tax invoices must be cleared by ZATCA before the customer receives them. n8n calls the clearance API. Cleared invoices come back stamped, and rejections go to a queue with the reason.');
+  await go('sign','zatca','14 XML');await act('zatca',1300,'13 ✓ 1 ✗','ZATCA Clearance API → 13 cleared · 1 rejected');show('zatcaCard');
+  await go('zatca','cleared','14');await act('cleared',500,'13 / 1');
+  await Promise.all([
+    (async()=>{await go('cleared','reject','1 · rejected');show('tagRej');await act('reject',700,'1 open','Rejection Queue → AR-1047: buyer VAT number invalid','warn',true);
+      await go('reject','rejalert');await act('rejalert',700,'sent','✉ Alert → billing team fixes customer master & resubmits');})(),
+    (async()=>{await go('cleared','pdf','13 cleared');await act('pdf',900,'13 PDF','Render → 13 PDF/A-3 files with cleared XML embedded');})()
+  ]);
+  /* 4 */
+  stage(4,'Cleared invoices go out immediately: by email to the customer\'s AP mailbox, and uploaded to the customer\'s supplier portal where the contract requires it. Each one lands in the AR open-items ledger with its due date.');
+  await go('pdf','deliver','13');await act('deliver',1100,'13 sent','Deliver → 9 emailed · 4 uploaded to customer supplier portals');
+  hide('zatcaCard');hide('tagRej');
+  await go('deliver','ledger','13 new',1500);await act('ledger',600,'+13','AR Ledger → 13 open items added (SAR 2.31M)');
+  /* 5 */
+  stage(5,'At 07:00 every morning n8n reads the open items and ages them. A Switch node picks the message for each customer: a polite heads-up before the due date, a WhatsApp nudge once it slips, and escalation to the Sales owner with a credit hold at 45 days late.');
+  pl=pulseOn(['sched']);await act('sched',900,'07:00','Schedule Trigger → daily collections run');pl.forEach(p=>p.remove());
+  await go('sched','aging');await act('aging',1000,'27 due','Open Items → 186 open · 27 due soon or overdue');
+  await go('aging','due','27');await act('due',700,'9·12·6','Days past due? → 9 due in 3 days · 12 at +15 · 6 at +45');
+  await Promise.all([
+    (async()=>{await go('due','r1','9');await act('r1',900,'9 sent','✉ 9 friendly reminders with invoice copy & statement');})(),
+    (async()=>{await go('due','r2','12');await act('r2',1100,'12 sent','WhatsApp → 12 overdue nudges with PDF & virtual IBAN');})(),
+    (async()=>{await go('due','r3','6');show('tagHold');await act('r3',1200,'2 holds','Escalate → 6 accounts to Sales owners · credit hold on 2','amb',true);})()
+  ]);
+  /* 6 */
+  stage(6,'Customer replies are collected in one place. Promise-to-pay dates are logged against each invoice, so the next reminder waits for that date. Disputes become cases with an owner and an SLA instead of sitting in someone\'s inbox.');
+  await Promise.all([go('r1','reply','4 replies'),go('r2','reply','7 replies'),go('r3','reply','3 replies')]);
+  hide('tagHold');
+  await act('reply',1000,'14 replies','Log Replies → 14 received · 11 promise-to-pay dates captured');
+  await go('reply','dispute','14');await act('dispute',600,'2 / 12');
+  await Promise.all([
+    (async()=>{await go('dispute','disp','2 · dispute');await act('disp',900,'2 cases','Dispute Case → 2 opened (rate query · missing GRN) · SLA 5 days','warn',true);
+      await go('disp','ledger','2 flagged',1200);})(),
+    go('dispute','ledger','12 · PTP',1400)
+  ]);
+  await act('ledger',500,'PTP 11','AR Ledger → 11 PTP dates · 2 invoices on dispute hold');
+  /* 7 */
+  stage(7,'Cash arrives. n8n pulls the day\'s credits from the bank API (or the MT940 file), and remittance advices come in by email. The two are merged, so each receipt carries whatever detail the customer sent.');
+  pl=pulseOn(['bank','remit']);setNode('bank','running');setNode('remit','running');await wait(1200);pl.forEach(p=>p.remove());
+  setNode('bank','done');badge('bank','31');setNode('remit','done');badge('remit','11');
+  log('Bank API → 31 incoming credits (SAR 4.18M)');log('Gmail → 11 remittance advices (PDF / Excel / body text)');
+  await Promise.all([go('bank','merge','31 credits'),go('remit','merge','11 advices')]);
+  await act('merge',800,'31','Merge → 31 receipts · 11 enriched with remittance detail');
+  await go('merge','ai','31 receipts');
+  /* 8 */
+  await aiStep();
+  await go('ai','match','31');await act('match',600,'29 ✓ 2 ?');
+  await Promise.all([
+    (async()=>{await go('match','post','29 ≥95%');await act('post',1000,'29 posted','ERP API → 29 receipts applied · 41 invoices closed','ok');
+      await go('post','ledger','29 applied',1300);})(),
+    (async()=>{await go('match','unapp','2 · low conf');await act('unapp',700,'2 open','Unapplied Cash → 2 receipts with no reference (SAR 96K)','amb',true);
+      await go('unapp','analyst','2');await act('analyst',1300,'2 approved','AR Analyst → AI suggestion approved via Send & Wait','ok');
+      await go('analyst','ledger','2 applied',1200);})()
+  ]);
+  await act('ledger',700,'31 applied','AR Ledger → 31 receipts applied · aging recalculated');
+  /* 9 */
+  await powerBI();
+  stage(9,`Run complete: 13 invoices cleared and sent, 27 customers chased, 2 disputes opened, and 31 receipts applied (29 by the AI with no human touch). The AI ran ${mode==='ext'?'in the cloud (external)':'inside your own network (internal)'}.`);
+  log('✔ Execution succeeded: 33 nodes, 0 errors','ok');
+  $('status').className='status ok';$('status').textContent='✔ Succeeded';
+  await wait(6000);if(loop)restart();}
+
+function reset(){runId++;waiters.forEach(w=>w.fire());waiters=[];tickers.clear();
+  $('packets').innerHTML='';$('fx').innerHTML='';$('log').innerHTML='';
+  for(const id in NE){setNode(id,null);NE[id].bg.classList.remove('show')}
+  Object.values(E).forEach(e=>{e.base.classList.remove('done');if(e.flow)e.flow.classList.remove('on')});
+  ['zatcaCard','matchCard','tagWarn','tagSafe','tagRej','tagHold'].forEach(hide);dashReset();clock=0;cw.scrollLeft=0;}
+function restart(){reset();paused=false;$('playBtn').textContent='⏸ Pause';scenario().catch(()=>{})}
+$('playBtn').onclick=()=>{paused=!paused;$('playBtn').textContent=paused?'▶ Play':'⏸ Pause'};
+$('replayBtn').onclick=restart;
+$('loopChk').onchange=e=>loop=e.target.checked;
+$('modeSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.mode;applyMode()};
+$('spdSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;speed=+b.dataset.s;[...$('spdSeg').children].forEach(x=>x.classList.toggle('on',x===b))};
+applyMode();restart();
+</script>
+</body>
+</html>

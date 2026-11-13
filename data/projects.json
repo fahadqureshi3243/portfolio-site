@@ -41,6 +41,15 @@
     "download": "/downloads/Construction Powerbi.pbix"
   },
   {
+    "title": "Accounts Receivable: Invoice to Cash",
+    "category": "n8n",
+    "industry": "All industries",
+    "fn": "Accounting & Close",
+    "desc": "Invoices are ZATCA-cleared and sent automatically, overdue customers are chased by email and WhatsApp, and AI matches bank receipts to invoices.",
+    "meta": "33 nodes",
+    "kind": "ar"
+  },
+  {
     "title": "Purchase Request to Vendor RFQ",
     "category": "n8n",
     "industry": "All industries",
