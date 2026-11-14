@@ -14,6 +14,22 @@
     "download": "https://drive.google.com/file/d/1C8ftnbeU9fZ178YMjFc4nehuYCoyJMrR/view?usp=drive_link"
   },
   {
+    "title": "Local Content Intelligence: Najd Horizon Construction",
+    "category": "pbi",
+    "industry": "Construction",
+    "fn": "Tax & Compliance",
+    "desc": "LCGPA local content score vs target for a Saudi contractor: 5-year uplift plan to 50%, supplier localisation, Saudization and local asset depreciation.",
+    "meta": "4 pages · FY2025–FY2030 · SAR",
+    "images": [
+      "/images/local-content-overview.png",
+      "/images/local-content-5-year-plan.png",
+      "/images/local-content-suppliers.png",
+      "/images/local-content-labor-assets.png"
+    ],
+    "download": "/downloads/local-content-lcgpa.pbix",
+    "link": ""
+  },
+  {
     "title": "API 6A / 16A Workshop: Production Costing",
     "category": "pbi",
     "industry": "Oil & Gas",
