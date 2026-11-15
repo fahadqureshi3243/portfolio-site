@@ -43,7 +43,7 @@ content:
         label: Industry
         type: select
         options:
-          values: [Oil & Gas, Petrochemicals, Construction, Manufacturing, Logistics, Entertainment, Healthcare, All industries]
+          values: [Oil & Gas, Petrochemicals, Construction, Manufacturing, Logistics, Entertainment, Healthcare, Telecom, All industries]
       - name: fn
         label: Function
         type: select

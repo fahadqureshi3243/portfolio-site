@@ -1,5 +1,21 @@
 [
   {
+    "title": "IFRS 16 Lease Accounting: Telecom Operator (KSA)",
+    "category": "pbi",
+    "industry": "Telecom",
+    "fn": "Accounting & Close",
+    "desc": "IFRS 16 lessee reporting for 240 telecom leases: lease liability and ROU roll-forwards, interest, depreciation, EBITDA impact, maturity analysis and remeasurements.",
+    "meta": "9 pages · FY2019–FY2026 · SAR",
+    "images": [
+      "/images/ifrs16-telecom-overview.png",
+      "/images/ifrs16-telecom-lease-liability.png",
+      "/images/ifrs16-telecom-rou-assets.png",
+      "/images/ifrs16-telecom-pnl-ebitda.png",
+      "/images/ifrs16-telecom-remeasurements.png"
+    ],
+    "download": "/downloads/ifrs16-telecom-leases.pbix"
+  },
+  {
     "title": "Hospital Performance & Profitability (KSA)",
     "category": "pbi",
     "industry": "Healthcare",

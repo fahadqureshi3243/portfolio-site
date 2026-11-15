@@ -196,7 +196,7 @@ function startGallery(S) {
     startGallery({
       PROJECTS: r[0] || [], comingSoon: r[1].comingSoon || [],
       FUNCTIONS: ['FP&A', 'Accounting & Close', 'Procurement', 'Operations', 'Tax & Compliance', 'Treasury', 'HR & Payroll', 'Valuation', 'ERP & Process'],
-      INDUSTRIES: ['Oil & Gas', 'Petrochemicals', 'Construction', 'Manufacturing', 'Logistics', 'Entertainment', 'Healthcare', 'All industries']
+      INDUSTRIES: ['Oil & Gas', 'Petrochemicals', 'Construction', 'Manufacturing', 'Logistics', 'Entertainment', 'Healthcare', 'Telecom', 'All industries']
     });
   }).catch(function (e) { console.error(e); document.getElementById('cards').textContent = 'Could not load the projects list.'; });
 })();
