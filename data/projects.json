@@ -1,5 +1,22 @@
 [
   {
+    "title": "Falak Cinemas: Cinema Chain Performance (KSA)",
+    "category": "pbi",
+    "industry": "Entertainment",
+    "fn": "FP&A",
+    "desc": "Revenue, EBITDA and P&L vs budget for a 9-cinema Saudi chain: box office, concessions, branch map, Saudization and customer NPS.",
+    "meta": "6 pages · 2025–2026 · SAR",
+    "images": [
+      "/images/falak-cinemas-executive-overview.png",
+      "/images/falak-cinemas-box-office.png",
+      "/images/falak-cinemas-concessions.png",
+      "/images/falak-cinemas-financials.png",
+      "/images/falak-cinemas-branches.png",
+      "/images/falak-cinemas-people.png"
+    ],
+    "download": "/downloads/falak-cinemas.pbix"
+  },
+  {
     "title": "IFRS 16 Lease Accounting: Telecom Operator (KSA)",
     "category": "pbi",
     "industry": "Telecom",
