@@ -1,5 +1,26 @@
 [
   {
+    "title": "AKOMS: Offshore Marine Fleet Performance (KSA)",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "FP&A",
+    "desc": "P&L, fleet utilisation, vessel profitability, contract backlog, capex, debt and receivables for a 31-vessel Saudi offshore marine services company.",
+    "meta": "10 pages · 2024–2026 · SAR",
+    "images": [
+      "/images/akoms-executive-overview.png",
+      "/images/akoms-fleet-operations.png",
+      "/images/akoms-vessel-profitability.png",
+      "/images/akoms-cost-of-sales.png",
+      "/images/akoms-contracts-backlog.png",
+      "/images/akoms-assets-capex.png",
+      "/images/akoms-debt-leverage.png",
+      "/images/akoms-receivables-cash.png",
+      "/images/akoms-budget-vs-actual.png",
+      "/images/akoms-guide-glossary.png"
+    ],
+    "download": "/downloads/akoms-offshore-marine.pbix"
+  },
+  {
     "title": "Investment Valuation: 25% Stake in Rimal Oilfield Services (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
