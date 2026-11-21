@@ -1,5 +1,24 @@
 [
   {
+    "title": "IAS 19 Employee Benefits: Drilling Contractor (KSA)",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "Accounting & Close",
+    "desc": "IAS 19 for a Saudi drilling contractor: EOSB valued per employee, pension asset ceiling, DBO reconciliations, sensitivity, GOSI and termination benefits.",
+    "meta": "8 pages · 2023–2025 · SAR",
+    "images": [
+      "/images/ias19-overview.png",
+      "/images/ias19-db-reconciliation.png",
+      "/images/ias19-pension-plan-assets.png",
+      "/images/ias19-assumptions-sensitivity.png",
+      "/images/ias19-eosb-employee-level.png",
+      "/images/ias19-short-term-gosi.png",
+      "/images/ias19-termination-long-term.png",
+      "/images/ias19-in-brief.png"
+    ],
+    "download": "/downloads/ias19-employee-benefits.pbix"
+  },
+  {
     "title": "AKOMS: Offshore Marine Fleet Performance (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
