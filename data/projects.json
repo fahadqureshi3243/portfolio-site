@@ -61,25 +61,20 @@
     "download": "/downloads/ias19-employee-benefits.pbix"
   },
   {
-    "title": "AKOMS: Offshore Marine Fleet Performance (KSA)",
+    "title": "IFRS 16 Lease Accounting: Telecom Operator (KSA)",
     "category": "pbi",
-    "industry": "Oil & Gas",
-    "fn": "FP&A",
-    "desc": "P&L, fleet utilisation, vessel profitability, contract backlog, capex, debt and receivables for a 31-vessel Saudi offshore marine services company.",
-    "meta": "10 pages · 2024–2026 · SAR",
+    "industry": "Telecom",
+    "fn": "Accounting & Close",
+    "desc": "IFRS 16 lessee reporting for 240 telecom leases: lease liability and ROU roll-forwards, interest, depreciation, EBITDA impact, maturity analysis and remeasurements.",
+    "meta": "9 pages · FY2019–FY2026 · SAR",
     "images": [
-      "/images/akoms-executive-overview.png",
-      "/images/akoms-fleet-operations.png",
-      "/images/akoms-vessel-profitability.png",
-      "/images/akoms-cost-of-sales.png",
-      "/images/akoms-contracts-backlog.png",
-      "/images/akoms-assets-capex.png",
-      "/images/akoms-debt-leverage.png",
-      "/images/akoms-receivables-cash.png",
-      "/images/akoms-budget-vs-actual.png",
-      "/images/akoms-guide-glossary.png"
+      "/images/ifrs16-telecom-overview.png",
+      "/images/ifrs16-telecom-lease-liability.png",
+      "/images/ifrs16-telecom-rou-assets.png",
+      "/images/ifrs16-telecom-pnl-ebitda.png",
+      "/images/ifrs16-telecom-remeasurements.png"
     ],
-    "download": "/downloads/akoms-offshore-marine.pbix"
+    "download": "/downloads/ifrs16-telecom-leases.pbix"
   },
   {
     "title": "Investment Valuation: 25% Stake in Rimal Oilfield Services (KSA)",
@@ -101,6 +96,47 @@
     "download": "/downloads/investment-valuation.pbix"
   },
   {
+    "title": "EPC Construction XYZ: Contracts, IFRS 15 & Cash (KSA)",
+    "category": "pbi",
+    "industry": "Construction",
+    "fn": "FP&A",
+    "desc": "Five-contract Saudi EPC portfolio: budget vs earned value, IFRS 15 revenue, procurement, labour, Murabaha financing, guarantees, retention and working capital.",
+    "meta": "9 pages · 2025–2026 · SAR",
+    "images": [
+      "/images/epc-contracts-executive-overview.png",
+      "/images/epc-contracts-budget-progress.png",
+      "/images/epc-contracts-ifrs15-revenue.png",
+      "/images/epc-contracts-procurement.png",
+      "/images/epc-contracts-labour.png",
+      "/images/epc-contracts-cash-financing.png",
+      "/images/epc-contracts-guarantees-bonding.png",
+      "/images/epc-contracts-retention.png",
+      "/images/epc-contracts-financials-working-capital.png"
+    ],
+    "download": "/downloads/epc-contracts-finance.pbix"
+  },
+  {
+    "title": "AKOMS: Offshore Marine Fleet Performance (KSA)",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "FP&A",
+    "desc": "P&L, fleet utilisation, vessel profitability, contract backlog, capex, debt and receivables for a 31-vessel Saudi offshore marine services company.",
+    "meta": "10 pages · 2024–2026 · SAR",
+    "images": [
+      "/images/akoms-executive-overview.png",
+      "/images/akoms-fleet-operations.png",
+      "/images/akoms-vessel-profitability.png",
+      "/images/akoms-cost-of-sales.png",
+      "/images/akoms-contracts-backlog.png",
+      "/images/akoms-assets-capex.png",
+      "/images/akoms-debt-leverage.png",
+      "/images/akoms-receivables-cash.png",
+      "/images/akoms-budget-vs-actual.png",
+      "/images/akoms-guide-glossary.png"
+    ],
+    "download": "/downloads/akoms-offshore-marine.pbix"
+  },
+  {
     "title": "Falak Cinemas: Cinema Chain Performance (KSA)",
     "category": "pbi",
     "industry": "Entertainment",
@@ -116,22 +152,6 @@
       "/images/falak-cinemas-people.png"
     ],
     "download": "/downloads/falak-cinemas.pbix"
-  },
-  {
-    "title": "IFRS 16 Lease Accounting: Telecom Operator (KSA)",
-    "category": "pbi",
-    "industry": "Telecom",
-    "fn": "Accounting & Close",
-    "desc": "IFRS 16 lessee reporting for 240 telecom leases: lease liability and ROU roll-forwards, interest, depreciation, EBITDA impact, maturity analysis and remeasurements.",
-    "meta": "9 pages · FY2019–FY2026 · SAR",
-    "images": [
-      "/images/ifrs16-telecom-overview.png",
-      "/images/ifrs16-telecom-lease-liability.png",
-      "/images/ifrs16-telecom-rou-assets.png",
-      "/images/ifrs16-telecom-pnl-ebitda.png",
-      "/images/ifrs16-telecom-remeasurements.png"
-    ],
-    "download": "/downloads/ifrs16-telecom-leases.pbix"
   },
   {
     "title": "Hospital Performance & Profitability (KSA)",
@@ -164,7 +184,7 @@
     "link": ""
   },
   {
-    "title": "API 6A / 16A Workshop: Production Costing",
+    "title": "Production Costing: API 6A / 16A Wellhead Workshop (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
     "fn": "Operations",
@@ -178,7 +198,7 @@
     "link": ""
   },
   {
-    "title": "Finance Hub: Oilfield Supplies (KSA)",
+    "title": "Sales & Profitability: Oilfield Supplies Distributor (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
     "fn": "FP&A",
@@ -191,26 +211,6 @@
     ],
     "download": "/downloads/oilfield-supplies-finance-hub.pbix",
     "link": ""
-  },
-  {
-    "title": "EPC Construction XYZ: Contracts, IFRS 15 & Cash (KSA)",
-    "category": "pbi",
-    "industry": "Construction",
-    "fn": "FP&A",
-    "desc": "Five-contract Saudi EPC portfolio: budget vs earned value, IFRS 15 revenue, procurement, labour, Murabaha financing, guarantees, retention and working capital.",
-    "meta": "9 pages · 2025–2026 · SAR",
-    "images": [
-      "/images/epc-contracts-executive-overview.png",
-      "/images/epc-contracts-budget-progress.png",
-      "/images/epc-contracts-ifrs15-revenue.png",
-      "/images/epc-contracts-procurement.png",
-      "/images/epc-contracts-labour.png",
-      "/images/epc-contracts-cash-financing.png",
-      "/images/epc-contracts-guarantees-bonding.png",
-      "/images/epc-contracts-retention.png",
-      "/images/epc-contracts-financials-working-capital.png"
-    ],
-    "download": "/downloads/epc-contracts-finance.pbix"
   },
   {
     "title": "Accounts Receivable: Invoice to Cash",
