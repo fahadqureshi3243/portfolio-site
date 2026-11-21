@@ -1,5 +1,24 @@
 [
   {
+    "title": "Investment Valuation: 25% Stake in Rimal Oilfield Services (KSA)",
+    "category": "pbi",
+    "industry": "Oil & Gas",
+    "fn": "Valuation",
+    "desc": "IFRS 13 fair value of a 25% oilfield services stake: DCF, comps, sensitivity grids, IAS 28 equity method, IAS 36 impairment and IFRS 9 portfolio.",
+    "meta": "9 pages · 2023–2030 · SAR",
+    "images": [
+      "/images/investment-valuation-deal-overview.png",
+      "/images/investment-valuation-financials.png",
+      "/images/investment-valuation-dcf-sensitivity.png",
+      "/images/investment-valuation-market-approach.png",
+      "/images/investment-valuation-ias28-equity.png",
+      "/images/investment-valuation-ias36-impairment.png",
+      "/images/investment-valuation-ifrs9-portfolio.png",
+      "/images/investment-valuation-summary.png"
+    ],
+    "download": "/downloads/investment-valuation.pbix"
+  },
+  {
     "title": "Falak Cinemas: Cinema Chain Performance (KSA)",
     "category": "pbi",
     "industry": "Entertainment",
