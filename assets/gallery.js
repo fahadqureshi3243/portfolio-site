@@ -129,8 +129,11 @@ function startGallery(S) {
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     if (p.download && p.category !== 'erp') {
-      var dl = el('a', 'dl'); dl.href = p.download; if (/^https?:/.test(p.download)) { dl.target = '_blank'; dl.rel = 'noopener'; } else dl.setAttribute('download', ''); dl.setAttribute('aria-label', 'Download ' + p.title);
-      dl.innerHTML = icon('M12 4v11M7 10l5 5 5-5M5 20h14', 15) + 'Download'; act.appendChild(dl);
+      /* files are sent on request: button opens a pre-filled email to Fahad */
+      var dl = el('a', 'dl'); dl.setAttribute('aria-label', 'Request download of ' + p.title);
+      dl.href = 'mailto:fahadqureshi3243@gmail.com?subject=' + encodeURIComponent('Download request: ' + p.title) +
+        '&body=' + encodeURIComponent('Hi Fahad,\n\nI would like a copy of "' + p.title + '".\n\nName:\nCompany:\nRole:\n\nThanks');
+      dl.innerHTML = icon('M12 4v11M7 10l5 5 5-5M5 20h14', 15) + 'Request download'; act.appendChild(dl);
     }
     f.appendChild(act); b.appendChild(f); a.appendChild(b); return a;
   }

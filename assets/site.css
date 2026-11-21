@@ -121,7 +121,7 @@ button,input,select{font:inherit;color:inherit}
 .card .foot .meta small{font-family:var(--mono);font-size:11px}
 .card .actions{display:flex;align-items:center;gap:8px}
 .card .open{font-weight:600;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 6px;background:none;border:0;cursor:pointer;font-size:13px}
-.card .dl{background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px}
+.card .dl{background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;white-space:nowrap;flex-shrink:0}
 .soon,.empty{border-radius:16px;padding:72px 24px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
 .soon{background:var(--surface);border:1px solid var(--line)}
 .soon b{font-size:clamp(32px,4vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1}
