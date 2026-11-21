@@ -1,5 +1,29 @@
 [
   {
+    "title": "Treasury Management: Al Rimal EPC Contracting (KSA)",
+    "category": "pbi",
+    "industry": "Construction",
+    "fn": "Treasury",
+    "desc": "Cash and 13-week forecast, bank guarantees and APG tracking, facility limits, loans, LCs and FX, covenants and bid-capacity what-if for a Saudi EPC contractor.",
+    "meta": "13 pages · 2025–2026 · SAR",
+    "images": [
+      "/images/treasury-overview.png",
+      "/images/treasury-cash-liquidity.png",
+      "/images/treasury-cash-forecast.png",
+      "/images/treasury-guarantees-issued.png",
+      "/images/treasury-guarantee-alerts.png",
+      "/images/treasury-bank-facilities.png",
+      "/images/treasury-loans-debt.png",
+      "/images/treasury-trade-finance-fx.png",
+      "/images/treasury-receivables-retention.png",
+      "/images/treasury-payables-subcontractors.png",
+      "/images/treasury-covenants-risk-insurance.png",
+      "/images/treasury-bid-capacity-whatif.png",
+      "/images/treasury-about-explanation.png"
+    ],
+    "download": "/downloads/al-rimal-epc-treasury.pbix"
+  },
+  {
     "title": "Fixed Asset Lifecycle: Najm Steel Co. (KSA)",
     "category": "pbi",
     "industry": "Manufacturing",
