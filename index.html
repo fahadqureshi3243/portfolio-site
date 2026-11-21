@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=20261121b">
+<link rel="stylesheet" href="assets/site.css?v=20261121c">
 </head>
 <body>
 <header class="top">
@@ -37,11 +37,13 @@
 
   <section class="gallery" id="work" aria-label="Work">
     <aside class="filters" aria-label="Filters">
-      <div class="head"><b>Filters</b><button type="button" class="linkbtn" data-clear>Clear all</button></div>
+      <div class="head"><b>Filters</b><span class="headbtns"><button type="button" class="linkbtn" data-clear>Clear all</button><button type="button" class="fclose" data-fclose aria-label="Close filters">✕</button></span></div>
       <fieldset><legend>FUNCTION</legend><div id="fnList"></div></fieldset>
       <div class="divider"></div>
       <fieldset><legend>INDUSTRY</legend><div id="indList"></div></fieldset>
+      <button type="button" class="btn-dark fapply" data-fclose>Show results</button>
     </aside>
+    <div class="fbackdrop" data-fclose hidden></div>
 
     <div class="main">
       <div class="tabsrow"><b>Categories:</b><div class="tabs" role="tablist" aria-label="Categories" id="tabs"></div></div>
@@ -51,6 +53,7 @@
           <span class="sr">Search projects</span>
           <input type="search" id="q" placeholder="Search dashboards, workflows, models…">
         </label>
+        <button type="button" class="filterbtn" id="filterBtn" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>Filters<span class="fcount" id="fcount" hidden></span></button>
         <label class="sort" for="sort">Sort by
           <select id="sort"><option value="featured">Featured</option><option value="az">Name A–Z</option></select>
         </label>
@@ -98,5 +101,25 @@
 <script src="data/mocks.js"></script>
 <script src="data/erp-data.js"></script>
 <script src="assets/gallery.js?v=20261121"></script>
+<script>
+(function () {
+  var aside = document.querySelector('.filters'), btn = document.getElementById('filterBtn'),
+      bd = document.querySelector('.fbackdrop'), fc = document.getElementById('fcount');
+  if (!aside || !btn) return;
+  function setOpen(o) {
+    aside.classList.toggle('open', o); bd.hidden = !o; btn.setAttribute('aria-expanded', o ? 'true' : 'false');
+    document.body.classList.toggle('noscroll', o);
+  }
+  function count() {
+    var n = aside.querySelectorAll('input:checked').length;
+    fc.textContent = n; fc.hidden = !n;
+  }
+  btn.addEventListener('click', function () { setOpen(true); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-fclose]'), function (b) { b.addEventListener('click', function () { setOpen(false); }); });
+  aside.addEventListener('change', count);
+  Array.prototype.forEach.call(document.querySelectorAll('[data-clear]'), function (b) { b.addEventListener('click', function () { setTimeout(count, 0); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+})();
+</script>
 </body>
 </html>

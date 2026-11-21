@@ -209,3 +209,20 @@ footer a{color:var(--text);text-decoration:none}
 /* Hero explainer video (replaces animated hero demo) */
 .hero-video{max-width:860px;margin:8px auto 0;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0B1220;box-shadow:0 12px 40px rgba(20,26,36,.12);aspect-ratio:16/9}
 .hero-video video{display:block;width:100%;height:100%;object-fit:cover}
+
+/* Mobile: filters open as a bottom sheet from a "Filters" button */
+.filterbtn,.fclose,.fapply,.fbackdrop{display:none}
+.headbtns{display:flex;align-items:center;gap:14px}
+@media (max-width:760px){
+  .filterbtn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:600 15px var(--sans);cursor:pointer}
+  .fcount{background:var(--accent);color:var(--on-accent);border-radius:999px;font-size:12px;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+  .fcount[hidden]{display:none}
+  .gallery .filters{position:fixed;left:0;right:0;bottom:0;z-index:60;max-height:80vh;overflow-y:auto;border-radius:20px 20px 0 0;box-shadow:0 -12px 40px rgba(20,26,36,.25);transform:translateY(105%);visibility:hidden;transition:transform .25s ease,visibility .25s}
+  .gallery .filters.open{transform:none;visibility:visible}
+  .fclose{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:16px;color:var(--ink);cursor:pointer}
+  .fapply{display:inline-flex;position:sticky;bottom:0;width:100%}
+  .fbackdrop{display:block;position:fixed;inset:0;background:rgba(11,15,23,.45);z-index:55}
+  .fbackdrop[hidden]{display:none}
+  body.noscroll{overflow:hidden}
+  .searchrow .search{flex:1 1 100%}
+}
