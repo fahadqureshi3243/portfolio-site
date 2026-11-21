@@ -226,3 +226,48 @@ footer a{color:var(--text);text-decoration:none}
   body.noscroll{overflow:hidden}
   .searchrow .search{flex:1 1 100%}
 }
+
+/* Hero side panels: Power BI building + n8n running (desktop >=1440px only) */
+.mk-stage{position:relative}
+.mk-bg{position:absolute;inset:-40px 0;pointer-events:none;z-index:0;
+ background:radial-gradient(circle,#D3D9E3 1.2px,transparent 1.4px) 0 0/26px 26px;
+ -webkit-mask-image:linear-gradient(90deg,#000 0,#000 22%,transparent 34%,transparent 66%,#000 78%,#000 100%);mask-image:linear-gradient(90deg,#000 0,#000 22%,transparent 34%,transparent 66%,#000 78%,#000 100%)}
+.mk-glow{position:absolute;left:50%;top:50%;width:1100px;height:620px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(255,106,43,.16),transparent);z-index:0;pointer-events:none}
+.mk-stage .hero-video{position:relative;z-index:2}
+.side{position:absolute;z-index:3;top:30px;width:300px;font-family:var(--sans);display:none}
+.side.l{left:calc(50% - 430px - 335px);transform-origin:top right}.side.r{left:calc(50% + 430px + 35px);transform-origin:top left}
+.mk-bg,.mk-glow{display:none}
+@media (min-width:1440px){.side,.mk-bg,.mk-glow{display:block}.side{transform:scale(.8)}}
+@media (min-width:1680px){.side{transform:none}.side.l{left:calc(50% - 430px - 345px)}.side.r{left:calc(50% + 430px + 45px)}}
+.cap{font:600 11px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#A8461C;text-transform:uppercase;margin:0 0 10px 4px}
+/* Power BI tile */
+.pbi{background:#fff;border:1px solid #E3E7EE;border-radius:16px;box-shadow:0 16px 40px rgba(20,26,36,.10);padding:16px 18px;transform:rotate(-1.5deg)}
+.pbi .hd{display:flex;align-items:center;gap:8px;font-size:13px;color:#5E6878;font-weight:600}
+.pbi .hd i{width:22px;height:22px;border-radius:6px;background:#F2C811;display:inline-flex;align-items:flex-end;justify-content:center;gap:2px;padding:4px}
+.pbi .hd i b{width:3px;background:#141A24;border-radius:1px}
+.pbi .kpi{font-size:34px;font-weight:800;letter-spacing:-.03em;color:#141A24;margin:10px 0 0}
+.pbi .sub{font-size:12px;color:#12A383;font-weight:700}
+.pbi .chart{position:relative;height:150px;margin-top:12px;border-bottom:1px solid #E3E7EE;display:flex;align-items:flex-end;gap:10px;padding:0 4px}
+.pbi .bar{flex:1;background:linear-gradient(#FF6A2B,#FF9A6B);border-radius:5px 5px 0 0;height:0;transition:height .6s cubic-bezier(.2,.8,.2,1)}
+.pbi svg.ln{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.pbi svg.ln polyline{fill:none;stroke:#2F64E0;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.4s ease}
+.pbi .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pbi .t{background:#F1F3F8;border-radius:10px;padding:8px 10px;font-size:11px;color:#5E6878;opacity:0;transform:translateY(6px);transition:all .5s}
+.pbi .t b{display:block;font-size:16px;color:#141A24}
+.pbi .t.on{opacity:1;transform:none}
+/* n8n flow */
+.n8n{background:#0b1020;border:1px solid #26305a;border-radius:16px;box-shadow:0 16px 40px rgba(20,26,36,.18);padding:14px 16px 16px;transform:rotate(1.5deg);color:#e6eaf5}
+.n8n .hd{display:flex;justify-content:space-between;font:600 11px 'JetBrains Mono',monospace;color:#8b95b5}
+.n8n .hd .live{color:#34d399}
+.n8n .row{display:flex;align-items:center;gap:12px;margin-top:10px;position:relative}
+.n8n .nd{width:40px;height:40px;border-radius:11px;border:2px solid #2a3456;display:flex;align-items:center;justify-content:center;background:#121a33;transition:all .35s;flex:none}
+.n8n .nd svg{width:20px;height:20px;stroke:#5b6690;transition:stroke .35s}
+.n8n .lb{font-size:13px;color:#8b95b5;transition:color .35s}
+.n8n .lb small{display:block;font-size:11px;color:#5b6690}
+.n8n .row:not(:last-child)::after{content:"";position:absolute;left:19px;top:42px;width:2px;height:12px;background:#2a3456}
+.n8n .row.on .nd{border-color:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 22%,transparent),0 0 18px color-mix(in srgb,var(--c) 55%,transparent)}
+.n8n .row.on .nd svg,.n8n .row.done .nd svg{stroke:var(--c)}
+.n8n .row.done .nd{border-color:var(--c)}
+.n8n .row.on .lb,.n8n .row.done .lb{color:#e6eaf5}
+.n8n .ft{margin-top:12px;font-size:12px;color:#8b95b5;display:flex;justify-content:space-between}
+.n8n .ft .ok{color:#34d399;opacity:0;transition:opacity .4s}.n8n .ft .ok.on{opacity:1}

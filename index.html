@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=20261121c">
+<link rel="stylesheet" href="assets/site.css?v=20261122">
 </head>
 <body>
 <header class="top">
@@ -31,7 +31,18 @@
     </div>
   </section>
 
-  <section aria-label="Explainer video" class="wrap"><div class="hero-video" style="max-width:860px;margin:8px auto 0"><video style="display:block;width:100%;max-width:100%;height:auto" src="/videos/cfo-visibility-explainer.mp4" poster="/images/cfo-visibility-explainer-poster.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="60-second explainer: how Power BI and automation give CFOs real-time visibility"></video></div></section>
+  <section aria-label="Explainer video" class="wrap mk-stage"><div class="mk-bg"></div><div class="mk-glow"></div>
+<div class="side l" aria-hidden="true"><p class="cap">Power BI · building live</p><div class="pbi">
+ <div class="hd"><i><b style="height:6px"></b><b style="height:10px"></b><b style="height:14px"></b></i>Cash forecast · 13 weeks</div>
+ <div class="kpi" id="kpi">SAR 0.0M</div><div class="sub">▲ no funding gap forecast</div>
+ <div class="chart" id="bars"><div class="bar" data-h="42"></div><div class="bar" data-h="55"></div><div class="bar" data-h="48"></div><div class="bar" data-h="63"></div><div class="bar" data-h="58"></div><div class="bar" data-h="74"></div><div class="bar" data-h="88"></div>
+  <svg class="ln" viewBox="0 0 260 150" preserveAspectRatio="none"><polyline id="ln" points="8,110 46,96 84,104 122,80 160,86 198,56 246,30"/></svg></div>
+ <div class="tiles"><div class="t">Closing cash<b>SAR 18.4M</b></div><div class="t">Min balance<b>Week 7</b></div></div>
+</div></div>
+<div class="side r" aria-hidden="true"><p class="cap">n8n · running now</p><div class="n8n" id="flow">
+ <div class="hd"><span>AP invoice automation</span><span class="live">● LIVE</span></div><div class="row" style="--c:#60a5fa"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2zM3.5 7l8.5 6 8.5-6"/></svg></div><div class="lb">Invoice received<small>Gmail · upload · WhatsApp</small></div></div><div class="row" style="--c:#a78bfa"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6 4.6 1.9-4.6 1.9L12 16l-1.9-4.6-4.6-1.9 4.6-1.9z"/></svg></div><div class="lb">AI extracts data<small>Vendor · VAT · totals</small></div></div><div class="row" style="--c:#2dd4bf"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16M8 12h8"/></svg></div><div class="lb">Duplicate check<small>ZATCA QR validated</small></div></div><div class="row" style="--c:#fb923c"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg></div><div class="lb">3-way match<small>PO · GRN · invoice</small></div></div><div class="row" style="--c:#22c55e"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 1 0-18 0M8 12.5l3 3 5-6"/></svg></div><div class="lb">Approved<small>Budget owner · 1 click</small></div></div><div class="row" style="--c:#f2c811"><div class="nd"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4v8.5H4zM10 7.5h4v13h-4zM16 3.5h4v17h-4z"/></svg></div><div class="lb">Power BI refreshed<small>AP dashboard updated</small></div></div>
+ <div class="ft"><span id="step">Waiting for invoice…</span><span class="ok" id="ok">✓ Done in 42s</span></div>
+</div></div><div class="hero-video" style="max-width:860px;margin:8px auto 0"><video style="display:block;width:100%;max-width:100%;height:auto" src="/videos/cfo-visibility-explainer.mp4" poster="/images/cfo-visibility-explainer-poster.jpg" autoplay muted loop playsinline controls preload="metadata" aria-label="60-second explainer: how Power BI and automation give CFOs real-time visibility"></video></div></section>
 
   <div class="wrap"><div class="statrow" id="stats" style="margin-top:28px"></div></div>
 
@@ -101,6 +112,7 @@
 <script src="data/mocks.js"></script>
 <script src="data/erp-data.js"></script>
 <script src="assets/gallery.js?v=20261122"></script>
+<script src="assets/hero-sides.js?v=20261122"></script>
 <script>
 (function () {
   var aside = document.querySelector('.filters'), btn = document.getElementById('filterBtn'),
