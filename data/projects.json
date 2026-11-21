@@ -1,5 +1,25 @@
 [
   {
+    "title": "Inventory & Procure-to-Pay: EPC Construction XYZ (KSA)",
+    "category": "pbi",
+    "industry": "Construction",
+    "fn": "Procurement",
+    "desc": "Stock value, min/max health, aging provision, vendor delivery, IKTVA local spend, GRNI, 3-way match and stock count accuracy for a Saudi EPC contractor.",
+    "meta": "9 pages · 2024–2026 · SAR",
+    "images": [
+      "/images/epc-inventory-overview.png",
+      "/images/epc-inventory-stock-health.png",
+      "/images/epc-inventory-aging-provision.png",
+      "/images/epc-inventory-procurement.png",
+      "/images/epc-inventory-ap-controls.png",
+      "/images/epc-inventory-explorer.png",
+      "/images/epc-inventory-item-detail.png",
+      "/images/epc-inventory-vendor-detail.png",
+      "/images/epc-inventory-project-detail.png"
+    ],
+    "download": "/downloads/epc-inventory-procure-to-pay.pbix"
+  },
+  {
     "title": "IAS 19 Employee Benefits: Drilling Contractor (KSA)",
     "category": "pbi",
     "industry": "Oil & Gas",
