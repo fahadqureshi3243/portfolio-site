@@ -171,16 +171,24 @@
     "link": ""
   },
   {
-    "title": "Construction Company - Power BI ",
+    "title": "EPC Construction XYZ: Contracts, IFRS 15 & Cash (KSA)",
     "category": "pbi",
     "industry": "Construction",
     "fn": "FP&A",
-    "desc": "Construction Company - Power BI - Finance Budget Progress",
-    "meta": "5 pages",
+    "desc": "Five-contract Saudi EPC portfolio: budget vs earned value, IFRS 15 revenue, procurement, labour, Murabaha financing, guarantees, retention and working capital.",
+    "meta": "9 pages · 2025–2026 · SAR",
     "images": [
-      "/images/Executive Summary - Construction.png"
+      "/images/epc-contracts-executive-overview.png",
+      "/images/epc-contracts-budget-progress.png",
+      "/images/epc-contracts-ifrs15-revenue.png",
+      "/images/epc-contracts-procurement.png",
+      "/images/epc-contracts-labour.png",
+      "/images/epc-contracts-cash-financing.png",
+      "/images/epc-contracts-guarantees-bonding.png",
+      "/images/epc-contracts-retention.png",
+      "/images/epc-contracts-financials-working-capital.png"
     ],
-    "download": "/downloads/Construction Powerbi.pbix"
+    "download": "/downloads/epc-contracts-finance.pbix"
   },
   {
     "title": "Accounts Receivable: Invoice to Cash",
