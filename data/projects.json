@@ -1,5 +1,27 @@
 [
   {
+    "title": "Fixed Asset Lifecycle: Najm Steel Co. (KSA)",
+    "category": "pbi",
+    "industry": "Manufacturing",
+    "fn": "Accounting & Close",
+    "desc": "End-to-end fixed assets for a Saudi steel maker: condition reviews, capex and procurement, CWIP, depreciation, IAS 36 impairment, disposals and FAR-to-GL close.",
+    "meta": "11 pages · 2022–2026 · SAR",
+    "images": [
+      "/images/fixed-assets-overview.png",
+      "/images/fixed-assets-condition-cba.png",
+      "/images/fixed-assets-capex-pipeline.png",
+      "/images/fixed-assets-procurement.png",
+      "/images/fixed-assets-receipt-qc.png",
+      "/images/fixed-assets-cwip-capitalisation.png",
+      "/images/fixed-assets-register-depreciation.png",
+      "/images/fixed-assets-impairment.png",
+      "/images/fixed-assets-disposals-count.png",
+      "/images/fixed-assets-close-controls.png",
+      "/images/fixed-assets-ifrs-assumptions.png"
+    ],
+    "download": "/downloads/najm-steel-fixed-assets.pbix"
+  },
+  {
     "title": "Inventory & Procure-to-Pay: EPC Construction XYZ (KSA)",
     "category": "pbi",
     "industry": "Construction",
