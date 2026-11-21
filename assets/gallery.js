@@ -139,7 +139,7 @@ function startGallery(S) {
   }
 
   /* animated n8n workflows */
-  var thumbs = [], FLOW = { rfq: 'WfRequest', inv: 'WfInventory', hr: 'WfHiring', ops: 'WfOperations' }, flowInst = null;
+  var thumbs = [], FLOW = { rfq: 'WfRequest', inv: 'WfInventory', hr: 'WfHiring', ops: 'WfOperations', ap: 'HeroDemo' }, flowInst = null;
   var PAGE = { ar: 'flows/ar-automation.html' };
   var dlg = document.getElementById('flowDlg');
   function openFlow(p) {

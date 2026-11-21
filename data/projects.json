@@ -237,6 +237,15 @@
     "link": ""
   },
   {
+    "title": "Accounts Payable: Invoice to Approval",
+    "category": "n8n",
+    "industry": "All industries",
+    "fn": "Accounting & Close",
+    "desc": "Invoices from email, upload and WhatsApp are read by AI, checked for duplicates, matched to POs, approved and logged for Power BI.",
+    "meta": "11 stages",
+    "kind": "ap"
+  },
+  {
     "title": "Accounts Receivable: Invoice to Cash",
     "category": "n8n",
     "industry": "All industries",
