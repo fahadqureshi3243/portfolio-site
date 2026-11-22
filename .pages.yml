@@ -10,6 +10,11 @@ media:
     input: downloads
     output: /downloads
     extensions: [pbix, xlsx, xlsm, pdf, pptx, zip, json]
+  - name: videos
+    label: Videos
+    input: videos
+    output: /videos
+    extensions: [mp4]
 
 content:
   - name: projects
@@ -39,6 +44,8 @@ content:
               label: Training
             - name: finance
               label: Finance Samples
+            - name: video
+              label: Videos
       - name: industry
         label: Industry
         type: select
@@ -67,6 +74,11 @@ content:
         type: file
         options:
           media: downloads
+      - name: video
+        label: Video file (.mp4, Videos cards only — under 25 MB; screenshot above is the cover)
+        type: file
+        options:
+          media: videos
       - name: link
         label: Live link (e.g. Power BI "Publish to web" or a OneDrive link)
         type: string

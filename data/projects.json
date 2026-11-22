@@ -377,5 +377,17 @@
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
     "meta": "6 sheets"
+  },
+  {
+    "title": "How the Saudi Local Content (LCGPA) Score Is Calculated",
+    "category": "video",
+    "industry": "All industries",
+    "fn": "Tax & Compliance",
+    "desc": "A narrated explainer on the LCGPA score: the cost base, suppliers, depreciation, labour, training, supplier development and R&D, with a worked example.",
+    "meta": "3:58 · Narrated · Sample figures",
+    "images": [
+      "/images/lc-score-explained.jpg"
+    ],
+    "video": "/videos/lc-score-explained.mp4"
   }
 ]

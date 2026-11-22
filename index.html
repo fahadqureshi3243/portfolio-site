@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=20261122">
+<link rel="stylesheet" href="assets/site.css?v=20261122b">
 </head>
 <body>
 <header class="top">
@@ -106,10 +106,15 @@
   </div>
 </div>
 
+<div class="viewer" id="vidDlg" role="dialog" aria-modal="true" aria-labelledby="vidCap" hidden>
+  <div class="vtop"><span id="vidCap"></span><button type="button" id="vidClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>Close</button></div>
+  <div class="vbody"><video id="vidPlayer" controls playsinline preload="metadata"></video></div>
+</div>
+
 <script src="assets/dc-lite.js"></script>
 <script src="data/mocks.js"></script>
 <script src="data/erp-data.js"></script>
-<script src="assets/gallery.js?v=20261122"></script>
+<script src="assets/gallery.js?v=20261122b"></script>
 <script src="assets/hero-sides.js?v=20261122"></script>
 <script>
 (function () {

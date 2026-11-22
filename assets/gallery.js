@@ -1,6 +1,6 @@
 /* Gallery page: tabs, filters, search and cards, all built from data/projects.js */
 function startGallery(S) {
-  var ALL = S.PROJECTS.filter(function (p) { return p && p.title && p.category; }), SOON = S.comingSoon || [], MOCKS = window.MOCKS || {};
+  var ALL = S.PROJECTS.filter(function (p) { return p && p.title && p.category; }), SOON = S.comingSoon || [], HIDE = S.hiddenTabs || [], MOCKS = window.MOCKS || {};
   ALL.forEach(function (p) { var m = MOCKS[p.title] || {}; if (!p.mock && m.kpis) p.mock = m; if (!p.nodes && m.nodes) p.nodes = m.nodes; p.industry = p.industry || 'All industries'; p.fn = p.fn || ''; p.desc = p.desc || ''; });
   var CATS = [
     { k: 'pbi', label: 'Power BI', icon: 'M5 20V12M10 20V8M15 20V4M20 20v-6' },
@@ -8,11 +8,13 @@ function startGallery(S) {
     { k: 'erp', label: 'ERP Workflows', icon: 'M12 3v5M12 8H6v4M12 8h6v4M6 12v3M18 12v3M10 3h4v4h-4zM3 15h6v5H3zM15 15h6v5h-6z' },
     { k: 'training', label: 'Training', icon: 'M3 8l9-4 9 4-9 4-9-4zM7 10v5c0 1.5 2.5 3 5 3s5-1.5 5-3v-5' },
     { k: 'finance', label: 'Finance Samples', icon: 'M4 4h16v16H4zM4 10h16M10 4v16' },
+    { k: 'video', label: 'Videos', icon: 'M4 5h16v14H4zM10 9l5 3-5 3z' },
     { k: 'all', label: 'All work', icon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' }
   ];
-  var CTA = { pbi: 'View', n8n: 'Watch', erp: 'Explore', training: 'Outline', finance: 'Open' };
+  CATS = CATS.filter(function (c) { return HIDE.indexOf(c.k) < 0; });
+  var CTA = { video: 'Watch', pbi: 'View', n8n: 'Watch', erp: 'Explore', training: 'Outline', finance: 'Open' };
   var FILE = { pbi: '.pbix', training: '.pdf', finance: '.xlsx' };
-  var live = ALL.filter(function (p) { return SOON.indexOf(p.category) < 0; });
+  var live = ALL.filter(function (p) { return SOON.indexOf(p.category) < 0 && HIDE.indexOf(p.category) < 0; });
   var st = { tab: 'pbi', fns: [], inds: [], q: '', sort: 'featured', slide: {} };
   try { var h = location.hash.slice(1); if (CATS.some(function (c) { return c.k === h; })) st.tab = h; } catch (e) {}
 
@@ -92,6 +94,14 @@ function startGallery(S) {
 
   function thumb(p) {
     var t = el('div', 'thumb'), imgs = p.images || [];
+    if (p.video) {
+      t.classList.add('has-img');
+      var vb0 = el('button', 'zoom playthumb'); vb0.type = 'button'; vb0.setAttribute('aria-label', 'Play ' + p.title);
+      if (imgs.length) { var pim = el('img'); pim.src = imgs[0]; pim.alt = ''; pim.loading = 'lazy'; vb0.appendChild(pim); }
+      var pl = el('span', 'play'); pl.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"></path></svg>'; vb0.appendChild(pl);
+      vb0.onclick = function () { openVideo(p); }; t.appendChild(vb0);
+      return t;
+    }
     if (imgs.length) {
       t.classList.add('has-img');
       var i = (st.slide[p.title] || 0) % imgs.length, im = el('img'); im.src = imgs[i]; im.alt = p.title + ' screenshot ' + (i + 1); im.loading = 'lazy';
@@ -125,7 +135,8 @@ function startGallery(S) {
     if (p.download) { var ext = (p.download.split('?')[0].match(/\.([a-z0-9]+)$/i) || [])[1]; if (ext) m.appendChild(el('small', '', '.' + ext.toLowerCase())); }
     f.appendChild(m);
     var act = el('span', 'actions'), href = p.category === 'erp' ? 'erp-workflows.html#' + p.erp : (p.link || '');
-    if (!href && (p.images || []).length) { var vb = el('button', 'open', 'View'); vb.type = 'button'; vb.onclick = function () { openViewer(p, 0); }; act.appendChild(vb); }
+    if (p.video) { var wv = el('button', 'open', 'Watch'); wv.type = 'button'; wv.onclick = function () { openVideo(p); }; act.appendChild(wv); }
+    else if (!href && (p.images || []).length) { var vb = el('button', 'open', 'View'); vb.type = 'button'; vb.onclick = function () { openViewer(p, 0); }; act.appendChild(vb); }
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     if (p.download && p.category !== 'erp') {
@@ -159,6 +170,14 @@ function startGallery(S) {
   document.getElementById('flowClose').addEventListener('click', closeFlow);
   dlg.addEventListener('click', function (e) { if (e.target === dlg) closeFlow(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) closeFlow(); });
+
+  /* video player */
+  var vd = document.getElementById('vidDlg'), vdPlayer = document.getElementById('vidPlayer');
+  function openVideo(p) { document.getElementById('vidCap').textContent = p.title; vdPlayer.poster = (p.images || [])[0] || ''; vdPlayer.src = p.video; vd.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vidClose').focus(); try { vdPlayer.play(); } catch (e) {} }
+  function closeVideo() { vdPlayer.pause(); vdPlayer.removeAttribute('src'); vdPlayer.load(); vd.hidden = true; document.body.style.overflow = ''; }
+  document.getElementById('vidClose').onclick = closeVideo;
+  vd.addEventListener('click', function (e) { if (e.target === vd) closeVideo(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !vd.hidden) closeVideo(); });
 
   /* full-size screenshot viewer */
   var vw = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vCap = document.getElementById('vCap'), vCur = null, vIdx = 0;
@@ -197,7 +216,7 @@ function startGallery(S) {
   function get(u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); }); }
   Promise.all([get('data/projects.json'), get('data/settings.json').catch(function () { return {}; })]).then(function (r) {
     startGallery({
-      PROJECTS: r[0] || [], comingSoon: r[1].comingSoon || [],
+      PROJECTS: r[0] || [], comingSoon: r[1].comingSoon || [], hiddenTabs: r[1].hiddenTabs || [],
       FUNCTIONS: ['FP&A', 'Accounting & Close', 'Procurement', 'Operations', 'Tax & Compliance', 'Treasury', 'HR & Payroll', 'Valuation', 'ERP & Process'],
       INDUSTRIES: ['Oil & Gas', 'Petrochemicals', 'Construction', 'Manufacturing', 'Logistics', 'Entertainment', 'Healthcare', 'Telecom', 'All industries']
     });

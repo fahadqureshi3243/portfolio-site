@@ -4,5 +4,9 @@
     "finance"
   ],
   "aboutPhoto": "",
-  "cv": ""
+  "cv": "",
+  "hiddenTabs": [
+    "training",
+    "finance"
+  ]
 }
