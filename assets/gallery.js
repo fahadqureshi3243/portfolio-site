@@ -139,6 +139,8 @@ function startGallery(S) {
     else if (!href && (p.images || []).length) { var vb = el('button', 'open', 'View'); vb.type = 'button'; vb.onclick = function () { openViewer(p, 0); }; act.appendChild(vb); }
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
+    var rp = relOf(p);
+    if (rp) { var rb = el('button', 'rel'); rb.type = 'button'; rb.innerHTML = icon(rp.video ? 'M6 4l14 8-14 8z' : 'M5 20V12M10 20V8M15 20V4M20 20v-6', 14) + (rp.video ? 'Watch the video' : 'See the dashboard'); rb.setAttribute('aria-label', (rp.video ? 'Watch ' : 'Open ') + rp.title); rb.onclick = function () { openRel(rp); }; b.appendChild(rb); }
     if (p.download && p.category !== 'erp') {
       /* files are sent on request: button opens a pre-filled email to Fahad */
       var dl = el('a', 'dl'); dl.setAttribute('aria-label', 'Request download of ' + p.title);
@@ -171,9 +173,15 @@ function startGallery(S) {
   dlg.addEventListener('click', function (e) { if (e.target === dlg) closeFlow(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !dlg.hidden) closeFlow(); });
 
+  /* linked cards (e.g. dashboard <-> explainer video) */
+  function relOf(p) { return p.related ? live.find(function (x) { return x.title === p.related && x !== p; }) || null : null; }
+  function openRel(rp) { if (!vd.hidden) closeVideo(); if (!vw.hidden) closeViewer(); if (rp.video) openVideo(rp); else if ((rp.images || []).length) openViewer(rp, 0); }
+  function relBtn(id, p) { var b = document.getElementById(id), rp = relOf(p); b.hidden = !rp; if (!rp) return;
+    b.innerHTML = icon(rp.video ? 'M6 4l14 8-14 8z' : 'M5 20V12M10 20V8M15 20V4M20 20v-6', 15) + (rp.video ? 'Watch the explainer video' : 'See the dashboard'); b.onclick = function () { openRel(rp); }; }
+
   /* video player */
   var vd = document.getElementById('vidDlg'), vdPlayer = document.getElementById('vidPlayer');
-  function openVideo(p) { document.getElementById('vidCap').textContent = p.title; vdPlayer.poster = (p.images || [])[0] || ''; vdPlayer.src = p.video; vd.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vidClose').focus(); try { vdPlayer.play(); } catch (e) {} }
+  function openVideo(p) { relBtn('vidRel', p); document.getElementById('vidCap').textContent = p.title; vdPlayer.poster = (p.images || [])[0] || ''; vdPlayer.src = p.video; vd.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vidClose').focus(); try { vdPlayer.play(); } catch (e) {} }
   function closeVideo() { vdPlayer.pause(); vdPlayer.removeAttribute('src'); vdPlayer.load(); vd.hidden = true; document.body.style.overflow = ''; }
   document.getElementById('vidClose').onclick = closeVideo;
   vd.addEventListener('click', function (e) { if (e.target === vd) closeVideo(); });
@@ -183,7 +191,7 @@ function startGallery(S) {
   var vw = document.getElementById('viewer'), vImg = document.getElementById('vImg'), vCap = document.getElementById('vCap'), vCur = null, vIdx = 0;
   function showV() { var imgs = vCur.images; vImg.src = imgs[vIdx]; vImg.alt = vCur.title + ' screenshot ' + (vIdx + 1); vCap.textContent = vCur.title + (imgs.length > 1 ? '  ·  ' + (vIdx + 1) + ' / ' + imgs.length : '');
     document.getElementById('vPrev').hidden = document.getElementById('vNext').hidden = imgs.length < 2; }
-  function openViewer(p, i) { vCur = p; vIdx = i || 0; showV(); vw.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vClose').focus(); }
+  function openViewer(p, i) { relBtn('vRel', p); vCur = p; vIdx = i || 0; showV(); vw.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('vClose').focus(); }
   function closeViewer() { vw.hidden = true; document.body.style.overflow = ''; vImg.removeAttribute('src'); }
   function stepV(d) { var n = vCur.images.length; vIdx = (vIdx + d + n) % n; showV(); }
   document.getElementById('vClose').onclick = closeViewer;

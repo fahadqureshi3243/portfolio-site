@@ -205,7 +205,8 @@
       "/images/local-content-labor-assets.png"
     ],
     "download": "/downloads/local-content-lcgpa.pbix",
-    "link": ""
+    "link": "",
+    "related": "How the Saudi Local Content (LCGPA) Score Is Calculated"
   },
   {
     "title": "Production Costing: API 6A / 16A Wellhead Workshop (KSA)",
@@ -388,6 +389,7 @@
     "images": [
       "/images/lc-score-explained.jpg"
     ],
-    "video": "/videos/lc-score-explained.mp4"
+    "video": "/videos/lc-score-explained.mp4",
+    "related": "Local Content Intelligence: Najd Horizon Construction"
   }
 ]

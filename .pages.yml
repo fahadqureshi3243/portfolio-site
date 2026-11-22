@@ -79,6 +79,9 @@ content:
         type: file
         options:
           media: videos
+      - name: related
+        label: Linked card (exact title of another card, e.g. the video that explains this dashboard)
+        type: string
       - name: link
         label: Live link (e.g. Power BI "Publish to web" or a OneDrive link)
         type: string
