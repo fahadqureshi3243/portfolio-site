@@ -244,7 +244,8 @@
     "fn": "Accounting & Close",
     "desc": "Invoices from email, upload and WhatsApp are read by AI, checked for duplicates, matched to POs, approved and logged for Power BI.",
     "meta": "11 stages",
-    "kind": "ap"
+    "kind": "ap",
+    "related": "Invoice Receiving and Matching with n8n"
   },
   {
     "title": "Accounts Receivable: Invoice to Cash",
@@ -378,6 +379,19 @@
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
     "meta": "6 sheets"
+  },
+  {
+    "title": "Invoice Receiving and Matching with n8n",
+    "category": "video",
+    "industry": "All industries",
+    "fn": "Accounting & Close",
+    "desc": "A narrated walkthrough of invoices caught from every channel, read by AI, checked for duplicates, matched to PO and GRN, and chased when missing.",
+    "meta": "3:46 · Narrated · Sample figures",
+    "images": [
+      "/images/invoice-automation-n8n.jpg"
+    ],
+    "video": "/videos/invoice-automation-n8n.mp4",
+    "related": "Accounts Payable: Invoice to Approval"
   },
   {
     "title": "How the Saudi Local Content (LCGPA) Score Is Calculated",

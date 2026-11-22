@@ -140,7 +140,7 @@ function startGallery(S) {
     if (href) { var o = el('a', 'open', CTA[p.category] || 'View'); o.href = href; if (/^https?:/.test(href)) { o.target = '_blank'; o.rel = 'noopener'; } act.appendChild(o); }
     else if (p.category === 'n8n' && p.kind) { var w = el('button', 'open', 'Watch'); w.type = 'button'; w.onclick = function () { openFlow(p); }; act.appendChild(w); }
     var rp = relOf(p);
-    if (rp) { var rb = el('button', 'rel'); rb.type = 'button'; rb.innerHTML = icon(rp.video ? 'M6 4l14 8-14 8z' : 'M5 20V12M10 20V8M15 20V4M20 20v-6', 14) + (rp.video ? 'Watch the video' : 'See the dashboard'); rb.setAttribute('aria-label', (rp.video ? 'Watch ' : 'Open ') + rp.title); rb.onclick = function () { openRel(rp); }; b.appendChild(rb); }
+    if (rp) { var rb = el('button', 'rel'); rb.type = 'button'; rb.innerHTML = icon(relIcon(rp), 14) + relText(rp, false); rb.setAttribute('aria-label', (rp.video ? 'Watch ' : 'Open ') + rp.title); rb.onclick = function () { openRel(rp); }; b.appendChild(rb); }
     if (p.download && p.category !== 'erp') {
       /* files are sent on request: button opens a pre-filled email to Fahad */
       var dl = el('a', 'dl'); dl.setAttribute('aria-label', 'Request download of ' + p.title);
@@ -175,9 +175,11 @@ function startGallery(S) {
 
   /* linked cards (e.g. dashboard <-> explainer video) */
   function relOf(p) { return p.related ? live.find(function (x) { return x.title === p.related && x !== p; }) || null : null; }
-  function openRel(rp) { if (!vd.hidden) closeVideo(); if (!vw.hidden) closeViewer(); if (rp.video) openVideo(rp); else if ((rp.images || []).length) openViewer(rp, 0); }
+  function relIcon(rp) { return rp.video ? 'M6 4l14 8-14 8z' : (rp.category === 'n8n' ? 'M4 6h6v5H4zM14 13h6v5h-6zM10 8.5h2v7h2' : 'M5 20V12M10 20V8M15 20V4M20 20v-6'); }
+  function relText(rp, long) { return rp.video ? (long ? 'Watch the explainer video' : 'Watch the video') : (rp.category === 'n8n' ? 'See the n8n workflow' : 'See the dashboard'); }
+  function openRel(rp) { if (!vd.hidden) closeVideo(); if (!vw.hidden) closeViewer(); if (!dlg.hidden) closeFlow(); if (rp.video) openVideo(rp); else if (rp.category === 'n8n' && rp.kind) openFlow(rp); else if ((rp.images || []).length) openViewer(rp, 0); }
   function relBtn(id, p) { var b = document.getElementById(id), rp = relOf(p); b.hidden = !rp; if (!rp) return;
-    b.innerHTML = icon(rp.video ? 'M6 4l14 8-14 8z' : 'M5 20V12M10 20V8M15 20V4M20 20v-6', 15) + (rp.video ? 'Watch the explainer video' : 'See the dashboard'); b.onclick = function () { openRel(rp); }; }
+    b.innerHTML = icon(relIcon(rp), 15) + relText(rp, true); b.onclick = function () { openRel(rp); }; }
 
   /* video player */
   var vd = document.getElementById('vidDlg'), vdPlayer = document.getElementById('vidPlayer');
