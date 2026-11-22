@@ -1,5 +1,24 @@
 [
   {
+    "title": "Transfer Pricing: Velmora Pharma Group (KSA)",
+    "category": "pbi",
+    "industry": "Healthcare",
+    "fn": "Tax & Compliance",
+    "desc": "Controlled transactions, arm's length tests, benchmarking, FAR/DEMPE, financing, WHT and customs, and ZATCA compliance for a Saudi pharma group.",
+    "meta": "8 pages · FY2023–FY2025 · SAR",
+    "images": [
+      "/images/transfer-pricing-overview.png",
+      "/images/transfer-pricing-controlled-transactions.png",
+      "/images/transfer-pricing-arms-length-tests.png",
+      "/images/transfer-pricing-benchmarking.png",
+      "/images/transfer-pricing-entity-pl-far.png",
+      "/images/transfer-pricing-financing-wht-customs.png",
+      "/images/transfer-pricing-compliance-disputes.png",
+      "/images/transfer-pricing-guide-explanation.png"
+    ],
+    "download": "/downloads/velmora-transfer-pricing.pbix"
+  },
+  {
     "title": "Treasury Management: Al Rimal EPC Contracting (KSA)",
     "category": "pbi",
     "industry": "Construction",
