@@ -16,7 +16,8 @@
       "/images/vat-wht-compliance-recon.png",
       "/images/vat-wht-summary-rules.png"
     ],
-    "download": "/downloads/sahm-plastics-vat-wht.pbix"
+    "download": "/downloads/sahm-plastics-vat-wht.pbix",
+    "related": "Saudi VAT Explained: Invoice to ZATCA Filing"
   },
   {
     "title": "Transfer Pricing: Velmora Pharma Group (KSA)",
@@ -419,6 +420,19 @@
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
     "meta": "6 sheets"
+  },
+  {
+    "title": "Saudi VAT Explained: Invoice to ZATCA Filing",
+    "category": "video",
+    "industry": "All industries",
+    "fn": "Tax & Compliance",
+    "desc": "A narrated walkthrough of Saudi VAT: output and input tax, reverse charge, imports, WHT, the 16-box return, corrections, e-invoicing and penalties.",
+    "meta": "13:27 · Narrated · Sample figures",
+    "images": [
+      "/images/saudi-vat-explained.jpg"
+    ],
+    "video": "/videos/saudi-vat-explained.mp4",
+    "related": "VAT & Withholding Tax: Sahm Plastics (KSA)"
   },
   {
     "title": "IAS 19 Employee Benefits Explained",
