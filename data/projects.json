@@ -102,7 +102,8 @@
       "/images/ias19-termination-long-term.png",
       "/images/ias19-in-brief.png"
     ],
-    "download": "/downloads/ias19-employee-benefits.pbix"
+    "download": "/downloads/ias19-employee-benefits.pbix",
+    "related": "IAS 19 Employee Benefits Explained"
   },
   {
     "title": "IFRS 16 Lease Accounting: Telecom Operator (KSA)",
@@ -399,6 +400,19 @@
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
     "meta": "6 sheets"
+  },
+  {
+    "title": "IAS 19 Employee Benefits Explained",
+    "category": "video",
+    "industry": "All industries",
+    "fn": "Accounting & Close",
+    "desc": "A narrated walkthrough of IAS 19: short-term, post-employment, other long-term and termination benefits, with Saudi end-of-service measured step by step.",
+    "meta": "5:49 · Narrated · Sample figures",
+    "images": [
+      "/images/ias19-explained.jpg"
+    ],
+    "video": "/videos/ias19-explained.mp4",
+    "related": "IAS 19 Employee Benefits: Drilling Contractor (KSA)"
   },
   {
     "title": "Transfer Pricing in Saudi Arabia Explained",
