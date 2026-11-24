@@ -281,3 +281,32 @@ footer a{color:var(--text);text-decoration:none}
 .playthumb .play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(20,26,36,.3);padding-left:4px;transition:transform .15s}
 .playthumb:hover .play{transform:scale(1.08)}
 .vbody video{max-width:100%;max-height:100%;border-radius:8px;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+
+/* Fahad avatar intro over the hero video */
+.hero-video{position:relative;container-type:inline-size}
+.fqa{display:none;position:absolute;inset:0;z-index:3;cursor:pointer;transition:opacity .6s ease;font-family:'Inter Tight',system-ui,sans-serif}
+.fqa.on{display:block}
+.fqa.out{opacity:0;pointer-events:none}
+.fqa-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.fqa-av{position:absolute;left:7.292%;top:51.389%;width:14.0625%;height:auto;overflow:visible}
+.fqa-ptr{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.fqa-glow{position:absolute;left:24.48%;top:12.13%;width:51.04%;height:37.78%;border:3px solid #2ee6d6;border-radius:2.2cqw;opacity:0;box-shadow:0 0 24px rgba(46,230,214,.45)}
+.fqa-bub{position:absolute;left:3%;bottom:50.6%;width:max-content;max-width:64cqw;background:#fff;color:#0B1220;border-radius:1.2em;padding:.55em 1em .65em;font-size:clamp(11px,2cqw,18px);line-height:1.3;opacity:0;transform-origin:18% 100%;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.fqa-bub:after{content:"";position:absolute;left:calc(11cqw - 8px);bottom:-9px;border-left:9px solid transparent;border-right:9px solid transparent;border-top:10px solid #fff}
+.fqa-hi{display:block;font-size:.8em;color:#5E6878}
+.fqa-hi b{font-size:1.3em;font-weight:800;color:#0B1220}
+.fqa-msg{display:block;position:relative;white-space:nowrap;margin-top:.1em;font-weight:500}
+.fqa-ghost{visibility:hidden}
+.fqa-live{position:absolute;left:0;top:0}
+.fqa-bub em{font-style:normal;font-weight:800;color:#0f8f87;position:relative;display:inline-block}
+.fqa-bub em i{position:absolute;left:0;bottom:-.08em;height:.12em;background:#14b8ad;border-radius:2px}
+.fqa-caret{display:inline-block;width:2px;height:1em;background:#14b8ad;vertical-align:-.12em;margin-left:1px}
+.fqa-skip{position:absolute;right:2%;bottom:3.5%;font:500 clamp(10px,1.3cqw,13px)/1 'Inter Tight',sans-serif;color:rgba(255,255,255,.75);background:rgba(11,18,32,.55);border:1px solid rgba(255,255,255,.18);border-radius:99px;padding:.6em 1em;cursor:pointer}
+.fqa-skip:hover{color:#fff}
+@media (max-width:600px){.fqa-bub{left:2%;max-width:80cqw}}
+/* Hero quote */
+.hero-quote{position:relative;margin:6px 0 0;padding:2px 0 2px 18px;border-left:3px solid var(--accent,#FF6A2B);border-radius:0;max-width:560px;text-align:left}
+.hero-quote p{margin:0 0 6px;font-family:Georgia,"Times New Roman",serif;font-style:italic;font-size:clamp(17px,2vw,21px);line-height:1.4;color:var(--ink);max-width:none}
+.hero-quote p em{color:#A8461C}
+.hero-quote cite{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--text2,#5E6878)}
+.hero h1 .hl{color:#E4561A}
