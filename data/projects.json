@@ -1,5 +1,24 @@
 [
   {
+    "title": "VAT & Withholding Tax: Sahm Plastics (KSA)",
+    "category": "pbi",
+    "industry": "Manufacturing",
+    "fn": "Tax & Compliance",
+    "desc": "ZATCA 16-box VAT return, input recovery and blocked VAT, reverse charge and imports, WHT on non-residents, Fatoora and GL reconciliation for a Saudi plastics maker.",
+    "meta": "8 pages · Jan 2025–Oct 2026 · SAR",
+    "images": [
+      "/images/vat-wht-overview.png",
+      "/images/vat-wht-vat-return.png",
+      "/images/vat-wht-output-tax.png",
+      "/images/vat-wht-input-tax.png",
+      "/images/vat-wht-reverse-charge-imports.png",
+      "/images/vat-wht-withholding-tax.png",
+      "/images/vat-wht-compliance-recon.png",
+      "/images/vat-wht-summary-rules.png"
+    ],
+    "download": "/downloads/sahm-plastics-vat-wht.pbix"
+  },
+  {
     "title": "Transfer Pricing: Velmora Pharma Group (KSA)",
     "category": "pbi",
     "industry": "Healthcare",
