@@ -139,7 +139,8 @@
       "/images/ifrs16-telecom-pnl-ebitda.png",
       "/images/ifrs16-telecom-remeasurements.png"
     ],
-    "download": "/downloads/ifrs16-telecom-leases.pbix"
+    "download": "/downloads/ifrs16-telecom-leases.pbix",
+    "related": "IFRS 16 Leases Explained by Fahad"
   },
   {
     "title": "Investment Valuation: 25% Stake in Rimal Oilfield Services (KSA)",
@@ -420,6 +421,19 @@
     "fn": "FP&A",
     "desc": "Driver-based revenue and opex budget with department roll-ups and monthly phasing.",
     "meta": "6 sheets"
+  },
+  {
+    "title": "IFRS 16 Leases Explained by Fahad",
+    "category": "video",
+    "industry": "All industries",
+    "fn": "Accounting & Close",
+    "desc": "A narrated explainer on IFRS 16: spotting a lease, the exemptions, day-one liability and ROU asset, a worked example and the EBITDA impact.",
+    "meta": "7:29 · Narrated · Sample figures",
+    "images": [
+      "/images/ifrs16-leases-explained.jpg"
+    ],
+    "video": "/videos/ifrs16-leases-explained.mp4",
+    "related": "IFRS 16 Lease Accounting: Telecom Operator (KSA)"
   },
   {
     "title": "Saudi VAT Explained: Invoice to ZATCA Filing",
